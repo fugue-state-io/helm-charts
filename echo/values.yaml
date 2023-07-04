@@ -1,0 +1,5 @@
+oauth2proxy:
+  {}
+ingress:
+  annotations:
+    {}
