@@ -1,16 +1,16 @@
-# apiVersion: argoproj.io/v1alpha1
-# kind: Application
-# metadata:
-#   name: echo
-#   namespace: argocd
-#   finalizers:
-#   - resources-finalizer.argocd.argoproj.io
-# spec:
-#   destination:
-#     namespace: echo
-#     server: "https://kubernetes.default.svc"
-#   project: fugue-state
-#   source:
-#     path: echo
-#     repoURL: 'https://github.com/fugue-state-io/helm-charts'
-#     targetRevision: develop
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: echo
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: echo
+    server: "https://kubernetes.default.svc"
+  project: fugue-state
+  source:
+    path: echo
+    repoURL: 'https://github.com/fugue-state-io/helm-charts'
+    targetRevision: develop
