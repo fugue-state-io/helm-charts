@@ -1,5 +1,5 @@
 replicaCount: 1
-
+namespace: c2
 image:
   repository: registry.digitalocean.com/fugue-state-registry/c2
   pullPolicy: IfNotPresent
