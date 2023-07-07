@@ -114,16 +114,16 @@ image:
 auth:
   ## @param auth.adminUser Keycloak administrator user
   ##
-  adminUser: user
+  # adminUser: user
   ## @param auth.adminPassword Keycloak administrator password for the new user
   ##
-  adminPassword: ""
+  # adminPassword: ""
   ## @param auth.existingSecret Existing secret containing Keycloak admin password
   ##
-  existingSecret: ""
+  existingSecret: "keycloak-secret"
   ## @param auth.passwordSecretKey Key where the Keycloak admin password is being stored inside the existing secret.
   ##
-  passwordSecretKey: ""
+  passwordSecretKey: "keycloak-password"
 
 ## HTTPS settings
 ## ref: https://github.com/bitnami/containers/tree/main/bitnami/keycloak#tls-encryption
@@ -1016,17 +1016,12 @@ postgresql:
 ##
 # TODO: wire up secret
 externalDatabase:
-  host: ""
-  port: 5432
-  user: bn_keycloak
-  database: bitnami_keycloak
-  password: ""
-  existingSecret: ""
-  existingSecretHostKey: ""
-  existingSecretPortKey: ""
-  existingSecretUserKey: ""
-  existingSecretDatabaseKey: ""
-  existingSecretPasswordKey: ""
+  existingSecret: "keycloak-secret"
+  existingSecretHostKey: "external-db-host"
+  existingSecretPortKey: "external-db-port"
+  existingSecretUserKey: "external-db-user"
+  existingSecretDatabaseKey: "external-db"
+  existingSecretPasswordKey: "external-db-password"
 
 ## @section Keycloak Cache parameters
 
