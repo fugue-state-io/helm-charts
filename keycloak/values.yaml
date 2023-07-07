@@ -123,6 +123,7 @@ auth:
   existingSecret: "keycloak-secret"
   ## @param auth.passwordSecretKey Key where the Keycloak admin password is being stored inside the existing secret.
   ##
+  userSecretKey: "keycloak-user"
   passwordSecretKey: "keycloak-password"
 
 ## HTTPS settings

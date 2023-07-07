@@ -12,7 +12,10 @@ metadata:
   annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
   {{- end }}
 data:
+  
+  {{- if not .Values.auth.userSecretKey }}
   KEYCLOAK_ADMIN: {{ .Values.auth.adminUser | quote }}
+  {{- end }}
   KEYCLOAK_HTTP_PORT: {{ .Values.containerPorts.http | quote }}
   KEYCLOAK_PROXY: {{ .Values.proxy | quote }}
   KEYCLOAK_ENABLE_STATISTICS: {{ ternary "true" "false" .Values.metrics.enabled | quote }}

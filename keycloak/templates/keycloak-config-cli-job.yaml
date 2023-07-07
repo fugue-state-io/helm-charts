@@ -75,7 +75,10 @@ spec:
             - name: KEYCLOAK_URL
               value: {{ printf "http://%s-headless:%d%s" (include "common.names.fullname" .) (.Values.containerPorts.http | int) (.Values.httpRelativePath) }}
             - name: KEYCLOAK_USER
-              value: {{ .Values.auth.adminUser | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "keycloak.secretName" . }}
+                  key: {{ include "keycloak.userKey" . }}
             - name: KEYCLOAK_PASSWORD
               valueFrom:
                 secretKeyRef:

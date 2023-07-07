@@ -237,7 +237,17 @@ Return the secret containing the Keycloak admin password
     {{- printf "%s" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
-
+{{/*
+Return the secret key that contains the Keycloak admin user
+*/}}
+{{- define "keycloak.userKey" -}}
+{{- $secretName := .Values.auth.existingSecret -}}
+{{- if and $secretName .Values.auth.userSecretKey -}}
+    {{- printf "%s" .Values.auth.userSecretKey -}}
+{{- else -}}
+    {{- print "keycloak-user" -}}
+{{- end -}}
+{{- end -}}
 {{/*
 Return the secret key that contains the Keycloak admin password
 */}}
