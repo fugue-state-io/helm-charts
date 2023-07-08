@@ -32,20 +32,12 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          command: ['./c2-3.2.0_amd64_linux','-hostname','c2.fugue-state.io','-reverseProxy','-reverseProxyPort', '430']
+          command: ['./c2-3.2.0_amd64_linux','-hostname','c2.fugue-state.io','-reverseProxy','-reverseProxyPort', '{{ .Values.service.port }}']
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
