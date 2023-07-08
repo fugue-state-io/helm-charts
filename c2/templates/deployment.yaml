@@ -41,7 +41,7 @@ spec:
                     '-hostname','c2.fugue-state.io',
                     '-reverseProxy','-reverseProxyPort', '{{ .Values.service.port }}', 
                     '-https','-debug', 
-                    '-setEdition', 'Community', '-setLicenseKey', '$C2_LICENSE_KEY']
+                    '-setEdition', 'Community', '-setLicenseKey', '$(C2_LICENSE_KEY)']
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
