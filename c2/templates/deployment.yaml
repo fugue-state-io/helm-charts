@@ -32,7 +32,14 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          command: ['./c2-3.2.0_amd64_linux','-hostname','c2.fugue-state.io','-reverseProxy','-reverseProxyPort', '{{ .Values.service.port }}', '-https', '-debug']
+          envFrom:
+          - secretRef:
+              name: c2-secrets
+          command: ['./c2-3.2.0_amd64_linux',
+                    '-hostname','c2.fugue-state.io',
+                    '-reverseProxy','-reverseProxyPort', '{{ .Values.service.port }}', 
+                    '-https','-debug', 
+                    '-setEdition', 'Community', '-setLicenseKey', '$C2_LICENSE_KEY']
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
