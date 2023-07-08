@@ -40,7 +40,7 @@ spec:
           command: ['./c2-3.2.0_amd64_linux',
                     '-hostname','c2.fugue-state.io',
                     '-reverseProxy','-reverseProxyPort', '{{ .Values.service.port }}','-debug', 
-                    '-setEdition', 'Community', '-setLicenseKey', '$(C2_LICENSE_KEY)']
+                    '-setEdition', 'Community']
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
