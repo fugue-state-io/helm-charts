@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "fugue-state-app.fullname" . }}
+  annotations:
+    secret.reloader.stakater.com/reload: "c2-secrets"
   labels:
     {{- include "fugue-state-app.labels" . | nindent 4 }}
 spec:
