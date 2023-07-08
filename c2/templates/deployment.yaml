@@ -39,7 +39,6 @@ spec:
               name: c2-secrets
           command: ['./c2-3.2.0_amd64_linux',
                     '-hostname','c2.fugue-state.io',
-                    '-reverseProxy','-reverseProxyPort', '{{ .Values.service.port }}','-debug', 
                     '-setEdition', 'Community']
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
