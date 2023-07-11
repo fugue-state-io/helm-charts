@@ -215,7 +215,7 @@ controller:
   # workflows. This controls where the service account and RBAC resources will
   # be created. Only valid when singleNamespace is false.
   workflowNamespaces:
-    - argoworkflows
+    - default
 
   instanceID:
     # -- Configures the controller to filter workflow submissions
@@ -558,6 +558,40 @@ server:
         hosts:
           - argoworkflows.fugue-state.io
 
+  ## Create a Google Backendconfig  for use with the GKE Ingress Controller
+  ## https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-configuration#configuring_ingress_features_through_backendconfig_parameters
+  GKEbackendConfig:
+    # -- Enable BackendConfig custom resource for Google Kubernetes Engine
+    enabled: false
+    # -- [BackendConfigSpec]
+    spec: {}
+  #  spec:
+  #    iap:
+  #      enabled: true
+  #      oauthclientCredentials:
+  #        secretName: argoworkflows-secret
+
+  ## Create a Google Managed Certificate for use with the GKE Ingress Controller
+  ## https://cloud.google.com/kubernetes-engine/docs/how-to/managed-certs
+  GKEmanagedCertificate:
+    # -- Enable ManagedCertificate custom resource for Google Kubernetes Engine.
+    enabled: false
+    # -- Domains for the Google Managed Certificate
+    domains:
+    - argoworkflows.example.com
+
+  ## Create a Google FrontendConfig Custom Resource, for use with the GKE Ingress Controller
+  ## https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features#configuring_ingress_features_through_frontendconfig_parameters
+  GKEfrontendConfig:
+    # -- Enable FrontConfig custom resource for Google Kubernetes Engine
+    enabled: false
+    # -- [FrontendConfigSpec]
+    spec: {}
+  # spec:
+  #   redirectToHttps:
+  #     enabled: true
+  #     responseCodeName: RESPONSE_CODE
+
   clusterWorkflowTemplates:
     # -- Create a ClusterRole and CRB for the server to access ClusterWorkflowTemplates.
     enabled: true
@@ -659,6 +693,38 @@ artifactRepository:
     #    enableEncryption: true
   # -- Store artifact in a GCS object store
   # @default -- `{}` (See [values.yaml])
+  gcs: {}
+  # bucket: <project>-argo
+  # keyFormat: "{{ \"{{workflow.namespace}}/{{workflow.name}}/{{pod.name}}\" }}"
+  # serviceAccountKeySecret is a secret selector.
+  # It references the k8s secret named 'my-gcs-credentials'.
+  # This secret is expected to have have the key 'serviceAccountKey',
+  # containing the base64 encoded credentials
+  # to the bucket.
+  #
+  # If it's running on GKE and Workload Identity is used,
+  # serviceAccountKeySecret is not needed.
+  # serviceAccountKeySecret:
+  # name: my-gcs-credentials
+  # key: serviceAccountKey
+  # -- Store artifact in Azure Blob Storage
+  # @default -- `{}` (See [values.yaml])
+  azure: {}
+  # endpoint: https://mystorageaccountname.blob.core.windows.net
+  # container: my-container-name
+  # blob: path/in/container
+  ## accountKeySecret is a secret selector.
+  ## It references the k8s secret named 'my-azure-storage-credentials'.
+  ## This secret is expected to have have the key 'account-access-key',
+  ## containing the base64 encoded credentials to the storage account.
+  ## If a managed identity has been assigned to the machines running the
+  ## workflow (e.g., https://docs.microsoft.com/en-us/azure/aks/use-managed-identity)
+  ## then accountKeySecret is not needed, and useSDKCreds should be
+  ## set to true instead:
+  # useSDKCreds: true
+  # accountKeySecret:
+  #  name: my-azure-storage-credentials
+  #  key: account-access-key
 
 # -- The section of custom artifact repository.
 # Utilize a custom artifact repository that is not one of the current base ones (s3, gcs, azure)
@@ -671,3 +737,12 @@ customArtifactRepository: {}
 #   passwordSecret:
 #     name: artifactory-creds
 #     key: password
+
+emissary:
+  # -- The command/args for each image on workflow, needed when the command is not specified and the emissary executor is used.
+  ## See more: https://argoproj.github.io/argo-workflows/workflow-executors/#emissary-emissary
+  images: []
+  #  argoproj/argosay:v2:
+  #    cmd: [/argosay]
+  #  docker/whalesay:latest:
+  #    cmd: [/bin/bash]
