@@ -196,7 +196,7 @@ production: true
 ## @param proxy reverse Proxy mode edge, reencrypt, passthrough or none
 ## ref: https://www.keycloak.org/server/reverseproxy
 ##
-proxy: passthrough
+proxy: edge
 ## @param httpRelativePath Set the path relative to '/' for serving resources. Useful if you are migrating from older version which were using '/auth/'
 ## ref: https://www.keycloak.org/migration/migrating-to-quarkus#_default_context_path_changed
 ##
@@ -547,7 +547,7 @@ ingress:
   ## This is supported in Kubernetes 1.18+ and required if you have more than one IngressClass marked as the default for your cluster .
   ## ref: https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/
   ##
-  ingressClassName: ""
+  ingressClassName: "nginx"
   ## @param ingress.pathType Ingress path type
   ##
   pathType: ImplementationSpecific
@@ -564,15 +564,14 @@ ingress:
   ## Default is http. Alternative is https.
   ##
   servicePort: http
-  ## @param ingress.annotations [object] Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations.
-  ## Use this parameter to set the required annotations for cert-manager, see
-  ## ref: https://cert-manager.io/docs/usage/ingress/#supported-annotations
-  ## e.g:
-  ## annotations:
-  ##   kubernetes.io/ingress.class: nginx
-  ##   cert-manager.io/cluster-issuer: cluster-issuer-name
-  ##
-  annotations: {}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.org/server-snippets: |
+      location /auth {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+      }
   ## @param ingress.tls Enable TLS configuration for the host defined at `ingress.hostname` parameter
   ## TLS certificates will be retrieved from a TLS secret with name: `{{- printf "%s-tls" (tpl .Values.ingress.hostname .) }}`
   ## You can:
@@ -854,123 +853,44 @@ keycloakConfigCli:
     repository: bitnami/keycloak-config-cli
     tag: 5.6.1-debian-11-r22
     digest: ""
-    ## Specify a imagePullPolicy
-    ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
     ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
-    ##
     pullPolicy: IfNotPresent
-    ## Optionally specify an array of imagePullSecrets.
-    ## Secrets must be manually created in the namespace.
     ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-    ## e.g:
-    ## pullSecrets:
-    ##   - myRegistryKeySecretName
-    ##
     pullSecrets: []
-  ## @param keycloakConfigCli.annotations [object] Annotations for keycloak-config-cli job
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
-  ##
   annotations:
     helm.sh/hook: "post-install,post-upgrade,post-rollback"
     helm.sh/hook-delete-policy: "hook-succeeded,before-hook-creation"
     helm.sh/hook-weight: "5"
-  ## @param keycloakConfigCli.command Command for running the container (set to default if not set). Use array form
-  ##
   command: []
-  ## @param keycloakConfigCli.args Args for running the container (set to default if not set). Use array form
-  ##
   args: []
-  ## @param keycloakConfigCli.hostAliases Job pod host aliases
   ## https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
-  ##
   hostAliases: []
-  ## Keycloak config CLI resource requests and limits
   ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
-  ## @param keycloakConfigCli.resources.limits The resources limits for the keycloak-config-cli container
-  ## @param keycloakConfigCli.resources.requests The requested resources for the keycloak-config-cli container
-  ##
   resources:
     limits: {}
     requests: {}
-  ## keycloak-config-cli containers' Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
-  ## @param keycloakConfigCli.containerSecurityContext.enabled Enabled keycloak-config-cli containers' Security Context
-  ## @param keycloakConfigCli.containerSecurityContext.runAsUser Set keycloak-config-cli container's Security Context runAsUser
-  ## @param keycloakConfigCli.containerSecurityContext.runAsNonRoot Set keycloak-config-cli container's Security Context runAsNonRoot
-  ##
   containerSecurityContext:
     enabled: true
     runAsUser: 1001
     runAsNonRoot: true
   ## keycloak-config-cli pods' Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
-  ## @param keycloakConfigCli.podSecurityContext.enabled Enabled keycloak-config-cli pods' Security Context
-  ## @param keycloakConfigCli.podSecurityContext.fsGroup Set keycloak-config-cli pod's Security Context fsGroup
-  ##
   podSecurityContext:
     enabled: true
     fsGroup: 1001
-  ## @param keycloakConfigCli.backoffLimit Number of retries before considering a Job as failed
-  ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/job/#pod-backoff-failure-policy
-  ##
   backoffLimit: 1
-  ## @param keycloakConfigCli.podLabels Pod extra labels
-  ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
-  ##
   podLabels: {}
-  ## @param keycloakConfigCli.podAnnotations Annotations for job pod
-  ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
-  ##
   podAnnotations: {}
-  ## @param keycloakConfigCli.extraEnvVars Additional environment variables to set
-  ## Example:
-  ## extraEnvVars:
-  ##   - name: FOO
-  ##     value: "bar"
-  ##
-  ## @param keycloakConfigCli.nodeSelector Node labels for pod assignment
-  ## ref: https://kubernetes.io/docs/user-guide/node-selection/
-  ##
   nodeSelector: {}
-  ##
-  ## @param keycloakConfigCli.podTolerations Tolerations for job pod assignment
-  ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
-  ##
   podTolerations: []
   extraEnvVars: []
-  ## @param keycloakConfigCli.extraEnvVarsCM ConfigMap with extra environment variables
-  ##
   extraEnvVarsCM: ""
-  ## @param keycloakConfigCli.extraEnvVarsSecret Secret with extra environment variables
-  ##
   extraEnvVarsSecret: ""
-  ## @param keycloakConfigCli.extraVolumes Extra volumes to add to the job
-  ##
   extraVolumes: []
-  ## @param keycloakConfigCli.extraVolumeMounts Extra volume mounts to add to the container
-  ##
   extraVolumeMounts: []
-  ## @param keycloakConfigCli.initContainers Add additional init containers to the Keycloak config cli pod
-  ## Example:
-  ## initContainers:
-  ##   - name: your-image-name
-  ##     image: your-image
-  ##     imagePullPolicy: Always
-  ##     ports:
-  ##       - name: portname
-  ##         containerPort: 1234
-  ##
   initContainers: []
-  ## @param keycloakConfigCli.sidecars Add additional sidecar containers to the Keycloak config cli pod
-  ## Example:
-  ## sidecars:
-  ##   - name: your-image-name
-  ##     image: your-image
-  ##     imagePullPolicy: Always
-  ##     ports:
-  ##       - name: portname
-  ##         containerPort: 1234
-  ##
   sidecars: []
   ## @param keycloakConfigCli.configuration keycloak-config-cli realms configuration
   ## NOTE: nil keys will be considered files to import locally
@@ -990,32 +910,14 @@ keycloakConfigCli:
   ## NOTE: This will override keycloakConfigCli.configuration
   ##
   existingConfigmap: ""
-  ## Automatic Cleanup for Finished Jobs
-  ## @param keycloakConfigCli.cleanupAfterFinished.enabled Enables Cleanup for Finished Jobs
-  ## @param keycloakConfigCli.cleanupAfterFinished.seconds Sets the value of ttlSecondsAfterFinished
-  ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/ttlafterfinished/
-  ##
+
   cleanupAfterFinished:
     enabled: false
     seconds: 600
 
 postgresql:
   enabled: false
-## External PostgreSQL configuration
-## All of these values are only used when postgresql.enabled is set to false
-## @param externalDatabase.host Database host
-## @param externalDatabase.port Database port number
-## @param externalDatabase.user Non-root username for Keycloak
-## @param externalDatabase.password Password for the non-root username for Keycloak
-## @param externalDatabase.database Keycloak database name
-## @param externalDatabase.existingSecret Name of an existing secret resource containing the database credentials
-## @param externalDatabase.existingSecretHostKey Name of an existing secret key containing the database host name
-## @param externalDatabase.existingSecretPortKey Name of an existing secret key containing the database port
-## @param externalDatabase.existingSecretUserKey Name of an existing secret key containing the database user
-## @param externalDatabase.existingSecretDatabaseKey Name of an existing secret key containing the database name
-## @param externalDatabase.existingSecretPasswordKey Name of an existing secret key containing the database credentials
-##
-# TODO: wire up secret
+
 externalDatabase:
   existingSecret: "keycloak-secret"
   existingSecretHostKey: "external-db-host"
@@ -1024,27 +926,13 @@ externalDatabase:
   existingSecretDatabaseKey: "external-db"
   existingSecretPasswordKey: "external-db-password"
 
-## @section Keycloak Cache parameters
-
-## Keycloak cache configuration
 ## ref: https://www.keycloak.org/server/caching
-## @param cache.enabled Switch to enable or disable the keycloak distributed cache for kubernetes.
-## NOTE: Set to false to use 'local' cache (only supported when replicaCount=1).
-## @param cache.stackName Set infinispan cache stack to use
-## @param cache.stackFile Set infinispan cache stack filename to use
-##
 cache:
   enabled: true
   stackName: kubernetes
   stackFile: ""
 
-## @section Keycloak Logging parameters
-
-## Keycloak logging configuration
-## ref: https://www.keycloak.org/server/logging
 ## @param logging.output Alternates between the default log output format or json format
-## @param logging.level Allowed values as documented: FATAL, ERROR, WARN, INFO, DEBUG, TRACE, ALL, OFF
-##
 logging:
   output: default
   level: INFO

@@ -72,6 +72,12 @@ configs:
             clientID: $fugue-state-argocd-secret:dexId
             clientSecret: $fugue-state-argocd-secret:dexSecret
             org: fugue-state-io
+      staticClients:
+        - id: argo-workflow
+          name: Argo Workflow
+          redirectURIs:
+            - https://argo-workflow.example.com/oauth2/callback
+          secret: $argoWorkflowDexClientSecret
     rbac:
       create: true
       annotations: {}
@@ -1435,54 +1441,6 @@ server:
 
     # -- Uses `server.service.servicePortHttps` instead `server.service.servicePortHttp`
     https: false
-
-  # Create a OpenShift Route with SSL passthrough for UI and CLI
-  # Consider setting 'hostname' e.g. https://argocd.apps-crc.testing/ using your Default Ingress Controller Domain
-  # Find your domain with: kubectl describe --namespace=openshift-ingress-operator ingresscontroller/default | grep Domain:
-  # If 'hostname' is an empty string "" OpenShift will create a hostname for you.
-  route:
-    # -- Enable an OpenShift Route for the Argo CD server
-    enabled: false
-    # -- Openshift Route annotations
-    annotations: {}
-    # -- Hostname of OpenShift Route
-    hostname: ""
-    # -- Termination type of Openshift Route
-    termination_type: passthrough
-    # -- Termination policy of Openshift Route
-    termination_policy: None
-
-  GKEbackendConfig:
-    # -- Enable BackendConfig custom resource for Google Kubernetes Engine
-    enabled: false
-    # -- [BackendConfigSpec]
-    spec: {}
-  #  spec:
-  #    iap:
-  #      enabled: true
-  #      oauthclientCredentials:
-  #        secretName: argocd-secret
-
-  ## Create a Google Managed Certificate for use with the GKE Ingress Controller
-  ## https://cloud.google.com/kubernetes-engine/docs/how-to/managed-certs
-  GKEmanagedCertificate:
-    # -- Enable ManagedCertificate custom resource for Google Kubernetes Engine.
-    enabled: false
-    # -- Domains for the Google Managed Certificate
-    domains:
-    - argocd.example.com
-
-  ## Create a Google FrontendConfig Custom Resource, for use with the GKE Ingress Controller
-  ## https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features#configuring_ingress_features_through_frontendconfig_parameters
-  GKEfrontendConfig:
-    # -- Enable FrontConfig custom resource for Google Kubernetes Engine
-    enabled: false
-    # -- [FrontendConfigSpec]
-    spec: {}
-  # spec:
-  #   redirectToHttps:
-  #     enabled: true
-  #     responseCodeName: RESPONSE_CODE
 
 ## Repo Server
 repoServer:
