@@ -778,7 +778,6 @@ NAME: my-release
 | server.replicas | int | `1` | The number of server pods to run |
 | server.resources | object | `{}` | Resource limits and requests for the Argo CD server |
 | server.route.annotations | object | `{}` | Openshift Route annotations |
-| server.route.enabled | bool | `false` | Enable an OpenShift Route for the Argo CD server |
 | server.route.hostname | string | `""` | Hostname of OpenShift Route |
 | server.route.termination_policy | string | `"None"` | Termination policy of Openshift Route |
 | server.route.termination_type | string | `"passthrough"` | Termination type of Openshift Route |
