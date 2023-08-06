@@ -902,7 +902,7 @@ keycloakConfigCli:
           "enabled": true,
           "sslRequired": "external",
           "registrationAllowed": true,
-          "privateKey": ${USERS_REALM_PRIVATE_KEY}",
+          "privateKey": "${USERS_REALM_PRIVATE_KEY}",
           "publicKey": "${USERS_REALM_PRIVATE_KEY}",
           "requiredCredentials": [ "password" ],
           "users" : [
