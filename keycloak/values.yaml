@@ -556,7 +556,7 @@ ingress:
   apiVersion: ""
   ## @param ingress.hostname Default host for the ingress record (evaluated as template)
   ##
-  hostname: keycloak.local
+  hostname: keycloak.fugue-state.io
   ## @param ingress.path [string] Default path for the ingress record (evaluated as template)
   ##
   path: "{{ .Values.httpRelativePath }}"
@@ -838,7 +838,7 @@ metrics:
 keycloakConfigCli:
   ## @param keycloakConfigCli.enabled Whether to enable keycloak-config-cli job
   ##
-  enabled: false
+  enabled: true
   ## Bitnami keycloak-config-cli image
   ## ref: https://hub.docker.com/r/bitnami/keycloak-config-cli/tags/
   ## @param keycloakConfigCli.image.registry keycloak-config-cli container image registry
@@ -887,7 +887,7 @@ keycloakConfigCli:
   podTolerations: []
   extraEnvVars: []
   extraEnvVarsCM: ""
-  extraEnvVarsSecret: ""
+  extraEnvVarsSecret: "keycloak-realm-secret"
   extraVolumes: []
   extraVolumeMounts: []
   initContainers: []
@@ -895,17 +895,68 @@ keycloakConfigCli:
   ## @param keycloakConfigCli.configuration keycloak-config-cli realms configuration
   ## NOTE: nil keys will be considered files to import locally
   ## Example:
-  ## configuration:
-  ##   realm1.json: |
-  ##     {
-  ##       "realm": "realm1",
-  ##       "clients": []
-  ##     }
-  ##   realm2.yaml: |
-  ##     realm: realm2
-  ##     clients: []
+  configuration:
+    realm.json: |
+      {
+          "realm": "${USERS_REALM}",
+          "enabled": true,
+          "sslRequired": "external",
+          "registrationAllowed": true,
+          "privateKey": ${USERS_REALM_PRIVATE_KEY}",
+          "publicKey": "${USERS_REALM_PRIVATE_KEY}",
+          "requiredCredentials": [ "password" ],
+          "users" : [
+              {
+                  "username" : "${USERS_REALM_USERNAME}",
+                  "enabled": true,
+                  "credentials" : [
+                      { 
+                        "type" : "password",
+                        "value" : "${USERS_REALM_USER_PASSWORD}" 
+                      }
+                  ],
+                  "realmRoles": [ "user" ],
+                  "clientRoles": {
+                      "account": ["view-profile", "manage-account"]
+                  }
+              }
+          ],
+          "roles" : {
+              "realm" : [
+                  {
+                      "name": "user",
+                      "description": "User privileges"
+                  }
+              ]
+          },
+          "scopeMappings": [
+              {
+                  "client": "fugue-state",
+                  "roles": ["user"]
+              }
+          ],
+          "clients": [
+              {
+                  "clientId": "fugue-state",
+                  "enabled": true,
+                  "publicClient": true,
+                  "baseUrl": "${USERS_REALM_BASEURL}",
+                  "redirectUris": [
+                      "/*"
+                  ],
+                  "webOrigins": []
+              }
+          ],
+          "clientScopeMappings": {
+              "account": [
+                  {
+                      "client": "fugue-state",
+                      "roles": ["view-profile"]
+                  }
+              ]
+          }
+      }
   ##
-  configuration: {}
   ## @param keycloakConfigCli.existingConfigmap ConfigMap with keycloak-config-cli configuration. This will override `keycloakConfigCli.config`
   ## NOTE: This will override keycloakConfigCli.configuration
   ##
