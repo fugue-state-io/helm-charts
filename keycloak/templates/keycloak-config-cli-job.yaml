@@ -73,7 +73,7 @@ spec:
           {{- end }}
           env:
             - name: KEYCLOAK_URL
-              value: {{ printf "http://%s-headless:%d%s" (include "common.names.fullname" .) (.Values.containerPorts.http | int) (.Values.httpRelativePath) }}
+              value: "keycloak-headless.keycloak.svc.cluster.local"
             - name: KEYCLOAK_USER
               valueFrom:
                 secretKeyRef:
