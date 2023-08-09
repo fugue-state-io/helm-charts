@@ -73,7 +73,7 @@ spec:
           {{- end }}
           env:
             - name: KEYCLOAK_URL
-              value: "keycloak-headless.keycloak.svc.cluster.local"
+              value: "http://keycloak-headless.keycloak.svc.cluster.local:8080"
             - name: KEYCLOAK_USER
               valueFrom:
                 secretKeyRef:
