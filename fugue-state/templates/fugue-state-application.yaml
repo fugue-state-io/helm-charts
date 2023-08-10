@@ -14,3 +14,6 @@ spec:
     path: fugue-state
     repoURL: 'https://github.com/fugue-state-io/helm-charts'
     targetRevision: develop
+  syncPolicy:
+    automated:
+      prune: true
