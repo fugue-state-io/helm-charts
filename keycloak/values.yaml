@@ -120,7 +120,7 @@ auth:
   # adminPassword: ""
   ## @param auth.existingSecret Existing secret containing Keycloak admin password
   ##
-  existingSecret: "keycloak-secret"
+  existingSecret: "keycloak-realm-secret"
   ## @param auth.passwordSecretKey Key where the Keycloak admin password is being stored inside the existing secret.
   ##
   userSecretKey: "keycloak-user"
