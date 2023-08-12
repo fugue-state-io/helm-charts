@@ -120,7 +120,7 @@ auth:
   # adminPassword: ""
   ## @param auth.existingSecret Existing secret containing Keycloak admin password
   ##
-  existingSecret: "keycloak-realm-secret"
+  existingSecret: "keycloak-secret"
   ## @param auth.passwordSecretKey Key where the Keycloak admin password is being stored inside the existing secret.
   ##
   userSecretKey: "keycloak-user"
@@ -253,7 +253,7 @@ extraEnvVars: []
 extraEnvVarsCM: ""
 ## @param extraEnvVarsSecret Name of existing Secret containing extra env vars
 ##
-extraEnvVarsSecret: ""
+extraEnvVarsSecret: "keycloak-secret"
 
 ## @section Keycloak statefulset parameters
 
@@ -887,7 +887,7 @@ keycloakConfigCli:
   podTolerations: []
   extraEnvVars: []
   extraEnvVarsCM: ""
-  extraEnvVarsSecret: "keycloak-realm-secret"
+  extraEnvVarsSecret: "keycloak-secret"
   extraVolumes: []
   extraVolumeMounts: []
   initContainers: []
