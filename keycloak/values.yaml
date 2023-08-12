@@ -898,13 +898,8 @@ keycloakConfigCli:
   configuration:
     realm.json: |
       {
-          "realm": "${USERS_REALM}",
+          "realm": "fugue-state",
           "enabled": true,
-          "sslRequired": "external",
-          "registrationAllowed": true,
-          "privateKey": "${USERS_REALM_PRIVATE_KEY}",
-          "publicKey": "${USERS_REALM_PUBLIC_KEY}",
-          "requiredCredentials": [ "password" ],
           "clients": []
       }
   ##
