@@ -73,7 +73,7 @@ configs:
             clientSecret: $fugue-state-argocd-secret:dexSecret
             org: fugue-state-io
       staticClients:
-        - id: argo-workflows
+        - id: argo-workflows-sso
           name: Argo Workflows
           redirectURIs:
             - https://argo-workflows.fugue-state.io/oauth2/callback
