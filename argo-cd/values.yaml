@@ -77,7 +77,7 @@ configs:
           name: Argo Workflows
           redirectURIs:
             - https://argo-workflows.fugue-state.io/oauth2/callback
-          secret: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
+          secretEnv: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
     rbac:
       create: true
       annotations: {}
