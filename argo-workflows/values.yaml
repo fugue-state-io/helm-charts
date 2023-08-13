@@ -608,7 +608,7 @@ server:
       key: argoWorkflowDexClientSecret
       name: argocd-secret
     issuer: https://argocd.example.com/api/dex
-    redirectUrl: https://argoworkflows.fugue-state.io/oauth2/callback
+    redirectUrl: https://argo-workflows.fugue-state.io/oauth2/callback
     rbac:
       # -- Adds ServiceAccount Policy to server (Cluster)Role.
       enabled: true
