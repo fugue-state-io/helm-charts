@@ -548,7 +548,7 @@ server:
     labels: {}
     ingressClassName: "nginx"
     hosts:
-      - argoworkflows.fugue-state.io
+      - argo-workflows.fugue-state.io
     paths:
       - /
     pathType: Prefix
@@ -556,7 +556,7 @@ server:
     tls:
       - secretName: argo-workflows-secret
         hosts:
-          - argoworkflows.fugue-state.io
+          - argo-workflows.fugue-state.io
 
   ## Create a Google Backendconfig  for use with the GKE Ingress Controller
   ## https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-configuration#configuring_ingress_features_through_backendconfig_parameters
