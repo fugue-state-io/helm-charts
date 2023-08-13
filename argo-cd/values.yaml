@@ -77,7 +77,7 @@ configs:
           name: Argo Workflows
           redirectURIs:
             - https://argo-workflows.fugue-state.io/oauth2/callback
-          secret: $argoWorkflowDexClientSecret
+          secret: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
     rbac:
       create: true
       annotations: {}
@@ -539,8 +539,12 @@ dex:
     imagePullPolicy: ""
 
   # -- Environment variables to pass to the Dex server
-  env: []
-
+  env: 
+    - name: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: argo-workflows-sso
+          key: client-secret
   # -- envFrom to pass to the Dex server
   # @default -- `[]` (See [values.yaml])
   envFrom: []
