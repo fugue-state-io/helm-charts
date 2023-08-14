@@ -598,6 +598,7 @@ server:
     enableEditing: true
 
   sso:
+    enabled: true
     issuer: https://argocd.fugue-state.io/api/dex
     sessionExpiry: 240h
     clientId:
