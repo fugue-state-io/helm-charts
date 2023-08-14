@@ -47,7 +47,7 @@ workflow:
   namespace:
   serviceAccount:
     # -- Specifies whether a service account should be created
-    create: false
+    create: true
     # -- Labels applied to created service account
     labels: {}
     # -- Annotations applied to created service account
@@ -629,7 +629,7 @@ server:
     redirectUrl: https://argo-workflows.fugue-state.io/oauth2/callback
     rbac:
       # -- Adds ServiceAccount Policy to server (Cluster)Role.
-      enabled: false
+      enabled: true
     # -- Whitelist to allow server to fetch Secrets
     ## When present, restricts secrets the server can read to a given list.
     ## You can use it to restrict the server to only be able to access the
@@ -638,7 +638,7 @@ server:
       secretWhitelist: []
     # -- Scopes requested from the SSO ID provider
     ## The 'groups' scope requests group membership information, which is usually used for authorization decisions.
-    scopes: []
+    scopes: ["fugue-state-io:admin"]
       # - groups
     # -- Define how long your login is valid for (in hours)
     ## If omitted, defaults to 10h.
