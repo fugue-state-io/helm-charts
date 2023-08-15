@@ -538,6 +538,7 @@ dex:
     # @default -- `""` (defaults to global.image.imagePullPolicy)
     imagePullPolicy: ""
 
+  env: []
   # -- envFrom to pass to the Dex server
   # @default -- `[]` (See [values.yaml])
   envFrom: []
