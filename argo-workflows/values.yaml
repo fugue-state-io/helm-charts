@@ -432,11 +432,12 @@ server:
     # -- Create a service account for the server
     create: true
     # -- Service account name
-    name: ""
+    name: "argo-workflows-sa"
     # -- Labels applied to created service account
     labels: {}
     # -- Annotations applied to created service account
-    annotations: {}
+    annotations:
+      workflows.argoproj.io/rbac-rule: "'fugue-state-io:admin' in groups"
 
   # -- Annotations to be applied to the UI Service
   serviceAnnotations: {}
