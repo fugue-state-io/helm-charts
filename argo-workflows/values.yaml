@@ -51,7 +51,9 @@ workflow:
     # -- Labels applied to created service account
     labels: {}
     # -- Annotations applied to created service account
-    annotations: {}
+    annotations:
+      workflows.argoproj.io/rbac-rule: "'admin' in groups"
+      workflows.argoproj.io/rbac-rule-precedence: "1"
     # -- Service account which is used to run workflows
     name: "argo-workflow"
   rbac:
@@ -432,12 +434,11 @@ server:
     # -- Create a service account for the server
     create: true
     # -- Service account name
-    name: "argo-workflows-sa"
+    name: ""
     # -- Labels applied to created service account
     labels: {}
     # -- Annotations applied to created service account
-    annotations:
-      workflows.argoproj.io/rbac-rule: "'fugue-state-io:admin' in groups"
+    annotations: {}
 
   # -- Annotations to be applied to the UI Service
   serviceAnnotations: {}
