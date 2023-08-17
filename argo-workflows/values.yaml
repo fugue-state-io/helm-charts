@@ -40,7 +40,7 @@ apiVersionOverrides:
 # Helm release) by apply Roles and RoleBindings instead of the Cluster
 # equivalents, and start workflow-controller with the --namespaced flag. Use it
 # in clusters with strict access policy.
-singleNamespace: false
+singleNamespace: true
 
 workflow:
   # -- Deprecated; use controller.workflowNamespaces instead.
@@ -84,7 +84,7 @@ controller:
     # -- Allows controller to get, list, and watch certain k8s secrets
     secretWhitelist: []
     # -- Allows controller to get, list and watch all k8s secrets. Can only be used if secretWhitelist is empty.
-    accessAllSecrets: true
+    accessAllSecrets: false
     # -- Allows controller to create and update ConfigMaps. Enables memoization feature
     writeConfigMaps: false
 
