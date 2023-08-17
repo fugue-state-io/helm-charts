@@ -634,7 +634,7 @@ server:
     ## You can use it to restrict the server to only be able to access the
     ## service account token secrets that are associated with service accounts
     ## used for authorization.
-      secretWhitelist: ["argo-workflows-sso", "sso"]
+      secretWhitelist: ["argo-workflow-secret"]
     # -- Scopes requested from the SSO ID provider
     ## The 'groups' scope requests group membership information, which is usually used for authorization decisions.
     scopes: 
@@ -660,30 +660,14 @@ server:
   extraInitContainers: []
 
 # -- Array of extra K8s manifests to deploy
-extraObjects: []
-  # - apiVersion: secrets-store.csi.x-k8s.io/v1
-  #   kind: SecretProviderClass
-  #   metadata:
-  #     name: argo-server-sso
-  #   spec:
-  #     provider: aws
-  #     parameters:
-  #       objects: |
-  #         - objectName: "argo/server/sso"
-  #           objectType: "secretsmanager"
-  #           jmesPath:
-  #               - path: "client_id"
-  #                 objectAlias: "client_id"
-  #               - path: "client_secret"
-  #                 objectAlias: "client_secret"
-  #     secretObjects:
-  #     - data:
-  #       - key: client_id
-  #         objectName: client_id
-  #       - key: client_secret
-  #         objectName: client_secret
-  #       secretName: argo-server-sso-secrets-store
-  #       type: Opaque
+extraObjects: 
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: argo-workflow-secret
+      annotations:
+        kubernetes.io/service-account.name: argo-workflow
+    type: kubernetes.io/service-account-token
 
 # -- Use static credentials for S3 (eg. when not using AWS IRSA)
 useStaticCredentials: true
