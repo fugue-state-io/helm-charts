@@ -40,7 +40,7 @@ apiVersionOverrides:
 # Helm release) by apply Roles and RoleBindings instead of the Cluster
 # equivalents, and start workflow-controller with the --namespaced flag. Use it
 # in clusters with strict access policy.
-singleNamespace: true
+singleNamespace: false
 
 workflow:
   # -- Deprecated; use controller.workflowNamespaces instead.
@@ -51,9 +51,6 @@ workflow:
     # -- Labels applied to created service account
     labels: {}
     # -- Annotations applied to created service account
-    annotations:
-      workflows.argoproj.io/rbac-rule: "'admin' in groups"
-      workflows.argoproj.io/rbac-rule-precedence: "0"
     # -- Service account which is used to run workflows
     name: "argo-workflow"
   rbac:
@@ -217,7 +214,7 @@ controller:
   # workflows. This controls where the service account and RBAC resources will
   # be created. Only valid when singleNamespace is false.
   workflowNamespaces:
-    - argo-workflows
+    - workflows
 
   instanceID:
     # -- Configures the controller to filter workflow submissions
@@ -621,10 +618,10 @@ server:
     sessionExpiry: 240h
     clientId:
       key: client-id
-      name: argo-workflows-sso
+      name: sso
     clientSecret:
       key: client-secret
-      name: argo-workflows-sso
+      name: sso
     redirectUrl: https://argo-workflows.fugue-state.io/oauth2/callback
     rbac:
       # -- Adds ServiceAccount Policy to server (Cluster)Role.
@@ -634,7 +631,7 @@ server:
     ## You can use it to restrict the server to only be able to access the
     ## service account token secrets that are associated with service accounts
     ## used for authorization.
-      secretWhitelist: ["argo-workflow.service-account-token"]
+      secretWhitelist: ["default.service-account-token"]
     # -- Scopes requested from the SSO ID provider
     ## The 'groups' scope requests group membership information, which is usually used for authorization decisions.
     scopes: 
@@ -664,7 +661,7 @@ extraObjects:
   - apiVersion: v1
     kind: Secret
     metadata:
-      name: argo-workflow.service-account-token
+      name: default.service-account-token
       annotations:
         kubernetes.io/service-account.name: argo-workflow
     type: kubernetes.io/service-account-token
