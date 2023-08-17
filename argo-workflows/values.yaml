@@ -664,7 +664,7 @@ extraObjects:
   - apiVersion: v1
     kind: Secret
     metadata:
-      name: argo-workflow-secret
+      name: argo-workflow.service-account-token
       annotations:
         kubernetes.io/service-account.name: argo-workflow
     type: kubernetes.io/service-account-token
