@@ -618,10 +618,10 @@ server:
     sessionExpiry: 240h
     clientId:
       key: client-id
-      name: sso
+      name: argo-workflows-sso
     clientSecret:
       key: client-secret
-      name: sso
+      name: argo-workflows-sso
     redirectUrl: https://argo-workflows.fugue-state.io/oauth2/callback
     rbac:
       # -- Adds ServiceAccount Policy to server (Cluster)Role.
@@ -631,7 +631,7 @@ server:
     ## You can use it to restrict the server to only be able to access the
     ## service account token secrets that are associated with service accounts
     ## used for authorization.
-      secretWhitelist: ["default.service-account-token"]
+      secretWhitelist: ["default.service-account-token", "argo-workflows-sso"]
     # -- Scopes requested from the SSO ID provider
     ## The 'groups' scope requests group membership information, which is usually used for authorization decisions.
     scopes: 
