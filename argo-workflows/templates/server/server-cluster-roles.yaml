@@ -14,6 +14,23 @@ metadata:
     {{- include "argo-workflows.labels" (dict "context" . "component" .Values.server.name "name" .Values.server.name) | nindent 4 }}
 rules:
 - apiGroups:
+    - argoproj.io
+  resources:
+    - eventsources
+    - sensors
+    - workflows
+    - workfloweventbindings
+    - workflowtemplates
+    - cronworkflows
+  verbs:
+    - create
+    - get
+    - list
+    - watch
+    - update
+    - patch
+    - delete
+- apiGroups:
   - ""
   resources:
   - configmaps
@@ -103,24 +120,6 @@ rules:
   verbs:
   - get
 {{- end}}
-- apiGroups:
-    - argoproj.io
-  resources:
-    - eventsources
-    - sensors
-    - workflows
-    - workfloweventbindings
-    - workflowtemplates
-    - cronworkflows
-  verbs:
-    - create
-    - get
-    - list
-    - watch
-    - update
-    - patch
-    - delete
-
 {{- if .Values.server.clusterWorkflowTemplates.enabled }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
