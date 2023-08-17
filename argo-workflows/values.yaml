@@ -40,7 +40,7 @@ apiVersionOverrides:
 # Helm release) by apply Roles and RoleBindings instead of the Cluster
 # equivalents, and start workflow-controller with the --namespaced flag. Use it
 # in clusters with strict access policy.
-singleNamespace: false
+singleNamespace: true
 
 workflow:
   # -- Deprecated; use controller.workflowNamespaces instead.
@@ -51,9 +51,9 @@ workflow:
     # -- Labels applied to created service account
     labels: {}
     # -- Annotations applied to created service account
-    annotations: {}
-      # workflows.argoproj.io/rbac-rule: "true"
-      # workflows.argoproj.io/rbac-rule-precedence: "0"
+    annotations:
+      workflows.argoproj.io/rbac-rule: "true"
+      workflows.argoproj.io/rbac-rule-precedence: "0"
     # -- Service account which is used to run workflows
     name: "argo-workflow"
   rbac:
@@ -217,7 +217,7 @@ controller:
   # workflows. This controls where the service account and RBAC resources will
   # be created. Only valid when singleNamespace is false.
   workflowNamespaces:
-    - default
+    - argo-workflows
 
   instanceID:
     # -- Configures the controller to filter workflow submissions
@@ -634,7 +634,7 @@ server:
     ## You can use it to restrict the server to only be able to access the
     ## service account token secrets that are associated with service accounts
     ## used for authorization.
-      secretWhitelist: ["default.service-account-token", "argo-workflows-sso"]
+      secretWhitelist: ["argo-workflow.service-account-token"]
     # -- Scopes requested from the SSO ID provider
     ## The 'groups' scope requests group membership information, which is usually used for authorization decisions.
     scopes: 
@@ -664,9 +664,9 @@ extraObjects:
   - apiVersion: v1
     kind: Secret
     metadata:
-      name: default.service-account-token
+      name: argo-workflow.service-account-token
       annotations:
-        kubernetes.io/service-account.name: default
+        kubernetes.io/service-account.name: argo-workflow
     type: kubernetes.io/service-account-token
 
 # -- Use static credentials for S3 (eg. when not using AWS IRSA)
