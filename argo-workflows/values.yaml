@@ -351,8 +351,8 @@ server:
   extraArgs:
     - --auth-mode
     - sso
-    # - --auth-mode
-    # - server
+    - --auth-mode
+    - server
 
   logging:
     level: info
@@ -399,7 +399,7 @@ server:
       - argo-workflows-sso
       - server-sa.service-account-token
       - argo-workflow.service-account-token
-      - argo-workflow-controller.service-account-token
+      - argo-workflows-workflow-controller.service-account-token
     scopes: 
      - groups
      - email
@@ -428,9 +428,9 @@ extraObjects:
   - apiVersion: v1
     kind: Secret
     metadata:
-      name: argo-workflow-controller.service-account-token
+      name: argo-workflows-workflow-controller.service-account-token
       annotations:
-        kubernetes.io/service-account.name: argo-workflow-controller
+        kubernetes.io/service-account.name: argo-workflows-workflow-controller
     type: kubernetes.io/service-account-token
 
 useStaticCredentials: true
