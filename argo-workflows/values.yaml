@@ -39,7 +39,7 @@ controller:
   rbac:
     create: true
     secretWhitelist: []
-    accessAllSecrets: false
+    accessAllSecrets: true
     writeConfigMaps: false
   namespaceParallelism:
   initialDelay:
@@ -107,7 +107,7 @@ controller:
     namespace: "" # "monitoring"
   serviceAccount:
     create: true
-    name: "argo-workflows-controller"
+    name: ""
     labels: {}
     annotations:
       workflows.argoproj.io/rbac-rule: "'admin' in groups"
@@ -399,7 +399,7 @@ server:
       - argo-workflows-sso
       - server-sa.service-account-token
       - argo-workflow.service-account-token
-      - argo-workflows-controller.service-account-token
+      - argo-workflows-workflow-controller.service-account-token
     scopes: 
      - groups
      - email
@@ -428,9 +428,9 @@ extraObjects:
   - apiVersion: v1
     kind: Secret
     metadata:
-      name: argo-workflow-controller.service-account-token
+      name: argo-workflows-workflow-controller.service-account-token
       annotations:
-        kubernetes.io/service-account.name: argo-workflow-controller
+        kubernetes.io/service-account.name: argo-workflows-workflow-controller
     type: kubernetes.io/service-account-token
 
 useStaticCredentials: true
