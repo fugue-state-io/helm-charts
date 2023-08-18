@@ -60,7 +60,7 @@ configs:
   cm:
     create: true
     annotations: {}
-    url: "https://argocd.fugue-state.io"
+    url: "https://argo-cd.fugue-state.io"
     admin.enabled: false
     dex.config: |
       connectors:
@@ -1035,7 +1035,7 @@ server:
     labels: {}
     ingressClassName: "nginx"
     hosts:
-      - argocd.fugue-state.io
+      - argo-cd.fugue-state.io
     paths:
       - /
     pathType: Prefix

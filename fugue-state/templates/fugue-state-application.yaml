@@ -2,9 +2,9 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: fugue-state
-  namespace: argocd
+  namespace: argo-cd
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.argo-cd.argoproj.io
 spec:
   destination:
     namespace: fugue-state
