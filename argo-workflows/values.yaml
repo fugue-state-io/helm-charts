@@ -163,7 +163,7 @@ controller:
 
   # -- Extra arguments to be added to the controller
   extraArgs:
-  - --certificate-authority /etc/ssl/certs/rootCA.crt
+  - --certificate-authority=/etc/ssl/certs/rootCA.crt
   # -- Additional volume mounts to the controller main container
   volumeMounts:
   - name: certificate
