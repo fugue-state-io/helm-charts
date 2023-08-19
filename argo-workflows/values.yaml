@@ -117,7 +117,8 @@ controller:
   name: workflow-controller
 
   workflowNamespaces:
-    - workflows
+    - ci
+    - etl
 
   instanceID:
     enabled: false

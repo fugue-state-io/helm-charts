@@ -69,8 +69,8 @@ configs:
           id: github
           name: GitHub
           config:
-            clientID: $fugue-state-argocd-secret:dexId
-            clientSecret: $fugue-state-argocd-secret:dexSecret
+            clientID: $argocd-secret:dexId
+            clientSecret: $argocd-secret:dexSecret
             org: fugue-state-io
       staticClients:
         - id: argo-workflows-sso
@@ -2049,7 +2049,7 @@ applicationSet:
   webhook:
     ingress:
       # -- Enable an ingress resource for Webhooks
-      enabled: false
+      enabled: true
       # -- Additional ingress annotations
       annotations: {}
       # -- Additional ingress labels
