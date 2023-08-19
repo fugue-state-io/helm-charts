@@ -69,8 +69,8 @@ configs:
           id: github
           name: GitHub
           config:
-            clientID: $argocd-secret:dexId
-            clientSecret: $argocd-secret:dexSecret
+            clientID: $fugue-state-argocd-secret:dexId
+            clientSecret: $fugue-state-argocd-secret:dexSecret
             org: fugue-state-io
       staticClients:
         - id: argo-workflows-sso
