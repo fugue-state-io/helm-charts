@@ -165,15 +165,15 @@ controller:
   extraArgs:
   - --certificate-authority /etc/ssl/certs/rootCA.crt
   # -- Additional volume mounts to the controller main container
-volumeMounts:
-- name: certificate
-  mountPath: /etc/ssl/certs/rootCA.crt
-  subPath: ca-cert
+  volumeMounts:
+  - name: certificate
+    mountPath: /etc/ssl/certs/rootCA.crt
+    subPath: ca-cert
 
-volumes:
-- name: certificate
-  configMap:
-    name: tls-cert
+  volumes:
+  - name: certificate
+    configMap:
+      name: tls-cert
   # -- The number of controller pods to run
   replicas: 1
 
