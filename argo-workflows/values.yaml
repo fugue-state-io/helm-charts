@@ -162,18 +162,18 @@ controller:
     #   value: "bar"
 
   # -- Extra arguments to be added to the controller
-  extraArgs:
-  - --certificate-authority=/etc/ssl/certs/rootCA.crt
+  extraArgs: []
+  # - --certificate-authority=/etc/ssl/certs/rootCA.crt
   # -- Additional volume mounts to the controller main container
-  volumeMounts:
-  - name: certificate
-    mountPath: /etc/ssl/certs/rootCA.crt
-    subPath: ca-cert
+  volumeMounts: []
+  # - name: certificate
+  #   mountPath: /etc/ssl/certs/rootCA.crt
+  #   subPath: ca-cert
 
-  volumes:
-  - name: certificate
-    configMap:
-      name: tls-cert
+  volumes: []
+  # - name: certificate
+  #   configMap:
+  #     name: tls-cert
   # -- The number of controller pods to run
   replicas: 1
 
@@ -361,13 +361,23 @@ server:
     - sso
     - --auth-mode
     - server
+    - --certificate-authority
+    - /etc/ssl/certs/rootCA.crt
 
   logging:
     level: info
     globallevel: "0"
     format: "text"
-  volumeMounts: []
-  volumes: []
+  # -- Additional volume mounts to the controller main container
+  volumeMounts:
+  - name: certificate
+    mountPath: /etc/ssl/certs/rootCA.crt
+    subPath: ca-cert
+
+  volumes:
+  - name: certificate
+    configMap:
+      name: tls-cert
   ingress:
     enabled: true
     https: true
