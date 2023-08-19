@@ -11,7 +11,7 @@ spec:
     server: "https://kubernetes.default.svc"
   project: fugue-state
   source:
-    path: keycloak
+    path: idp
     repoURL: 'https://github.com/fugue-state-io/helm-charts'
     targetRevision: develop
   syncPolicy:
