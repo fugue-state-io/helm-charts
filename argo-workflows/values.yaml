@@ -361,8 +361,8 @@ server:
     - sso
     - --auth-mode
     - server
-    - --certificate-authority
-    - /etc/ssl/certs/rootCA.crt
+    # - --certificate-authority
+    # - /etc/ssl/certs/rootCA.crt
 
   logging:
     level: info
@@ -370,14 +370,14 @@ server:
     format: "text"
   # -- Additional volume mounts to the controller main container
   volumeMounts:
-  - name: certificate
-    mountPath: /etc/ssl/certs/rootCA.crt
-    subPath: ca-cert
+  # - name: certificate
+  #   mountPath: /etc/ssl/certs/rootCA.crt
+  #   subPath: ca-cert
 
   volumes:
-  - name: certificate
-    configMap:
-      name: tls-cert
+  # - name: certificate
+  #   configMap:
+  #     name: tls-cert
   ingress:
     enabled: true
     https: true
