@@ -384,7 +384,7 @@ server:
 
   sso:
     enabled: true
-    issuer: https://argo-cd.fugue-state.io/api/dex
+    issuer: https://argocd.fugue-state.io/api/dex
     sessionExpiry: 240h
     clientId:
       key: client-id
