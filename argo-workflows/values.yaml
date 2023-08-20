@@ -361,8 +361,6 @@ server:
     - sso
     - --auth-mode
     - server
-    - --tls-server-name
-    - argocd.fugue-state.io
     # - --certificate-authority
     # - /etc/ssl/certs/rootCA.crt
 
