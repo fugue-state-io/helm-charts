@@ -60,7 +60,7 @@ spec:
                     container:
                       image: docker/whalesay:latest
                       command: [cowsay]
-                      args: ["{{inputs.parameters.pr-title}}"]
+                      args: ["\\{\\{inputs.parameters.pr-title\\}\\}"]
           parameters:
             - src:
                 dependencyName: test-dep
@@ -72,12 +72,12 @@ spec:
               dest: spec.arguments.parameters.1.value
             - src:
                 dependencyName: test-dep
-                dataTemplate: "{{ .Input.body.pull_request.head.sha | substr 0 7 }}"
+                dataTemplate: "\\{\\{ .Input.body.pull_request.head.sha | substr 0 7 \\}\\}"
               dest: spec.arguments.parameters.2.value
             # Append pull request number and short sha to dynamically assign workflow name <github-21500-2c065a>
             - src:
                 dependencyName: test-dep
-                dataTemplate: "{{ .Input.body.pull_request.number }}-{{ .Input.body.pull_request.head.sha | substr 0 7 }}"
+                dataTemplate: "\\{\\{ .Input.body.pull_request.number \\}\\}-\\{\\{ .Input.body.pull_request.head.sha | substr 0 7 \\}\\}"
               dest: metadata.name
               operation: append
       retryStrategy:
