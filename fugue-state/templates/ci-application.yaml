@@ -1,20 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argo-events
+  name: ci
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: argo-events
+    namespace: ci
     server: "https://kubernetes.default.svc"
   project: fugue-state
   source:
-    path: argo-events
+    path: ci
     repoURL: 'https://github.com/fugue-state-io/helm-charts'
     targetRevision: develop
   syncPolicy:
     automated:
       prune: true
-      selfHeal: true
+      selfHeal: false
