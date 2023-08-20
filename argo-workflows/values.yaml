@@ -361,6 +361,7 @@ server:
     - sso
     - --auth-mode
     - server
+    - --insecure-skip-verify 
     # - --certificate-authority
     # - /etc/ssl/certs/rootCA.crt
 

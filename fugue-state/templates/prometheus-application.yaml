@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: prometheus
+    server: "https://kubernetes.default.svc"
+  project: fugue-state
+  source:
+    path: prometheus
+    repoURL: 'https://github.com/fugue-state-io/helm-charts'
+    targetRevision: develop
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: false
