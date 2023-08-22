@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: github
+spec:
+  service:
+    ports:
+    - port: 12000
+      targetPort: 12000
+  github:
+    repo_hook:
+      organizations: 
+        - fugue-state-io
+      webhook:
+        endpoint: /webhook
+        port: "12000"
+        method: POST
+        url: https://ci.fugue-state.io
+      events:
+        - "*"
+      webhookSecret:
+        name: ci-secrets
+        key: github-webhook-secret
+      archive: true
+      contentType: json

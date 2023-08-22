@@ -272,7 +272,7 @@ controller:
   ## Events controller metrics configuration
   metrics:
     # -- Deploy metrics service
-    enabled: false
+    enabled: true
     service:
       # -- Metrics service annotations
       annotations: {}
@@ -300,7 +300,7 @@ controller:
 ## Argo Events admission webhook
 webhook:
   # -- Enable admission webhook. Applies only for cluster-wide installation
-  enabled: false
+  enabled: true
 
   # -- Argo Events admission webhook name string
   name: events-webhook
