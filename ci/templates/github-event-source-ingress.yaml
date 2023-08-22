@@ -9,9 +9,9 @@ spec:
   tls:
   - secretName: ci-tls
     hosts:
-    - fugue-state.io
+    - ci.fugue-state.io
   rules:
-  - host: fugue-state.io
+  - host: ci.fugue-state.io
     http:
       paths:
       - path: /
