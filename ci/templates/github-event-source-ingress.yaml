@@ -20,4 +20,4 @@ spec:
           service:
             name: github
             port:
-              number: 80
+              number: 12000
