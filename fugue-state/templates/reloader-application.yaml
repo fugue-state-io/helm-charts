@@ -3,8 +3,6 @@ kind: Application
 metadata:
   name: reloader
   namespace: argocd
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: reloader
