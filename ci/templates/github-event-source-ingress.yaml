@@ -18,6 +18,6 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service:
-            name: github
+            name: github-eventsource-svc
             port:
               number: 12000
