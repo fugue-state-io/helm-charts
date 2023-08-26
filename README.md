@@ -12,3 +12,4 @@ argo-workflows:
 
 ci:
   contains bindings for argo-events and argo-workflows CRDs to create a ci pipeline.
+  work in progress
