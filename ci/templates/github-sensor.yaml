@@ -4,7 +4,7 @@ metadata:
   name: github-sensor
 spec:
   template:
-    serviceAccountName: operate-workflow-sa
+    serviceAccountName: argo-workflow
   dependencies:
     - name: github-sensor-dependencies
       eventSourceName: repo_hook

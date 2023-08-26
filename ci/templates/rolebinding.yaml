@@ -1,12 +1,12 @@
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: operate-workflow-sa-binding
-  namespace: ci
-subjects:
-  - kind: ServiceAccount
-    name: argo-workflow
-    namespace: ci
+# kind: RoleBinding
+# apiVersion: rbac.authorization.k8s.io/v1
+# metadata:
+#   name: operate-workflow-sa-binding
+#   namespace: ci
+# subjects:
+#   - kind: ServiceAccount
+#     name: operate-workflow-sa
+#     namespace: ci
 # roleRef:
 #   kind: ClusterRole
 #   name: argo-workflows-workflow-controller
