@@ -8,7 +8,7 @@ spec:
       inputs:
         parameters:
           - name: message
-            value: "{{{`{workflow.parameters.message}}`}}"
+            value: "{{`{workflow.parameters.message}}`}}"
       container:
         image: docker/whalesay:latest
         command: [cowsay]
