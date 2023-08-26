@@ -9,3 +9,6 @@ argo-cd:
 
 argo-workflows:
   https://argoproj.github.io/argo-workflows/quick-start/
+
+ci:
+  contains bindings for argo-events and argo-workflows CRDs to create a ci pipeline.
