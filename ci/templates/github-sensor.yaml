@@ -7,7 +7,7 @@ spec:
     serviceAccountName: operate-workflow-sa
   dependencies:
     - name: github-sensor-dependencies
-      eventSourceName: repo_hook
+      eventSourceName: github
       eventName: github-event
       filters:
         data:
