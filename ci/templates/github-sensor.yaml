@@ -8,30 +8,12 @@ spec:
   dependencies:
     - name: test-dep
       eventSourceName: github
-      eventName: example
+      eventName: github-sensor-event
       filters:
         data:
           # Type of Github event that triggered the delivery: [pull_request, push, issues, label, ...]
           # https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads
-          - path: headers.X-Github-Event
-            type: string
-            value:
-              - pull_request
-          - path: body.action
-            type: string
-            value:
-              - opened
-              - edited
-              - reopened
-              - synchronize
-          - path: body.pull_request.state
-            type: string
-            value:
-              - open
-          - path: body.pull_request.base.ref
-            type: string
-            value:
-              - develop
+
   triggers:
     - template:
         name: github-workflow-trigger
