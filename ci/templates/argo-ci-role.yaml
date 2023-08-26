@@ -9,14 +9,19 @@ rules:
   - pods/exec
   - secrets
   - ingresses
+  - logs
   - services
   - jobs
   - deployments
   - statefulsets
   - cronjobs
   - workflows
+  - workflowtemplates
+  - cronworkflows
+  - clusterworkflowtemplates
   - configmaps
   - sensors
+  - events
   - eventsources
   - workfloweventbindings
   verbs: ["*"]
