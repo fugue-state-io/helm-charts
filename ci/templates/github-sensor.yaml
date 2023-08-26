@@ -1,60 +1,69 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
-  name: github-sensor
+  name: github
 spec:
   template:
     serviceAccountName: operate-workflow-sa
   dependencies:
-    - name: github-sensor-dependencies
+    - name: test-dep
       eventSourceName: github
-      eventName: github-event
+      eventName: example
+      filters:
+        data:
+          # Type of Github event that triggered the delivery: [pull_request, push, issues, label, ...]
+          # C
+          - path: headers.X-Github-Event
+            type: string
+            value:
+              - push
   triggers:
     - template:
         name: github-workflow-trigger
         k8s:
           operation: create
-          parameters:
-            - src:
-                dependencyName: github-sensor-dependencies
-                dataKey: body.repository.name
-              dest: spec.arguments.parameters.0.value
-            - src:
-                dependencyName: github-trunk-dependencies
-                dataTemplate: "{{`{{ .Input.body.repository.head.sha }}`}}"
-              dest: spec.arguments.parameters.1.value
-            - src:
-                dependencyName: github-trunk-dependencies
-                dataTemplate: "{{`{{ .Input.body.pull_request.head.sha | substr 0 7 }}`}}"
-              dest: spec.arguments.parameters.2.value
-            # Append pull request number and short sha to dynamically assign workflow name <github-21500-2c065a>
-            - src:
-                dependencyName: github-trunk-dependencies
-                dataTemplate: "{{`{{ .Input.body.repository.name }}-{{ .Input.body.pull_request.head.sha | substr 0 7 }}`}}"
-              dest: metadata.generateName
-              operation: append
           source:
             resource:
               apiVersion: argoproj.io/v1alpha1
               kind: Workflow
               metadata:
-                namespace: ci
                 generateName: github-
               spec:
-                entrypoint: main
+                entrypoint: whalesay
                 arguments:
                   parameters:
-                    - name: repository
-                    - name: sha
+                    - name: pr-title
+                    - name: pr-number
                     - name: short-sha
                 templates:
-                  - name: main
+                  - name: whalesay
                     inputs:
                       parameters:
-                        - name: repository
-                        - name: sha
+                        - name: pr-title
+                        - name: pr-number
                         - name: short-sha
                     container:
                       image: docker/whalesay:latest
                       command: [cowsay]
-                      args: ["{{`{{inputs.parameters.repository}}-{{inputs.parameters.sha}}`}}"]
+                      args: ["{{inputs.parameters.pr-title}}"]
+          parameters:
+            - src:
+                dependencyName: test-dep
+                dataKey: body.pull_request.title
+              dest: spec.arguments.parameters.0.value
+            - src:
+                dependencyName: test-dep
+                dataKey: body.pull_request.number
+              dest: spec.arguments.parameters.1.value
+            - src:
+                dependencyName: test-dep
+                dataTemplate: "{{ .Input.body.pull_request.head.sha | substr 0 7 }}"
+              dest: spec.arguments.parameters.2.value
+            # Append pull request number and short sha to dynamically assign workflow name <github-21500-2c065a>
+            - src:
+                dependencyName: test-dep
+                dataTemplate: "{{ .Input.body.pull_request.number }}-{{ .Input.body.pull_request.head.sha | substr 0 7 }}"
+              dest: metadata.name
+              operation: append
+      retryStrategy:
+        steps: 3
