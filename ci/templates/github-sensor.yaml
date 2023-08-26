@@ -9,12 +9,6 @@ spec:
     - name: github-sensor-dependencies
       eventSourceName: github
       eventName: github-event
-      filters:
-        data:
-          - path: body.pull_request.base.ref
-            type: string
-            value:
-              - develop
   triggers:
     - template:
         name: github-workflow-trigger
