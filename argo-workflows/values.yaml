@@ -236,7 +236,7 @@ controller:
 
   # -- The duration in seconds before the pods in the GC queue get deleted. A zero value indicates that the pods will be deleted immediately.
   # @default -- `5s` (Argo Workflows default)
-  podGCDeleteDelayDuration: ""
+  podGCDeleteDelayDuration: "86400s"
 
 # mainContainer adds default config for main container that could be overriden in workflows template
 mainContainer:
@@ -453,7 +453,7 @@ extraObjects:
 
 useStaticCredentials: true
 artifactRepository:
-  archiveLogs: false
+  archiveLogs: true
   s3: {}
   gcs: {}
   azure: {}
