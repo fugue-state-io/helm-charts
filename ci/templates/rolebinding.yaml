@@ -5,9 +5,9 @@ metadata:
   namespace: ci
 subjects:
   - kind: ServiceAccount
-    name: operate-workflow-sa
+    name: argo-workflow
     namespace: ci
-roleRef:
-  kind: ClusterRole
-  name: argo-workflows-workflow-controller
-  apiGroup: rbac.authorization.k8s.io
+# roleRef:
+#   kind: ClusterRole
+#   name: argo-workflows-workflow-controller
+#   apiGroup: rbac.authorization.k8s.io
