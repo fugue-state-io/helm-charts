@@ -12,11 +12,26 @@ spec:
       filters:
         data:
           # Type of Github event that triggered the delivery: [pull_request, push, issues, label, ...]
-          # C
+          # https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads
           - path: headers.X-Github-Event
             type: string
             value:
-              - push
+              - pull_request
+          - path: body.action
+            type: string
+            value:
+              - opened
+              - edited
+              - reopened
+              - synchronize
+          - path: body.pull_request.state
+            type: string
+            value:
+              - open
+          - path: body.pull_request.base.ref
+            type: string
+            value:
+              - master
   triggers:
     - template:
         name: github-workflow-trigger
