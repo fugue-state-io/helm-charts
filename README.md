@@ -1,8 +1,11 @@
 # fugue-state/helm-charts
 Holds declarative deployments for all fugue-state services.
 
+argo-events:
+  Contains events, eventbus, service accounts and CRDs
+
 argo-cd:
-  Continuous delivery of helm-charts
+  Contains CRDs for project, applications and starts argo-server.
 
 argo-workflows:
   https://argoproj.github.io/argo-workflows/quick-start/
