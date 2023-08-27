@@ -36,6 +36,7 @@ spec:
                       command: [sh]
                       source: >
                         echo '{{`{{inputs.parameters.body}}`}}'
+                        echo "Hello argo"
           parameters:
             - src:
                 dependencyName: github-dep

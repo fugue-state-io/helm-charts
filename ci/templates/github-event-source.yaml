@@ -17,7 +17,7 @@ spec:
         method: POST
         url: https://ci.fugue-state.io
       events:
-        - "*"
+        - "push"
       webhookSecret:
         name: ci-secrets
         key: github-webhook-secret
