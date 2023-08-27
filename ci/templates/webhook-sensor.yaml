@@ -11,7 +11,6 @@ spec:
       eventName: example
   triggers:
     - template:
-        serviceAccountName: operate-workflow-sa
         name: webhook-workflow-trigger
         k8s:
           operation: create
@@ -19,6 +18,7 @@ spec:
             resource:
               apiVersion: argoproj.io/v1alpha1
               kind: Workflow
+              serviceAccountName: operate-workflow-sa
               metadata:
                 generateName: webhook-
               spec:
