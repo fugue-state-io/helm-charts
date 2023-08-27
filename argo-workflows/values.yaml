@@ -46,13 +46,7 @@ controller:
   deploymentAnnotations: {}
   podAnnotations: {}
   podLabels: {}
-  podSecurityContext:
-    readOnlyRootFilesystem: true
-    runAsNonRoot: true
-    allowPrivilegeEscalation: false
-    capabilities:
-      drop:
-        - ALL
+  podSecurityContext: {}
   metricsConfig:
     enabled: false
     path: /metrics
@@ -238,7 +232,7 @@ controller:
 
   # -- Specifies the duration in seconds before a terminating pod is forcefully killed. A zero value indicates that the pod will be forcefully terminated immediately.
   # @default -- `30` seconds (Kubernetes default)
-  podGCGracePeriodSeconds:
+  podGCGracePeriodSeconds: 3600
 
   # -- The duration in seconds before the pods in the GC queue get deleted. A zero value indicates that the pods will be deleted immediately.
   # @default -- `5s` (Argo Workflows default)
