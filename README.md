@@ -1,5 +1,6 @@
 # fugue-state/helm-charts
 Holds declarative deployments for all fugue-state services.
+Deployed automatically by gitops.
 
 argo-events:
   Contains events, eventbus, service accounts and CRDs
