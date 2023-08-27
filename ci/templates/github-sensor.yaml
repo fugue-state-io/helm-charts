@@ -32,9 +32,10 @@ spec:
                       parameters:
                         - name: body
                     container:
-                      image: docker/whalesay:latest
-                      command: [cowsay]
-                      args: ["{{`{{inputs.parameters.body}}`}}"]
+                      image: curlimages/curl:8.2.1
+                      command: [sh]
+                      source: >
+                        echo '{{`{{inputs.parameters.body}}`}}'
           parameters:
             - src:
                 dependencyName: github-dep
