@@ -3,6 +3,3 @@ kind: ServiceAccount
 metadata:
   name: operate-workflow-sa
   namespace: ci
-  annotations:
-    workflows.argoproj.io/rbac-rule: "'admin' in groups"
-    workflows.argoproj.io/rbac-rule-precedence: "2"
