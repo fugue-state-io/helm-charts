@@ -35,7 +35,6 @@ spec:
                       image: curlimages/curl:8.2.1
                       command: [sh]
                       source: >
-                        echo '{{`{{inputs.parameters.body}}`}}'
                         echo "Hello argo"
           parameters:
             - src:
