@@ -32,7 +32,7 @@ spec:
                       parameters:
                         - name: body
                     container:
-                      image: curlimages/curl:8.2.1
+                      image: alpine
                       command: [sh]
                       source: >
                         echo "Hello argo"
