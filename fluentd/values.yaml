@@ -2,11 +2,11 @@ nameOverride: ""
 fullnameOverride: ""
 
 # DaemonSet, Deployment or StatefulSet
-kind: "DaemonSet"
+kind: "Deployment"
 # azureblob, cloudwatch, elasticsearch7, elasticsearch8, gcs, graylog , kafka, kafka2, kinesis, opensearch
 variant: elasticsearch7
 # # Only applicable for Deployment or StatefulSet
-# replicaCount: 1
+replicaCount: 1
 
 image:
   repository: "fluent/fluentd-kubernetes-daemonset"
