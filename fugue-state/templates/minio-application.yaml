@@ -1,15 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argo-workflows
+  name: minio
   namespace: argocd
 spec:
   destination:
-    namespace: argo-workflows
+    namespace: minio
     server: "https://kubernetes.default.svc"
   project: fugue-state
   source:
-    path: argo-workflows
+    path: minio
     repoURL: 'https://github.com/fugue-state-io/helm-charts'
     targetRevision: develop
   syncPolicy:
