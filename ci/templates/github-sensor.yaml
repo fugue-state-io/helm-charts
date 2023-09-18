@@ -28,6 +28,10 @@ spec:
                 entrypoint: argosay
                 templates:
                   - name: argosay
+                    inputs:
+                      parameters:
+                        - name: body
+                          value: '{{`{{workflow.parameters.body}}`}}'
                     container:
                       name: main
                       image: argoproj/argosay:v2
@@ -35,7 +39,7 @@ spec:
                         - /argosay
                       args:
                         - echo
-                        - '{{inputs.parameters.body}}'
+                        - '{{`{{inputs.parameters.body}}`}}'
           parameters:
             - src:
                 dependencyName: github-dep
