@@ -22,20 +22,24 @@ spec:
               metadata:
                 generateName: github-
               spec:
-                entrypoint: whalesay
                 arguments:
                   parameters:
                     - name: body
+                entrypoint: argosay
                 templates:
-                  - name: whalesay
+                  - name: argosay
                     inputs:
                       parameters:
                         - name: body
+                          value: '{{workflow.parameters.body}}'
                     container:
-                      image: alpine
-                      command: [sh]
-                      source: >
-                        echo "Hello argo"
+                      name: main
+                      image: argoproj/argosay:v2
+                      command:
+                        - /argosay
+                      args:
+                        - echo
+                        - '{{inputs.parameters.body}}'
           parameters:
             - src:
                 dependencyName: github-dep
