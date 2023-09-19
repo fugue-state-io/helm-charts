@@ -25,11 +25,11 @@ spec:
                 arguments:
                   parameters:
                     - name: body
-                    - name: x-github-event
+                    - name: X-Github-Event
                 entrypoint: argosay
                 templates:
                   - name: pull-event
-                    when: "{{`{{workflow.parameters.x-github-event}}`}} == 'pull'"
+                    when: "{{`{{workflow.parameters.X-Github-Event}}`}} == 'pull'"
                     inputs:
                       parameters:
                         - name: body
@@ -63,5 +63,5 @@ spec:
               dest: spec.arguments.parameters.0.value
             - src:
                 dependencyName: github-dep
-                dataKey: body.x-github-event
+                dataKey: body.X-Github-Event
               dest: spec.arguments.parameters.1.value
