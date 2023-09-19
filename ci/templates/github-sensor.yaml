@@ -25,9 +25,25 @@ spec:
                 arguments:
                   parameters:
                     - name: body
+                    - name: x-github-event
                 entrypoint: argosay
                 templates:
-                  - name: argosay
+                  - name: pull-event
+                    when: "{{`{{workflow.parameters.x-github-event}}`}} == 'pull'"
+                    inputs:
+                      parameters:
+                        - name: body
+                          value: '{{`{{workflow.parameters.body}}`}}'
+                    container:
+                      name: main
+                      image: argoproj/argosay:v2
+                      command:
+                        - /argosay
+                      args:
+                        - echo
+                        - '{{`{{inputs.parameters.body}}`}}'
+                  - name: check-suite-event
+                    when: "{{`{{workflow.parameters.x-github-event}}`}} == 'check_suite'"
                     inputs:
                       parameters:
                         - name: body
@@ -45,3 +61,7 @@ spec:
                 dependencyName: github-dep
                 dataKey: body
               dest: spec.arguments.parameters.0.value
+            - src:
+                dependencyName: github-dep
+                dataKey: body.x-github-event
+              dest: spec.arguments.parameters.1.value
