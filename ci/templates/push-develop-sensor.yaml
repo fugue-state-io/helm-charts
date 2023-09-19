@@ -17,10 +17,10 @@ spec:
             type: string
             value:
               - push
-          - path: body.pull_request.base.ref
+          - path: body.ref
             type: string
             value:
-              - develop
+              - refs/heads/develop
   triggers:
     - template:
         name: github-workflow-trigger
