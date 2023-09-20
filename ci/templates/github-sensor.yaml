@@ -33,6 +33,14 @@ spec:
                         - name: output-artifact
                           template: output-artifact
                         
+                        - name: cat-artifact
+                          depends: output-artifact
+                          template: cat-artifact
+                          arguments:
+                            artifacts:
+                              - name: body
+                                from: "{{`{{tasks.output-artifact.outputs.artifact.body}}`}}"
+                        
                   - name: output-artifact
                     inputs:
                       parameters:
@@ -50,6 +58,18 @@ spec:
                       artifacts:
                         - name: body
                           path: "/body.json"
+
+                  - name: cat-artifact
+                    inputs:
+                      artifacts:
+                        - name: body
+                          path: "/body.json"
+                    script:
+                      image: alpine
+                      command: [sh]
+                      source: |
+                        set -e
+                        cat /body.json
           parameters:
             - src:
                 dependencyName: github-dep
