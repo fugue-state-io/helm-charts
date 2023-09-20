@@ -32,14 +32,14 @@ spec:
                       parameters:
                         - name: body
                           value: '{{`{{workflow.parameters.body}}`}}'
-                    container:
-                      name: main
-                      image: argoproj/argosay:v2
-                      command:
-                        - /argosay
-                      args:
-                        - echo
-                        - '{{`{{inputs.parameters.body}}`}}'
+                    script:
+                      image: alpine
+                      command: [sh]
+                      source: |
+                        set -e
+                        cat <<EOF > /body.json
+                        {{`{{inputs.parameters.body}}`}}'
+                        EOF
           parameters:
             - src:
                 dependencyName: github-dep
