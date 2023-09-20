@@ -9,18 +9,6 @@ spec:
     - name: github-dep
       eventSourceName: github
       eventName: push-develop
-      filters:
-        data:
-          # Type of Github event that triggered the delivery: [pull_request, push, issues, label, ...]
-          # https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads
-          - path: body.X-GitHub-Event
-            type: string
-            value:
-              - push
-          - path: body.ref
-            type: string
-            value:
-              - refs/heads/develop
   triggers:
     - template:
         name: github-workflow-trigger
@@ -52,7 +40,7 @@ spec:
                             source: |
                               set -e
                               cat <<EOF > /body.json
-                              {{workflow.parameters.body}}
+                              {{`{{workflow.parameters.body}}`}}
                               EOF
                         - name: cat-artifact
                           inputs:
