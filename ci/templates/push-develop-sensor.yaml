@@ -33,19 +33,38 @@ spec:
               metadata:
                 generateName: push-develop-
               spec:
-                entrypoint: whalesay
+                entrypoint: main
                 arguments:
                   parameters:
                     - name: body
                 templates:
-                  - name: whalesay
-                    inputs:
-                      parameters:
-                        - name: body
-                    container:
-                      image: docker/whalesay:latest
-                      command: [cowsay]
-                      args: ["{{`{{inputs.parameters.body}}`}}"]
+                  - name: main
+                    dag:
+                      tasks:
+                        - name: body-to-artifact
+                          outputs:
+                            artifacts:
+                              - name: body
+                                path: "/body.json"
+                          script:
+                            image: alpine
+                            command: [sh]
+                            source: |
+                              set -e
+                              cat <<EOF > /body.json
+                              {{workflow.parameters.body}}
+                              EOF
+                        - name: cat-artifact
+                          inputs:
+                            artifacts:
+                            - name: body
+                            path: "/body.json"
+                          script:
+                            image: alpine
+                            command: [sh]
+                            source: |
+                              set -e
+                              cat /body.json
           parameters:
             - src:
                 dependencyName: github-dep
