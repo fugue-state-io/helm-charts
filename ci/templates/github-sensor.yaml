@@ -39,7 +39,7 @@ spec:
                           arguments:
                             artifacts:
                               - name: body
-                                from: "{{`{{tasks.output-artifact.outputs.artifact.body}}`}}"
+                                from: "{{`{{tasks.output-artifact.outputs.artifacts.body}}`}}"
                         
                   - name: output-artifact
                     inputs:
