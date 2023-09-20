@@ -25,9 +25,15 @@ spec:
                 arguments:
                   parameters:
                     - name: body
-                entrypoint: argosay
+                entrypoint: main
                 templates:
-                  - name: argosay
+                  - name: main
+                    dag:
+                      tasks:
+                        - name: output-artifact
+                          template: output-artifact
+                        
+                  - name: output-artifact
                     inputs:
                       parameters:
                         - name: body
@@ -38,8 +44,12 @@ spec:
                       source: |
                         set -e
                         cat <<EOF > /body.json
-                        {{`{{inputs.parameters.body}}`}}'
+                        {{`{{inputs.parameters.body}}`}}
                         EOF
+                    outputs:
+                      artifacts:
+                        - name: body
+                          path: "/body.json"
           parameters:
             - src:
                 dependencyName: github-dep
