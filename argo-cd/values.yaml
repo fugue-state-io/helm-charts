@@ -78,6 +78,21 @@ configs:
           redirectURIs:
             - https://argo-workflows.fugue-state.io/oauth2/callback
           secret: $argo-workflows-sso:client-secret
+    rbac:
+      create: true
+      annotations: {}
+      policy.default: role:readonly
+      policy.csv: |
+        p, role:org-admin, applications, *, */*, allow
+        p, role:org-admin, clusters, get, *, allow
+        p, role:org-admin, repositories, get, *, allow
+        p, role:org-admin, repositories, create, *, allow
+        p, role:org-admin, repositories, update, *, allow
+        p, role:org-admin, repositories, delete, *, allow
+        p, role:org-admin, logs, get, *, allow
+        p, role:org-admin, exec, create, */*, allow
+
+        g, fugue-state-io:admin, role:org-admin
     application.instanceLabelKey: argocd.argoproj.io/instance
     server.rbac.log.enforce.enable: true
     exec.enabled: true
@@ -115,18 +130,8 @@ configs:
   rbac:
     create: true
     annotations: {}
-    policy.default: role:readonly
-    policy.csv: |
-      p, role:org-admin, applications, *, */*, allow
-      p, role:org-admin, clusters, get, *, allow
-      p, role:org-admin, repositories, get, *, allow
-      p, role:org-admin, repositories, create, *, allow
-      p, role:org-admin, repositories, update, *, allow
-      p, role:org-admin, repositories, delete, *, allow
-      p, role:org-admin, logs, get, *, allow
-      p, role:org-admin, exec, create, */*, allow
-
-      g, fugue-state-io:admin, role:org-admin
+    policy.default: ''
+    policy.csv: ''
     scopes: "[groups]"
   gpg:
     annotations: {}
