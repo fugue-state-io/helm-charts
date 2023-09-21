@@ -460,10 +460,10 @@ artifactRepository:
     region: nyc3
     insecure: false
     accessKeySecret:
-      name: argo-workflows-spaces
+      name: ci-secrets
       key: spaces_access_id
     secretKeySecret:
-      name: argo-workflows-spaces
+      name: ci-secrets
       key: spaces_secret_key
   gcs: {}
   azure: {}
