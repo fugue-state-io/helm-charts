@@ -454,7 +454,17 @@ extraObjects:
 useStaticCredentials: true
 artifactRepository:
   archiveLogs: true
-  s3: {}
+  s3:
+    endpoint: digitaloceanspaces.com
+    bucket: fugue-state-artifacts
+    region: nyc3
+    insecure: false
+    accessKeySecret:
+      name: argo-workflows-spaces
+      key: spaces_access_id
+    secretKeySecret:
+      name: argo-workflows-spaces
+      key: spaces_secret_key
   gcs: {}
   azure: {}
 
