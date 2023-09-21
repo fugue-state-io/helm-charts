@@ -455,7 +455,7 @@ useStaticCredentials: true
 artifactRepository:
   archiveLogs: true
   s3:
-    endpoint: https://fugue-state-artifacts.nyc3.digitaloceanspaces.com
+    endpoint: nyc3.digitaloceanspaces.com
     bucket: fugue-state-artifacts
     region: nyc3
     insecure: false
