@@ -53,6 +53,11 @@ spec:
                           depends: get-event
                           when: "{{`{{tasks.get-event.outputs.result}}`}} == 'push'"
                           template: push-event
+
+                        - name: check-suite-event
+                          depends: get-event
+                          when: "{{`{{tasks.get-event.outputs.result}}`}} == 'check_suite'"
+                          template: push-event
                         
                   - name: body-to-artifact
                     inputs:
@@ -103,6 +108,14 @@ spec:
                       source: |
                         set -e
                         echo "push-event"
+
+                  - name: check-suite-event
+                    script:
+                      image: badouralix/curl-jq
+                      command: [sh]
+                      source: |
+                        set -e
+                        echo "check-suite-event"
           parameters:
             - src:
                 dependencyName: github-dep
