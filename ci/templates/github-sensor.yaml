@@ -48,6 +48,10 @@ spec:
                             artifacts:
                               - name: body
                                 from: "{{`{{tasks.output-artifact.outputs.artifacts.body}}`}}"
+
+                        - name: push-event
+                          when: "{{`{{tasks.get-event.outputs.parameters.event}}`}}"
+                          template: push-event
                         
                   - name: body-to-artifact
                     inputs:
@@ -89,12 +93,20 @@ spec:
                       command: [sh]
                       source: |
                         set -e
-                        cat /body.json | jq -r '."X-GitHub-Event' > result.json
+                        cat /body.json | jq -r '.["X-GitHub-Event]' > result.json
                     outputs:
                       parameters:
                         - name: event
                           valueFrom:
                             path: "/result.json"
+
+                  - name: push-event
+                    script:
+                      image: badouralix/curl-jq
+                      command: [sh]
+                      source: |
+                        set -e
+                        echo "push-event"
           parameters:
             - src:
                 dependencyName: github-dep
