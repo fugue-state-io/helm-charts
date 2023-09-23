@@ -41,6 +41,14 @@ spec:
                               - name: body
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
+                        - name: jq-artifact
+                          depends: body-to-artifact
+                          template: jq-artifact
+                          arguments:
+                            artifacts:
+                              - name: body
+                                from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
+
                         - name: get-event
                           depends: body-to-artifact
                           template: get-event
@@ -88,6 +96,18 @@ spec:
                       source: |
                         set -e
                         cat /body.json
+
+                  - name: jq-artifact
+                    inputs:
+                      artifacts:
+                        - name: body
+                          path: "/body.json"
+                    script:
+                      image: badouralix/curl-jq
+                      command: [sh]
+                      source: |
+                        set -e
+                        cat /body.json | jq '.'
 
                   - name: get-event
                     inputs:
