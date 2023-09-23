@@ -85,7 +85,7 @@ spec:
                         - name: body
                           path: "/body.json"
                     script:
-                      image: alpine
+                      image: badouralix/curl-jq
                       command: [sh]
                       source: |
                         set -e
