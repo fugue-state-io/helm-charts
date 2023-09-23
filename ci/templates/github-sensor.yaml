@@ -91,7 +91,6 @@ spec:
                         set -e
                         cat /body.json | jq '.' > /result.json
                         cat /result.json
-                                        outputs:
                     outputs:
                       artifacts:
                         - name: body
