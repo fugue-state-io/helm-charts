@@ -41,9 +41,9 @@ spec:
                               - name: body
                                 from: "{{`{{tasks.output-artifact.outputs.artifacts.body}}`}}"
 
-                        - name: jq-artifact
+                        - name: get-event
                           depends: output-artifact
-                          template: jq-artifact
+                          template: get-event
                           arguments:
                             artifacts:
                               - name: body
