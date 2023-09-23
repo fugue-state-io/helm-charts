@@ -30,11 +30,11 @@ spec:
                   - name: main
                     dag:
                       tasks:
-                        - name: output-artifact
-                          template: output-artifact
+                        - name: body-to-artifact
+                          template: body-to-artifact
                         
                         - name: cat-artifact
-                          depends: output-artifact
+                          depends: body-to-artifact
                           template: cat-artifact
                           arguments:
                             artifacts:
@@ -42,14 +42,14 @@ spec:
                                 from: "{{`{{tasks.output-artifact.outputs.artifacts.body}}`}}"
 
                         - name: get-event
-                          depends: output-artifact
+                          depends: body-to-artifact
                           template: get-event
                           arguments:
                             artifacts:
                               - name: body
                                 from: "{{`{{tasks.output-artifact.outputs.artifacts.body}}`}}"
                         
-                  - name: output-artifact
+                  - name: body-to-artifact
                     inputs:
                       parameters:
                         - name: body
