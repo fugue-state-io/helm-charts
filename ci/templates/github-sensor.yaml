@@ -18,7 +18,6 @@ spec:
             resource:
               apiVersion: argoproj.io/v1alpha1
               kind: Workflow
-              
               metadata:
                 generateName: github-
               spec:
@@ -37,6 +36,14 @@ spec:
                         - name: cat-artifact
                           depends: output-artifact
                           template: cat-artifact
+                          arguments:
+                            artifacts:
+                              - name: body
+                                from: "{{`{{tasks.output-artifact.outputs.artifacts.body}}`}}"
+
+                        - name: jq-artifact
+                          depends: output-artifact
+                          template: jq-artifact
                           arguments:
                             artifacts:
                               - name: body
@@ -71,6 +78,18 @@ spec:
                       source: |
                         set -e
                         cat /body.json
+
+                  - name: jq-artifact
+                    inputs:
+                      artifacts:
+                        - name: body
+                          path: "/body.json"
+                    script:
+                      image: alpine
+                      command: [sh]
+                      source: |
+                        set -e
+                        cat /body.json | jq '.[]'
           parameters:
             - src:
                 dependencyName: github-dep
