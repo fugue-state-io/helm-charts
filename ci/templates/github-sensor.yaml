@@ -50,7 +50,7 @@ spec:
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
                         - name: push-event
-                          when: "{{`{{tasks.get-event.outputs.parameters.event}}`}} == "push""
+                          when: "{{`{{tasks.get-event.outputs.parameters.event}}`}} == 'push'"
                           template: push-event
                         
                   - name: body-to-artifact
