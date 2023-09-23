@@ -79,7 +79,7 @@ spec:
                         set -e
                         cat /body.json
 
-                  - name: jq-artifact
+                  - name: get-event
                     inputs:
                       artifacts:
                         - name: body
@@ -89,12 +89,12 @@ spec:
                       command: [sh]
                       source: |
                         set -e
-                        cat /body.json | jq '.' > /result.json
-                        cat /result.json
+                        cat /body.json | jq -r '."X-GitHub-Event' > result.json
                     outputs:
-                      artifacts:
-                        - name: body
-                          path: "/body.json"
+                      parameters:
+                        - name: event
+                          valueFrom:
+                            path: "/result.json"
           parameters:
             - src:
                 dependencyName: github-dep
