@@ -50,7 +50,7 @@ spec:
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
                         - name: push-event
-                          when: "{{`{{tasks.get-event.outputs.parameters.event}}`}} == 'push'"
+                          when: "{{`{{tasks.get-event.outputs.parameters.event}}`}} == push"
                           template: push-event
                         
                   - name: body-to-artifact
@@ -93,7 +93,7 @@ spec:
                       command: [sh]
                       source: |
                         set -e
-                        cat /body.json | jq -r '.["X-GitHub-Event]' > result.json
+                        cat /body.json | jq -r '.["X-GitHub-Event"]' > result.json
                     outputs:
                       parameters:
                         - name: event
