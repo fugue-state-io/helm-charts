@@ -39,7 +39,7 @@ spec:
                           arguments:
                             artifacts:
                               - name: body
-                                from: "{{`{{tasks.output-artifact.outputs.artifacts.body}}`}}"
+                                from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
                         - name: get-event
                           depends: body-to-artifact
@@ -47,7 +47,7 @@ spec:
                           arguments:
                             artifacts:
                               - name: body
-                                from: "{{`{{tasks.output-artifact.outputs.artifacts.body}}`}}"
+                                from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
                         - name: push-event
                           when: "{{`{{tasks.get-event.outputs.parameters.event}}`}}"
