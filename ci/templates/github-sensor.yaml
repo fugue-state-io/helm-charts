@@ -89,7 +89,13 @@ spec:
                       command: [sh]
                       source: |
                         set -e
-                        cat /body.json | jq '.[]'
+                        cat /body.json | jq '.' > /result.json
+                        cat /result.json
+                                        outputs:
+                    outputs:
+                      artifacts:
+                        - name: body
+                          path: "/body.json"
           parameters:
             - src:
                 dependencyName: github-dep
