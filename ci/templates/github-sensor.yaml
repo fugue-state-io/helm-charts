@@ -77,22 +77,26 @@ spec:
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
                         - name: push-event
-                          depends: get-event && clone-repo
+                          depends: get-event && clone-repo && body-to-artifact
                           when: "{{`{{tasks.get-event.outputs.result}}`}} == 'push'"
                           template: push-event
                           arguments:
                             artifacts:
                               - name: argo-source
                                 from: "{{`{{tasks.clone-repo.outputs.artifacts.argo-source}}`}}"
+                              - name: body
+                                from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
                         - name: check-suite-event
-                          depends: get-event && clone-repo
+                          depends: get-event && clone-repo && body-to-artifact
                           when: "{{`{{tasks.get-event.outputs.result}}`}} == 'check_suite'"
                           template: push-event
                           arguments:
                             artifacts:
                               - name: argo-source
                                 from: "{{`{{tasks.clone-repo.outputs.artifacts.argo-source}}`}}"
+                              - name: body
+                                from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
                         
                   - name: body-to-artifact
                     inputs:
@@ -165,6 +169,8 @@ spec:
                       artifacts:
                       - name: argo-source
                         path: /src
+                      - name: body
+                        path: "/body.json"
                     script:
                       image: badouralix/curl-jq
                       command: [sh]
@@ -177,6 +183,8 @@ spec:
                       artifacts:
                       - name: argo-source
                         path: /src
+                      - name: body
+                        path: "/body.json"
                     script:
                       image: badouralix/curl-jq
                       command: [sh]
