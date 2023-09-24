@@ -32,14 +32,6 @@ spec:
                       tasks:
                         - name: body-to-artifact
                           template: body-to-artifact
-                        
-                        - name: cat-artifact
-                          depends: body-to-artifact
-                          template: cat-artifact
-                          arguments:
-                            artifacts:
-                              - name: body
-                                from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
                         - name: get-repo
                           depends: body-to-artifact
@@ -49,8 +41,16 @@ spec:
                               - name: body
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
+                        - name: get-revision
+                          depends: body-to-artifact
+                          template: get-revision
+                          arguments:
+                            artifacts:
+                              - name: body
+                                from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
+
                         - name: clone-repo
-                          depends: get-repo
+                          depends: get-repo && get-revision && (push-event || check_suite_event)
                           template: clone-repo
                           arguments:
                             artifacts:
@@ -58,7 +58,7 @@ spec:
                                 path: /src
                                 git:
                                   repo: "{{`{{tasks.get-repo.outputs.result}}`}}"
-                                  revision: "v2.1.1"
+                                  revision: "{{`{{tasks.get-revision.outputs.result}}`}}"
                                   
                         - name: jq-artifact
                           depends: body-to-artifact
@@ -77,7 +77,7 @@ spec:
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
                         - name: push-event
-                          depends: get-event && clone-repo && body-to-artifact
+                          depends: get-event && body-to-artifact
                           when: "{{`{{tasks.get-event.outputs.result}}`}} == 'push'"
                           template: push-event
                           arguments:
@@ -88,7 +88,7 @@ spec:
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
                         - name: check-suite-event
-                          depends: get-event && clone-repo && body-to-artifact
+                          depends: get-event && body-to-artifact
                           when: "{{`{{tasks.get-event.outputs.result}}`}} == 'check_suite'"
                           template: push-event
                           arguments:
