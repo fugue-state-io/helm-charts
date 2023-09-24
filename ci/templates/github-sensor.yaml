@@ -77,7 +77,7 @@ spec:
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
                         - name: push-event
-                          depends: get-event
+                          depends: get-event && clone-repo
                           when: "{{`{{tasks.get-event.outputs.argo-source}}`}} == 'push'"
                           template: push-event
                           arguments:
@@ -86,7 +86,7 @@ spec:
                                 from: "{{`{{tasks.clone-repo.outputs.artifacts.argo-source}}`}}"
 
                         - name: check-suite-event
-                          depends: get-event
+                          depends: get-event && clone-repo
                           when: "{{`{{tasks.get-event.outputs.result}}`}} == 'check_suite'"
                           template: push-event
                           arguments:
