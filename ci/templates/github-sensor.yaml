@@ -78,7 +78,7 @@ spec:
 
                         - name: push-event
                           depends: get-event && clone-repo
-                          when: "{{`{{tasks.get-event.outputs.argo-source}}`}} == 'push'"
+                          when: "{{`{{tasks.get-event.outputs.result}}`}} == 'push'"
                           template: push-event
                           arguments:
                             artifacts:
