@@ -78,13 +78,21 @@ spec:
 
                         - name: push-event
                           depends: get-event
-                          when: "{{`{{tasks.get-event.outputs.result}}`}} == 'push'"
+                          when: "{{`{{tasks.get-event.outputs.argo-source}}`}} == 'push'"
                           template: push-event
+                          arguments:
+                            artifacts:
+                              - name: argo-source
+                                from: "{{`{{tasks.clone-repo.outputs.artifacts.argo-source}}`}}"
 
                         - name: check-suite-event
                           depends: get-event
                           when: "{{`{{tasks.get-event.outputs.result}}`}} == 'check_suite'"
                           template: push-event
+                          arguments:
+                            artifacts:
+                              - name: argo-source
+                                from: "{{`{{tasks.clone-repo.outputs.artifacts.argo-source}}`}}"
                         
                   - name: body-to-artifact
                     inputs:
@@ -153,6 +161,10 @@ spec:
                         cat /body.json | jq -r '.["repository"] | .["clone_url"]'
 
                   - name: push-event
+                    inputs:
+                      artifacts:
+                      - name: argo-source
+                        path: /src
                     script:
                       image: badouralix/curl-jq
                       command: [sh]
@@ -161,6 +173,10 @@ spec:
                         echo "push-event"
 
                   - name: check-suite-event
+                    inputs:
+                      artifacts:
+                      - name: argo-source
+                        path: /src
                     script:
                       image: badouralix/curl-jq
                       command: [sh]
@@ -168,7 +184,7 @@ spec:
                         set -e
                         echo "check-suite-event"
 
-                  - name: git-clone
+                  - name: clone-repo
                     inputs:
                       artifacts:
                       - name: argo-source
@@ -178,6 +194,10 @@ spec:
                       command: [sh, -c]
                       args: ["git status && ls && cat VERSION"]
                       workingDir: /src
+                    outputs:
+                      artifacts:
+                      - name: argo-source
+                        path: /src
           parameters:
             - src:
                 dependencyName: github-dep
