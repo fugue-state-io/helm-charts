@@ -164,6 +164,18 @@ spec:
                         set -e
                         cat /body.json | jq -r '.["repository"] | .["clone_url"]'
 
+                  - name: get-revision
+                    inputs:
+                      artifacts:
+                        - name: body
+                          path: "/body.json"
+                    script:
+                      image: badouralix/curl-jq
+                      command: [sh]
+                      source: |
+                        set -e
+                        cat /body.json | jq -r '.["after"]'
+
                   - name: push-event
                     inputs:
                       artifacts:
