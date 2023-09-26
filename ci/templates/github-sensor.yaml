@@ -88,7 +88,7 @@ spec:
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
                         - name: check-suite-event
-                          depends: get-event && body-to-artifact
+                          depends: get-event && body-to-artifact && clone-repo
                           when: "{{`{{tasks.get-event.outputs.result}}`}} == 'check_suite'"
                           template: push-event
                           arguments:
