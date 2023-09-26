@@ -212,10 +212,10 @@ spec:
                       - name: argo-source
                         path: /src
                     container:
-                      image: golang:1.10
-                      command: [sh, -c]
-                      args: ["git status"]
-                      workingDir: /src
+                      image: badouralix/curl-jq
+                      command: [sh]
+                      source: |
+                        git status
                     outputs:
                       artifacts:
                       - name: argo-source
