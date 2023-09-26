@@ -190,8 +190,15 @@ spec:
                       command: [sh]
                       source: |
                         set -e
-                        ls -la /src
-
+                        cd /src
+                        export GIT_REF=$(cat /body.json | jq -r '.["ref"]')
+                        export MASTER_BRANCH=$(cat /body.json | jq -r '.["repository"] | .["master_branch"]')
+                        if [[ $MASTER_BRANCH == *$GIT_REF ]] # * is used for pattern matching
+                        then
+                          echo "Push to Master branch";
+                        else
+                          echo "Push to other branch"; 
+                        fi
                   - name: check-suite-event
                     inputs:
                       artifacts:
