@@ -50,7 +50,7 @@ spec:
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
                         - name: clone-repo
-                          depends: get-repo && get-revision && push-event
+                          depends: get-repo && get-revision
                           template: clone-repo
                           arguments:
                             artifacts:
@@ -77,7 +77,7 @@ spec:
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
                         - name: push-event
-                          depends: get-event && body-to-artifact
+                          depends: get-event && body-to-artifact && clone-repo
                           when: "{{`{{tasks.get-event.outputs.result}}`}} == 'push'"
                           template: push-event
                           arguments:
