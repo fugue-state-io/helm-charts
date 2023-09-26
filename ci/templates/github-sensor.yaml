@@ -175,7 +175,8 @@ spec:
                       source: |
                         set -e
                         cat /body.json | jq -r '.["after"]'
-
+                        cat /body.json | jq -r '.["check_suite"] | .["after"]'
+                        
                   - name: push-event
                     inputs:
                       artifacts:
@@ -188,7 +189,7 @@ spec:
                       command: [sh]
                       source: |
                         set -e
-                        echo "push-event"
+                        ls -la /src
 
                   - name: check-suite-event
                     inputs:
@@ -212,7 +213,7 @@ spec:
                     container:
                       image: golang:1.10
                       command: [sh, -c]
-                      args: ["git status && ls && cat VERSION"]
+                      args: ["git status"]
                       workingDir: /src
                     outputs:
                       artifacts:
