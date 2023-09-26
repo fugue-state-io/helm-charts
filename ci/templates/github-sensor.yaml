@@ -174,9 +174,9 @@ spec:
                       command: [sh]
                       source: |
                         set -e
-                        cat /body.json | jq -r '.["after"]' >> /result.txt
-                        cat /body.json | jq -r '.["check_suite"] | .["after"]' >> /result.txt
-                        cat /result.txt | tr -d "[:space:]"
+                        cat /body.json | jq -r '.["after"] | select( . != null )' >> /result.txt
+                        cat /body.json | jq -r '.["check_suite"] | .["after"] | select( . != null )' >> /result.txt
+                        cat /result.txt
 
                   - name: push-event
                     inputs:
