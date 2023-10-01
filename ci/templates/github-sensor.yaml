@@ -21,6 +21,10 @@ spec:
               metadata:
                 generateName: github-
               spec:
+                volumes:
+                - name: docker-cfg
+                  secret:
+                    secretName: docker-cfg
                 serviceAccountName: operate-workflow-sa
                 arguments:
                   parameters:
@@ -91,7 +95,7 @@ spec:
                         - name: check-suite-event
                           depends: get-event && body-to-artifact && clone-repo
                           when: "{{`{{tasks.get-event.outputs.result}}`}} == 'check_suite'"
-                          template: push-event
+                          template: check-suite-event
                           arguments:
                             artifacts:
                               - name: argo-source
@@ -191,26 +195,25 @@ spec:
                       command: [sh]
                       source: |
                         set -e
+                        pwd
+                        ls -la /secret/
+                        export DOCKER_CONFIG=/secret/.dockerconfigjson
                         cd /src
                         export GIT_REF=$(cat /body.json | jq -r '.["ref"]')
                         export MASTER_BRANCH=$(cat /body.json | jq -r '.["repository"] | .["master_branch"]')
                         if [[ $GIT_REF == *$MASTER_BRANCH ]] # * is used for pattern matching
                         then
                           echo "Push to Master branch";
-                          cat /src/ci.yaml | yq -r '.["push"]' > /repo-workflow.yaml
+                          if [ -f "ci.sh" ]; then
+                            ci.sh
+                          fi
                           echo "master" > /branch.txt
                         else
                           echo "Push to other branch";
-                          echo "other" > /branch.txt
                         fi
-                    outputs:
-                      parameters:
-                        - name: repo-workflow
-                          valueFrom:
-                            path: /repo-workflow.yaml
-                        - name: branch
-                          valueFrom:
-                            path: /branch.txt
+                    volumeMounts:
+                    - name: docker-cfg
+                      mountPath: "/secret/"
 
                   - name: check-suite-event
                     inputs:
