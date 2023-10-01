@@ -1023,7 +1023,6 @@ server:
     enabled: true
     https: true
     annotations:
-      argoproj.io/expect-ingresses: "false"
       cert-manager.io/cluster-issuer: letsencrypt-prod
       nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
       nginx.ingress.kubernetes.io/ssl-passthrough: "true"
@@ -2047,17 +2046,21 @@ applicationSet:
       # -- Enable an ingress resource for Webhooks
       enabled: true
       # -- Additional ingress annotations
-      annotations: {}
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
       # -- Additional ingress labels
       labels: {}
       # -- Defines which ingress ApplicationSet controller will implement the resource
-      ingressClassName: ""
+      ingressClassName: "nginx"
 
       # -- List of ingress hosts
       ## Hostnames must be provided if Ingress is enabled.
       ## Secrets must be manually created in the namespace
-      hosts: []
-        # - argocd-applicationset.example.com
+      hosts: 
+        - argocd-applicationset.fugue-state.io
 
       # -- List of ingress paths
       paths:
