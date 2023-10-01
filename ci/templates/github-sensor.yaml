@@ -198,9 +198,6 @@ spec:
                       command: [sh]
                       source: |
                         set -e
-                        pwd
-                        ls -la /secret/
-                        export DOCKER_CONFIG=/secret/.dockerconfigjson
                         cd /src
                         export GIT_REF=$(cat /body.json | jq -r '.["ref"]')
                         export MASTER_BRANCH=$(cat /body.json | jq -r '.["repository"] | .["master_branch"]')
