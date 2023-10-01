@@ -2083,10 +2083,10 @@ applicationSet:
         #         name: use-annotation
 
       # -- Ingress TLS configuration
-      tls: []
-        # - secretName: argocd-applicationset-tls
-        #   hosts:
-        #     - argocd-applicationset.example.com
+      tls:
+        - secretName: argocd-applicationset-tls
+         hosts:
+            - argocd-applicationset.fugue-state.io
 
   # TLS certificate configuration via cert-manager
   ## Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/tls/#tls-configuration
