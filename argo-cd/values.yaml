@@ -2085,7 +2085,7 @@ applicationSet:
       # -- Ingress TLS configuration
       tls:
         - secretName: argocd-applicationset-tls
-         hosts:
+          hosts:
             - argocd-applicationset.fugue-state.io
 
   # TLS certificate configuration via cert-manager
