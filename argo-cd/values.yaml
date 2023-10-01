@@ -166,14 +166,14 @@ configs:
   # Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/#sensitive-data-and-sso-client-secrets
   secret:
     # -- Create the argocd-secret
-    createSecret: true
+    createSecret: false
     # -- Labels to be added to argocd-secret
     labels: {}
     # -- Annotations to be added to argocd-secret
     annotations: {}
 
     # -- Shared secret for authenticating GitHub webhook events
-    githubSecret: ""
+    githubSecret: "fugue-state-argocd-secret"
     # -- Shared secret for authenticating GitLab webhook events
     gitlabSecret: ""
     # -- Shared secret for authenticating BitbucketServer webhook events
