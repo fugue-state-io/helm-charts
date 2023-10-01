@@ -90,11 +90,12 @@ spec:
                         - name:  repo-ci
                           depends: push-event
                           when: "{{`{{tasks.push-event.outputs.parameters.branch}}`}} == 'master'"
-                          template: repo-ci
-                          arguments:
-                            parameters:
-                              - name: repo-workflow
-                                value: "{{`{{tasks.push-event.outputs.parameters.repo-workflow}}`}}"
+                          resource:
+                            action: create
+                            manifest: |
+                              {{`{{tasks.push-event.outputs.parameters.repo-workflow}}`}}
+                            successCondition: status.phase == Succeeded
+                            failureCondition: status.phase in (Failed, Error)
 
                         - name: check-suite-event
                           depends: get-event && body-to-artifact && clone-repo
@@ -219,17 +220,6 @@ spec:
                         - name: branch
                           valueFrom:
                             path: /branch.txt
-
-                  - name: repo-ci
-                    inputs:
-                      parameters:
-                        repo-workflow
-                    resource:
-                      action: create
-                      manifest: |
-                        {{`{{inputs.parameters.repo-workflow}}`}}
-                      successCondition: status.phase == Succeeded
-                      failureCondition: status.phase in (Failed, Error)
 
                   - name: check-suite-event
                     inputs:
