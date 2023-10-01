@@ -205,7 +205,7 @@ spec:
                         then
                           echo "Push to Master branch";
                           if [ -f "ci.sh" ]; then
-                            ci.sh
+                            ./ci.sh
                           fi
                           echo "master" > /branch.txt
                         else
