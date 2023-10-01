@@ -87,15 +87,6 @@ spec:
                               - name: body
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
-                        - name:  repo-ci
-                          depends: push-event
-                          when: "{{`{{tasks.push-event.outputs.parameters.branch}}`}} == 'master'"
-                          resource:
-                            action: create
-                            manifest: |
-                              {{tasks.push-event.outputs.parameters.repo-workflow}}
-                            successCondition: status.phase == Succeeded
-                            failureCondition: status.phase in (Failed, Error)
 
                         - name: check-suite-event
                           depends: get-event && body-to-artifact && clone-repo
