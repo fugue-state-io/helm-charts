@@ -87,10 +87,10 @@ spec:
                               - name: body
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
-                        - name: push-event
+                        - name:  repo-ci
                           depends: push-event
                           when: "{{`{{tasks.push-event.outputs.parameters.branch}}`}} == 'master'"
-                          template: push-event
+                          template: repo-ci
                           arguments:
                             parameters:
                               - name: repo-workflow
