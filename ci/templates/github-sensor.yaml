@@ -92,7 +92,8 @@ spec:
                           when: "{{`{{tasks.push-event.outputs.parameters.branch}}`}} == 'master'"
                           resource:
                             action: create
-                            manifest: {{`{{tasks.push-event.outputs.parameters.repo-workflow}}`}}
+                            manifest: |
+                              {{tasks.push-event.outputs.parameters.repo-workflow}}
                             successCondition: status.phase == Succeeded
                             failureCondition: status.phase in (Failed, Error)
 
