@@ -90,6 +90,9 @@ spec:
                                 from: "{{`{{tasks.clone-repo.outputs.artifacts.argo-source}}`}}"
                               - name: body
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
+                          volumeMounts:
+                          - name: docker-cfg
+                            mountPath: "/secret/"
 
 
                         - name: check-suite-event
@@ -211,9 +214,6 @@ spec:
                         else
                           echo "Push to other branch";
                         fi
-                    volumeMounts:
-                    - name: docker-cfg
-                      mountPath: "/secret/"
 
                   - name: check-suite-event
                     inputs:
