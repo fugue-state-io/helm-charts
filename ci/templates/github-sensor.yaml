@@ -226,8 +226,7 @@ spec:
                         repo-workflow
                     resource:
                       action: create
-                      manifest: |
-                        {{`{{inputs.parameters.repo-workflow}}`}}
+                      manifest: {{`{{inputs.parameters.repo-workflow}}`}}
                       successCondition: status.phase == Succeeded
                       failureCondition: status.phase in (Failed, Error)
 
