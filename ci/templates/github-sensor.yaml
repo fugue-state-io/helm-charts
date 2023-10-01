@@ -197,7 +197,7 @@ spec:
                         if [[ $GIT_REF == *$MASTER_BRANCH ]] # * is used for pattern matching
                         then
                           echo "Push to Master branch";
-                          cat /src/ci.yaml > yq -r '.["push"]' > /repo-workflow.yaml
+                          cat /src/ci.yaml | yq -r '.["push"]' > /repo-workflow.yaml
                           echo "master" > /branch.txt
                         else
                           echo "Push to other branch";
