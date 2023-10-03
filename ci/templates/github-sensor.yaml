@@ -204,10 +204,9 @@ spec:
                         if [[ $GIT_REF == *$MASTER_BRANCH ]] # * is used for pattern matching
                         then
                           echo "Push to Master branch";
-                          if [ -f "ci.sh" ]; then
-                            ./ci.sh
+                          if [ -f "/src/ci.sh" ]; then
+                            /src/ci.sh
                           fi
-                          echo "master" > /branch.txt
                         else
                           echo "Push to other branch";
                         fi
