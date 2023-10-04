@@ -53,16 +53,6 @@ spec:
                               - name: body
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
-                        - name: clone-repo
-                          depends: get-repo && get-revision
-                          template: clone-repo
-                          arguments:
-                            artifacts:
-                              - name: argo-source
-                                path: /src
-                                git:
-                                  repo: "{{`{{tasks.get-repo.outputs.result}}`}}"
-                                  revision: "{{`{{tasks.get-revision.outputs.result}}`}}"
                                   
                         - name: jq-artifact
                           depends: body-to-artifact
@@ -81,13 +71,16 @@ spec:
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
                         - name: push-event
-                          depends: get-event && body-to-artifact && clone-repo
+                          depends: get-event && body-to-artifact
                           when: "{{`{{tasks.get-event.outputs.result}}`}} == 'push'"
                           template: push-event
                           arguments:
                             artifacts:
                               - name: argo-source
-                                from: "{{`{{tasks.clone-repo.outputs.artifacts.argo-source}}`}}"
+                                path: /src
+                                git:
+                                  repo: "{{`{{tasks.get-repo.outputs.result}}`}}"
+                                  revision: "{{`{{tasks.get-revision.outputs.result}}`}}"
                               - name: body
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
                           volumeMounts:
@@ -96,13 +89,16 @@ spec:
 
 
                         - name: check-suite-event
-                          depends: get-event && body-to-artifact && clone-repo
+                          depends: get-event && body-to-artifact
                           when: "{{`{{tasks.get-event.outputs.result}}`}} == 'check_suite'"
                           template: check-suite-event
                           arguments:
                             artifacts:
                               - name: argo-source
-                                from: "{{`{{tasks.clone-repo.outputs.artifacts.argo-source}}`}}"
+                                path: /src
+                                git:
+                                  repo: "{{`{{tasks.get-repo.outputs.result}}`}}"
+                                  revision: "{{`{{tasks.get-revision.outputs.result}}`}}"
                               - name: body
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
                         
@@ -198,7 +194,6 @@ spec:
                       command: [sh]
                       source: |
                         set -e
-                        cd /src
                         export GIT_REF=$(cat /body.json | jq -r '.["ref"]')
                         export MASTER_BRANCH=$(cat /body.json | jq -r '.["repository"] | .["master_branch"]')
                         if [[ $GIT_REF == *$MASTER_BRANCH ]] # * is used for pattern matching
@@ -225,20 +220,7 @@ spec:
                         set -e
                         echo "check-suite-event"
 
-                  - name: clone-repo
-                    inputs:
-                      artifacts:
-                      - name: argo-source
-                        path: /src
-                    container:
-                      image: badouralix/curl-jq
-                      command: [sh]
-                      source: |
-                        git status
-                    outputs:
-                      artifacts:
-                      - name: argo-source
-                        path: /src
+
           parameters:
             - src:
                 dependencyName: github-dep
