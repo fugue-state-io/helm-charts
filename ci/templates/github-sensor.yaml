@@ -195,6 +195,7 @@ spec:
                       source: |
                         set -e
                         cd /src
+                        ls -la /src/
                         export GIT_REF=$(cat /body.json | jq -r '.["ref"]')
                         export MASTER_BRANCH=$(cat /body.json | jq -r '.["repository"] | .["master_branch"]')
                         if [[ $GIT_REF == *$MASTER_BRANCH ]] # * is used for pattern matching
