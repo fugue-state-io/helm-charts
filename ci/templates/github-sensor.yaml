@@ -53,7 +53,6 @@ spec:
                               - name: body
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
-                                  
                         - name: jq-artifact
                           depends: body-to-artifact
                           template: jq-artifact
@@ -202,7 +201,7 @@ spec:
                         then
                           echo "Push to Master branch";
                           if [ -f "/src/ci.sh" ]; then
-                            /src/ci.sh
+                            bash /src/ci.sh
                           fi
                         else
                           echo "Push to other branch";
