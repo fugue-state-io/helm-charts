@@ -71,7 +71,7 @@ spec:
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
                         - name: push-event
-                          depends: get-event && body-to-artifact
+                          depends: get-event && get-repo && get-revision && body-to-artifact
                           when: "{{`{{tasks.get-event.outputs.result}}`}} == 'push'"
                           template: push-event
                           arguments:
@@ -89,7 +89,7 @@ spec:
 
 
                         - name: check-suite-event
-                          depends: get-event && body-to-artifact
+                          depends: get-event && get-repo && get-revision && body-to-artifact
                           when: "{{`{{tasks.get-event.outputs.result}}`}} == 'check_suite'"
                           template: check-suite-event
                           arguments:
@@ -194,6 +194,7 @@ spec:
                       command: [sh]
                       source: |
                         set -e
+                        cd /src
                         export GIT_REF=$(cat /body.json | jq -r '.["ref"]')
                         export MASTER_BRANCH=$(cat /body.json | jq -r '.["repository"] | .["master_branch"]')
                         if [[ $GIT_REF == *$MASTER_BRANCH ]] # * is used for pattern matching
@@ -220,7 +221,20 @@ spec:
                         set -e
                         echo "check-suite-event"
 
-
+                  - name: clone-repo
+                    inputs:
+                      artifacts:
+                      - name: argo-source
+                        path: /src
+                    container:
+                      image: badouralix/curl-jq
+                      command: [sh]
+                      source: |
+                        git status
+                    outputs:
+                      artifacts:
+                      - name: argo-source
+                        path: /src
           parameters:
             - src:
                 dependencyName: github-dep
