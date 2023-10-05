@@ -201,7 +201,7 @@ spec:
                         then
                           echo "Push to Master branch";
                           if [ -f "/src/ci.sh" ]; then
-                            bash /src/ci.sh
+                            sh /src/ci.sh
                           fi
                         else
                           echo "Push to other branch";
