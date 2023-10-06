@@ -30,6 +30,8 @@ spec:
                   parameters:
                     - name: body
                 entrypoint: main
+                imagePullSecrets:
+                - name: fugue-state-registry
                 templates:
                   - name: main
                     dag:
