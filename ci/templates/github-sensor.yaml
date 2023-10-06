@@ -192,7 +192,7 @@ spec:
                         path: "/body.json"
                     script:
                       image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:2c38fe6c
-                      command: [sh]
+                      command: [bash]
                       source: |
                         set -e
                         cd /src
@@ -203,7 +203,7 @@ spec:
                         then
                           echo "Push to Master branch";
                           if [ -f "/src/ci.sh" ]; then
-                            sh /src/ci.sh
+                            bash /src/ci.sh
                           fi
                         else
                           echo "Push to other branch";
@@ -221,7 +221,9 @@ spec:
                       command: [sh]
                       source: |
                         set -e
-                        echo "check-suite-event"
+                        if [ -f "/src/check_suite.sh" ]; then
+                          bash /src/check_suite.sh
+                        fi
 
                   - name: clone-repo
                     inputs:
