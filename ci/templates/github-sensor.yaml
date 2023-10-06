@@ -138,8 +138,8 @@ spec:
                       artifacts:
                         - name: body
                           path: "/body.json"
-                    script:
-                      image: fugue-state-registry/workflow-task-image:a7a107c
+                    script:  
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:a7a107c7
                       command: [sh]
                       source: |
                         set -e
@@ -151,7 +151,7 @@ spec:
                         - name: body
                           path: "/body.json"
                     script:
-                      image: fugue-state-registry/workflow-task-image:a7a107c
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:a7a107c7
                       command: [sh]
                       source: |
                         set -e
@@ -163,7 +163,7 @@ spec:
                         - name: body
                           path: "/body.json"
                     script:
-                      image: fugue-state-registry/workflow-task-image:a7a107c
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:a7a107c7
                       command: [sh]
                       source: |
                         set -e
@@ -175,7 +175,7 @@ spec:
                         - name: body
                           path: "/body.json"
                     script:
-                      image: fugue-state-registry/workflow-task-image:a7a107c
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:a7a107c7
                       command: [sh]
                       source: |
                         set -e
@@ -191,7 +191,7 @@ spec:
                       - name: body
                         path: "/body.json"
                     script:
-                      image: fugue-state-registry/workflow-task-image:a7a107c
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:a7a107c7
                       command: [sh]
                       source: |
                         set -e
@@ -217,7 +217,7 @@ spec:
                       - name: body
                         path: "/body.json"
                     script:
-                      image: fugue-state-registry/workflow-task-image:a7a107c
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:a7a107c7
                       command: [sh]
                       source: |
                         set -e
@@ -229,7 +229,7 @@ spec:
                       - name: argo-source
                         path: /src
                     container:
-                      image: fugue-state-registry/workflow-task-image:a7a107c
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:a7a107c7
                       command: [sh]
                       source: |
                         git status
