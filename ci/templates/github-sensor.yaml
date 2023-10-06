@@ -137,7 +137,7 @@ spec:
                         - name: body
                           path: "/body.json"
                     script:
-                      image: badouralix/curl-jq
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:a7a107c
                       command: [sh]
                       source: |
                         set -e
@@ -149,7 +149,7 @@ spec:
                         - name: body
                           path: "/body.json"
                     script:
-                      image: badouralix/curl-jq
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:a7a107c
                       command: [sh]
                       source: |
                         set -e
@@ -161,7 +161,7 @@ spec:
                         - name: body
                           path: "/body.json"
                     script:
-                      image: badouralix/curl-jq
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:a7a107c
                       command: [sh]
                       source: |
                         set -e
@@ -173,7 +173,7 @@ spec:
                         - name: body
                           path: "/body.json"
                     script:
-                      image: badouralix/curl-jq
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:a7a107c
                       command: [sh]
                       source: |
                         set -e
@@ -189,7 +189,7 @@ spec:
                       - name: body
                         path: "/body.json"
                     script:
-                      image: badouralix/curl-jq
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:a7a107c
                       command: [sh]
                       source: |
                         set -e
@@ -215,7 +215,7 @@ spec:
                       - name: body
                         path: "/body.json"
                     script:
-                      image: badouralix/curl-jq
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:a7a107c
                       command: [sh]
                       source: |
                         set -e
@@ -227,7 +227,7 @@ spec:
                       - name: argo-source
                         path: /src
                     container:
-                      image: badouralix/curl-jq
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:a7a107c
                       command: [sh]
                       source: |
                         git status
