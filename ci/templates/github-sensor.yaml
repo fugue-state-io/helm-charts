@@ -62,7 +62,7 @@ spec:
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
                         - name: image
-                          depends: get-workflow-parameters && body-to-artifact && push-event
+                          depends: get-workflow-parameters && push-event
                           template: image
                           arguments:
                             artifacts:
@@ -156,7 +156,7 @@ spec:
                         if [[ $GIT_REF == *$MASTER_BRANCH ]] # * is used for pattern matching
                         then
                           if [ -f "/src/ci.json" ]; then
-                            cat /src/ci.json > ci.json
+                            cat /src/ci.json > /ci.json
                           else
                             echo "[]" > /ci.json
                           fi
