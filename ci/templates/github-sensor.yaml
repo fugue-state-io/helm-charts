@@ -57,7 +57,7 @@ spec:
                                 path: /src
                                 git:
                                   repo: "{{`{{tasks.get-workflow-parameters.outputs.parameters.repo}}`}}"
-                                  revision: "{{`{{tasks.get-workflow-parameters.outputs.parameters.parameters}}`}}"
+                                  revision: "{{`{{tasks.get-workflow-parameters.outputs.parameters.revision}}`}}"
                               - name: body
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
