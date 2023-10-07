@@ -47,7 +47,7 @@ ingress:
   annotations: 
     cert-manager.io/cluster-issuer: letsencrypt-prod
   hosts:
-    - host: fugue-state,io
+    - host: fugue-state.io
       paths:
         - path: /
           pathType: ImplementationSpecific
