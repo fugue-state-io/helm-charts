@@ -11,7 +11,7 @@ image:
   tag: "55939d7a"
 
 imagePullSecrets:
-- fugue-state-registry
+  - "fugue-state-registry"
 nameOverride: ""
 fullnameOverride: ""
 
