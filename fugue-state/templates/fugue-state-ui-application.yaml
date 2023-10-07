@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: fugue-state-ui
+  namespace: argocd
+spec:
+  destination:
+    namespace: fugue-state-ui
+    server: "https://kubernetes.default.svc"
+  project: fugue-state
+  source:
+    path: fugue-state-ui
+    repoURL: 'https://github.com/fugue-state-io/helm-charts'
+    targetRevision: develop
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
