@@ -22,9 +22,9 @@ spec:
                 generateName: github-
               spec:
                 volumes:
-                - name: docker-cfg
+                - name: docker-config
                   secret:
-                    secretName: docker-cfg
+                    secretName: docker-config
                 serviceAccountName: operate-workflow-sa
                 arguments:
                   parameters:
@@ -39,59 +39,31 @@ spec:
                         - name: body-to-artifact
                           template: body-to-artifact
 
-                        - name: get-repo
+                        - name: get-workflow-parameters
                           depends: body-to-artifact
-                          template: get-repo
-                          arguments:
-                            artifacts:
-                              - name: body
-                                from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
-
-                        - name: get-revision
-                          depends: body-to-artifact
-                          template: get-revision
-                          arguments:
-                            artifacts:
-                              - name: body
-                                from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
-
-                        - name: jq-artifact
-                          depends: body-to-artifact
-                          template: jq-artifact
-                          arguments:
-                            artifacts:
-                              - name: body
-                                from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
-
-                        - name: get-event
-                          depends: body-to-artifact
-                          template: get-event
+                          template: get-workflow-parameters
                           arguments:
                             artifacts:
                               - name: body
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
                         - name: push-event
-                          depends: get-event && get-repo && get-revision && body-to-artifact
-                          when: "{{`{{tasks.get-event.outputs.result}}`}} == 'push'"
+                          depends: get-workflow-parameters && body-to-artifact
+                          when: "{{`{{tasks.get-workflow-parameters.outputs.parameters.event}}`}} == 'push'"
                           template: push-event
                           arguments:
                             artifacts:
                               - name: argo-source
                                 path: /src
                                 git:
-                                  repo: "{{`{{tasks.get-repo.outputs.result}}`}}"
-                                  revision: "{{`{{tasks.get-revision.outputs.result}}`}}"
+                                  repo: "{{`{{tasks.get-workflow-parameters.outputs.parameters.repo}}`}}"
+                                  revision: "{{`{{tasks.get-workflow-parameters.outputs.parameters.parameters}}`}}"
                               - name: body
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
-                          volumeMounts:
-                          - name: docker-cfg
-                            mountPath: "/secret/"
-
 
                         - name: check-suite-event
                           depends: get-event && get-repo && get-revision && body-to-artifact
-                          when: "{{`{{tasks.get-event.outputs.result}}`}} == 'check_suite'"
+                          when: "{{`{{tasks.get-workflow-parameters.outputs.parameters.event}}`}} == 'check_suite'"
                           template: check-suite-event
                           arguments:
                             artifacts:
@@ -104,48 +76,20 @@ spec:
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
                         
                   - name: body-to-artifact
-                    inputs:
-                      parameters:
-                        - name: body
-                          value: '{{`{{workflow.parameters.body}}`}}'
                     script:
                       image: alpine
                       command: [sh]
                       source: |
                         set -e
                         cat <<EOF > /body.json
-                        {{`{{inputs.parameters.body}}`}}
+                        {{`{{workflow.parameters.body}}`}}
                         EOF
                     outputs:
                       artifacts:
                         - name: body
                           path: "/body.json"
 
-                  - name: cat-artifact
-                    inputs:
-                      artifacts:
-                        - name: body
-                          path: "/body.json"
-                    script:
-                      image: alpine
-                      command: [sh]
-                      source: |
-                        set -e
-                        cat /body.json
-
-                  - name: jq-artifact
-                    inputs:
-                      artifacts:
-                        - name: body
-                          path: "/body.json"
-                    script:  
-                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:2c38fe6c
-                      command: [sh]
-                      source: |
-                        set -e
-                        cat /body.json | jq '.'
-
-                  - name: get-event
+                  - name: get-workflow-parameters
                     inputs:
                       artifacts:
                         - name: body
@@ -155,33 +99,21 @@ spec:
                       command: [sh]
                       source: |
                         set -e
-                        cat /body.json | jq -r '.["X-GitHub-Event"]'
-
-                  - name: get-repo
-                    inputs:
-                      artifacts:
-                        - name: body
-                          path: "/body.json"
-                    script:
-                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:2c38fe6c
-                      command: [sh]
-                      source: |
-                        set -e
-                        cat /body.json | jq -r '.["repository"] | .["clone_url"]'
-
-                  - name: get-revision
-                    inputs:
-                      artifacts:
-                        - name: body
-                          path: "/body.json"
-                    script:
-                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:2c38fe6c
-                      command: [sh]
-                      source: |
-                        set -e
-                        cat /body.json | jq -r '.["after"] | select( . != null )' >> /result.txt
-                        cat /body.json | jq -r '.["check_suite"] | .["after"] | select( . != null )' >> /result.txt
-                        cat /result.txt
+                        cat /body.json | jq -r '.["repository"] | .["clone_url"]' > /repo.txt
+                        cat /body.json | jq -r '.["X-GitHub-Event"]' > /event.txt
+                        cat /body.json | jq -r '.["after"] | select( . != null )' >> /revision.txt
+                        cat /body.json | jq -r '.["check_suite"] | .["after"] | select( . != null )' >> /revision.txt
+                    outputs:
+                      parameters:
+                        - name: repo
+                          valueFrom:
+                            path: /repo.txt
+                        - name: event
+                          valueFrom:
+                            path: /event.txt
+                        - name: revision
+                          valueFrom:
+                            path: /revision.txt
 
                   - name: push-event
                     inputs:
@@ -196,17 +128,15 @@ spec:
                       source: |
                         set -e
                         cd /src
-                        ls -la /src/
                         export GIT_REF=$(cat /body.json | jq -r '.["ref"]')
                         export MASTER_BRANCH=$(cat /body.json | jq -r '.["repository"] | .["master_branch"]')
                         if [[ $GIT_REF == *$MASTER_BRANCH ]] # * is used for pattern matching
                         then
-                          echo "Push to Master branch";
-                          if [ -f "/src/ci.sh" ]; then
-                            bash /src/ci.sh
+                          if [ -f "/src/Dockerfile" ]; then
+                            echo $(/src/ci.sh) > result.txt
                           fi
                         else
-                          echo "Push to other branch";
+                          echo "None" > /result.txt
                         fi
 
                   - name: check-suite-event
@@ -225,20 +155,40 @@ spec:
                           bash /src/check_suite.sh
                         fi
 
-                  - name: clone-repo
+                  - name: image
                     inputs:
-                      artifacts:
-                      - name: argo-source
-                        path: /src
+                      parameters:
+                        - name: image
+                    volumes:
+                      - name: docker-config
+                        secret:
+                          secretName: docker-config
                     container:
-                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:2c38fe6c
-                      command: [sh]
-                      source: |
-                        git status
-                    outputs:
-                      artifacts:
-                      - name: argo-source
-                        path: /src
+                      readinessProbe:
+                        exec:
+                          command: [ sh, -c, "buildctl debug workers" ]
+                      image: moby/buildkit:v0.9.3-rootless
+                      volumeMounts:
+                        - name: docker-config
+                          mountPath: /.docker
+                      workingDir: /src/
+                      env:
+                        - name: BUILDKITD_FLAGS
+                          value: --oci-worker-no-process-sandbox
+                        - name: DOCKER_CONFIG
+                          value: /.docker
+                      command:
+                        - buildctl-daemonless.sh
+                      args:
+                        - build
+                        - --frontend
+                        - dockerfile.v0
+                        - --local
+                        - context=.
+                        - --local
+                        - dockerfile=.
+                        - --output
+                        - type=image,name=docker.io/{{`{{inputs.parameters.image}}`}},push=true
           parameters:
             - src:
                 dependencyName: github-dep
