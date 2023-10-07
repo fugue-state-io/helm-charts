@@ -69,8 +69,8 @@ spec:
                               - name: argo-source
                                 path: /src
                                 git:
-                                  repo: "{{`{{tasks.get-repo.outputs.result}}`}}"
-                                  revision: "{{`{{tasks.get-revision.outputs.result}}`}}"
+                                  repo: "{{`{{tasks.get-workflow-parameters.outputs.parameters.repo}}`}}"
+                                  revision: "{{`{{tasks.get-workflow-parameters.outputs.parameters.revision}}`}}"
                               - name: body
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
                             parameters:
