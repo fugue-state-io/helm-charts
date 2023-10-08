@@ -138,7 +138,7 @@ spec:
                     inputs:
                       artifacts:
                       - name: argo-source
-                        path: /src
+                        path: /src/
                       - name: body
                         path: "/body.json"
                     script:
@@ -191,7 +191,10 @@ spec:
                   - name: image
                     inputs:
                       parameters:
-                        - name: image
+                      - name: image
+                      artifacts:
+                      - name: argo-source
+                        path: /src
                     volumes:
                       - name: docker-config
                         secret:
