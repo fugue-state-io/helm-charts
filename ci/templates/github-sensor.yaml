@@ -62,7 +62,7 @@ spec:
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
                         - name: image
-                          depends: get-workflow-parameters && (push-event.Succeeded && check-suite-event.Omitted)
+                          depends: get-workflow-parameters && (push-event.Succeeded && check-suite-event.Skipped)
                           template: image
                           arguments:
                             artifacts:
