@@ -221,7 +221,7 @@ spec:
                         - --local
                         - dockerfile=.
                         - --output
-                        - type=image,name={{`{{inputs.parameters.image}}`}},push=true
+                        - type=image,name=/src/{{`{{inputs.parameters.image}}`}},push=true
                       securityContext:
                         privileged: true
           parameters:
