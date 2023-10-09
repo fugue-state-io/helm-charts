@@ -206,13 +206,13 @@ spec:
                       image: moby/buildkit:v0.9.3-rootless
                       volumeMounts:
                         - name: docker-config
-                          mountPath: /.docker
+                          mountPath: /.dockerconfigjson
                       workingDir: /src/
                       env:
                         - name: BUILDKITD_FLAGS
                           value: --oci-worker-no-process-sandbox
                         - name: DOCKER_CONFIG
-                          value: /.docker
+                          value: /.dockerconfigjson
                       command:
                         - buildctl-daemonless.sh
                       args:
