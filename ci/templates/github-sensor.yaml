@@ -78,7 +78,7 @@ spec:
                                 
                         - name: images
                           depends: get-workflow-parameters && (push-event.Succeeded && check-suite-event.Skipped)
-                          template: images
+                          template: image
                           arguments:
                             artifacts:
                               - name: argo-source
