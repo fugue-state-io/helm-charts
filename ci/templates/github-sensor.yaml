@@ -247,7 +247,7 @@ spec:
                     script:
                       image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:2c38fe6c
                       command: [sh]
-                      source:
+                      source: |
                         set -e
                         curl -X POST --fail -H "Authorization: Bearer $(JWT)" "https://api.github.com/repos/LarkTechnologies/{{`{{inputs.parameters.project}}`}}" \
                         -d '{"state" : "{{`{{inputs.parameters.state}}`}}", "context" : "{{`{{inputs.parameters.context}}`}}", "target_url":"https://argo-workflows.fugue-state.io/workflows/{{`{{workflow.namespace}}`}}/{{`{{workflow.name}}`}}"}'
