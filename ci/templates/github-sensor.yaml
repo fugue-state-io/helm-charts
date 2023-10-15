@@ -68,9 +68,9 @@ spec:
                           arguments:
                             parameters:
                               - name: project
-                                value: "{{`{{workflow.parameters.project}}`}}"
+                                value: "{{`{{tasks.get-workflow-parameters.outputs.parameters.name}}`}}"
                               - name: sha
-                                value: "{{`{{workflow.parameters.sha}}`}}"
+                                value: "{{`{{tasks.get-workflow-parameters.outputs.parameters.revision}}`}}"
                               - name: context
                                 value: "building-images"
                               - name: state
@@ -101,9 +101,9 @@ spec:
                           arguments:
                             parameters:
                               - name: project
-                                value: "{{`{{workflow.parameters.project}}`}}"
+                                value: "{{`{{tasks.get-workflow-parameters.outputs.parameters.name}}`}}"
                               - name: sha
-                                value: "{{`{{workflow.parameters.sha}}`}}"
+                                value: "{{`{{tasks.get-workflow-parameters.outputs.parameters.revision}}`}}"
                               - name: context
                                 value: "building-images"
                               - name: state
@@ -115,9 +115,9 @@ spec:
                           arguments:
                             parameters:
                               - name: project
-                                value: "{{`{{workflow.parameters.project}}`}}"
+                                value: "{{`{{tasks.get-workflow-parameters.outputs.parameters.name}}`}}"
                               - name: sha
-                                value: "{{`{{workflow.parameters.sha}}`}}"
+                                value: "{{`{{tasks.get-workflow-parameters.outputs.parameters.revision}}`}}"
                               - name: context
                                 value: "building-images"
                               - name: state
@@ -165,6 +165,7 @@ spec:
                         cat /body.json | jq -r '.["X-GitHub-Event"]' > /event.txt
                         cat /body.json | jq -r '.["after"] | select( . != null )' >> /revision.txt
                         cat /body.json | jq -r '.["check_suite"] | .["after"] | select( . != null )' >> /revision.txt
+                        cat /body.json | jq -r '.["repository"] | .["name"]' >> /name.txt
                     outputs:
                       parameters:
                         - name: repo
@@ -176,6 +177,9 @@ spec:
                         - name: revision
                           valueFrom:
                             path: /revision.txt
+                        - name: name
+                          valueFrom:
+                            path: /name.txt
 
                   - name: push-event
                     inputs:
