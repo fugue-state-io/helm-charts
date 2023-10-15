@@ -232,8 +232,6 @@ spec:
                   - name: github-status-check
                     inputs:
                       parameters:
-                        - name: project
-                        - name: sha
                         - name: context
                         - name: state
                         - name: url
