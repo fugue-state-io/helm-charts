@@ -243,17 +243,22 @@ spec:
                         - name: context
                         - name: state
                     env:
-                      - name: JWT
+                      - name: GITHUB_APP_CLIENT_ID
                         valueFrom:
                           secretKeyRef:
-                            name: github-app-jwt
-                            key: github-app-jwt
+                            name: github-auth
+                            key: github-app-client-id
+                      - name: GITHUB_APP_CLIENT_SECRET
+                        valueFrom:
+                          secretKeyRef:
+                            name: github-auth
+                            key: github-app-client-secret
                     script:
                       image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:2c38fe6c
                       command: [sh]
                       source: |
                         set -e
-                        curl -X POST --fail -H "Authorization: Bearer $JWT" "https://api.github.com/repos/fugue-state-io/{{`{{inputs.parameters.project}}`}}/statuses/{{`{{inputs.parameters.sha}}`}}" \
+                        curl -X POST --fail --user "$GITHUB_APP_CLIENT_ID:$GITHUB_APP_CLIENT_SECRET" "https://api.github.com/repos/fugue-state-io/{{`{{inputs.parameters.project}}`}}/statuses/{{`{{inputs.parameters.sha}}`}}" \
                         -d '{"state" : "{{`{{inputs.parameters.state}}`}}", "context" : "{{`{{inputs.parameters.context}}`}}", "target_url":"https://argo-workflows.fugue-state.io/workflows/{{`{{workflow.namespace}}`}}/{{`{{workflow.name}}`}}"}'
 
                   - name: image
