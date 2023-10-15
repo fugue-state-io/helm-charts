@@ -61,6 +61,21 @@ spec:
                               - name: body
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
+                        - name: images-pending
+                          depends: push-event.Succeeded
+                          when: "{{`{{tasks.push-event.outputs.parameters.ci}}`}} != []"
+                          template: github-status-check
+                          arguments:
+                            parameters:
+                              - name: project
+                                value: "{{`{{workflow.parameters.project}}`}}"
+                              - name: sha
+                                value: "{{`{{workflow.parameters.sha}}`}}"
+                              - name: context
+                                value: "building-images"
+                              - name: state
+                                value: "pending"
+                                
                         - name: image
                           depends: get-workflow-parameters && (push-event.Succeeded && check-suite-event.Skipped)
                           template: image
@@ -79,6 +94,34 @@ spec:
                               - name: dockerfile
                                 value: "{{`{{item.dockerfile}}`}}"
                           withParam: "{{`{{tasks.push-event.outputs.parameters.ci}}`}}"
+
+                        - name: images-success
+                          depends: images.Succeeded
+                          template: github-status-check
+                          arguments:
+                            parameters:
+                              - name: project
+                                value: "{{`{{workflow.parameters.project}}`}}"
+                              - name: sha
+                                value: "{{`{{workflow.parameters.sha}}`}}"
+                              - name: context
+                                value: "building-images"
+                              - name: state
+                                value: "success"
+
+                        - name: images-failed
+                          depends: images.Failed
+                          template: github-status-check
+                          arguments:
+                            parameters:
+                              - name: project
+                                value: "{{`{{workflow.parameters.project}}`}}"
+                              - name: sha
+                                value: "{{`{{workflow.parameters.sha}}`}}"
+                              - name: context
+                                value: "building-images"
+                              - name: state
+                                value: "failed"
 
                         - name: check-suite-event
                           depends: get-workflow-parameters && body-to-artifact
