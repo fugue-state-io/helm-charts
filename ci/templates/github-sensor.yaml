@@ -76,9 +76,9 @@ spec:
                               - name: state
                                 value: "pending"
                                 
-                        - name: image
+                        - name: images
                           depends: get-workflow-parameters && (push-event.Succeeded && check-suite-event.Skipped)
-                          template: image
+                          template: images
                           arguments:
                             artifacts:
                               - name: argo-source
