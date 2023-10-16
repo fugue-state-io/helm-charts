@@ -76,7 +76,7 @@ spec:
                                 from: "{{`{{tasks.github-app-jwt.outputs.artifacts.jwt}}`}}"
 
                         - name: images-pending
-                          depends: push-event.Succeeded
+                          depends: push-event.Succeeded && github-app-installation
                           when: "{{`{{tasks.push-event.outputs.parameters.ci}}`}} != []"
                           template: github-status-check
                           arguments:
@@ -108,7 +108,7 @@ spec:
                           withParam: "{{`{{tasks.push-event.outputs.parameters.ci}}`}}"
 
                         - name: images-success
-                          depends: images.Succeeded
+                          depends: images.Succeeded && github-app-installation
                           template: github-status-check
                           arguments:
                             parameters:
@@ -118,9 +118,12 @@ spec:
                                 value: "building-images"
                               - name: state
                                 value: "success"
+                            artifacts:
+                              - name: access_tokens
+                                from: "{{`{{tasks.github-app-installation-token.outputs.artifacts.access_tokens}}`}}"
 
                         - name: images-failed
-                          depends: images.Failed
+                          depends: images.Failed && github-app-installation
                           template: github-status-check
                           arguments:
                             parameters:
@@ -130,6 +133,9 @@ spec:
                                 value: "building-images"
                               - name: state
                                 value: "failed"
+                            artifacts:
+                              - name: access_tokens
+                                from: "{{`{{tasks.github-app-installation-token.outputs.artifacts.access_tokens
 
                         - name: check-suite-event
                           depends: get-workflow-parameters && body-to-artifact
@@ -284,8 +290,7 @@ spec:
                     outputs:
                       artifacts:
                         - name: access_tokens
-                          valueFrom:
-                            path: /access_tokens.json
+                          path: /access_tokens.json
                       
                   - name: github-status-check
                     inputs:
@@ -294,14 +299,14 @@ spec:
                         - name: state
                         - name: url
                       artifacts:
-                        - name: access_token
-                          path: /access_token.txt
+                        - name: access_tokens
+                          path: /access_tokens.txt
                     script:
                       image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:ad578f1
                       command: [sh]
                       source: |
                         set -e
-                        export JWT=$(cat /access_token.txt)
+                        export JWT=$(cat /access_tokens.txt)
                         curl -X POST --fail --header "Authorization: Bearer $JWT" --header "Accept: application/vnd.github+json" --header "X-GitHub-Api-Version: 2022-11-28" \
                         -d '{"state" : "{{`{{inputs.parameters.state}}`}}", "context" : "{{`{{inputs.parameters.context}}`}}", "target_url":"https://argo-workflows.fugue-state.io/workflows/{{`{{workflow.namespace}}`}}/{{`{{workflow.name}}`}}"}' {{`{{inputs.parameters.url}}`}}
 
