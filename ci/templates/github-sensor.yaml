@@ -61,6 +61,20 @@ spec:
                               - name: body
                                 from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
 
+                        - name: github-app-jwt
+                          template: github-app-jwt
+
+                        - name: github-app-installation-token
+                          depends: github-app-jwt
+                          template: github-app-installation-token
+                          arguments:
+                            parameters:
+                              - name: installation_id
+                                value: "{{`{{tasks.get-workflow-parameters.outputs.parameters.installation_id}}`}}"
+                            artifacts:
+                              - name: jwt
+                                from: "{{`{{tasks.github-app-jwt.outputs.artifacts.jwt}}`}}"
+
                         - name: images-pending
                           depends: push-event.Succeeded
                           when: "{{`{{tasks.push-event.outputs.parameters.ci}}`}} != []"
@@ -151,7 +165,7 @@ spec:
                         - name: body
                           path: "/body.json"
                     script:
-                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:2c38fe6c
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:ad578f1
                       command: [sh]
                       source: |
                         set -e
@@ -187,7 +201,7 @@ spec:
                       - name: body
                         path: "/body.json"
                     script:
-                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:2c38fe6c
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:ad578f1
                       command: [bash]
                       source: |
                         set -e
@@ -225,13 +239,14 @@ spec:
                       - name: body
                         path: "/body.json"
                     script:
-                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:2c38fe6c
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:ad578f1
                       command: [sh]
                       source: |
                         set -e
                         if [ -f "/src/check_suite.sh" ]; then
                           bash /src/check_suite.sh
                         fi
+
                   - name: github-app-jwt
                     inputs:
                       parameters:
@@ -241,7 +256,7 @@ spec:
                         secret:
                           secretName: github-auth
                     script:
-                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:2c38fe6c
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:ad578f1
                       command: [sh]
                       source: |
                         set -e
@@ -256,13 +271,15 @@ spec:
                     inputs:
                       parameters:
                         - name: installation_id
+                      artifacts:
+                        - name: jwt
+                          path: /jwt.txt
                     script:
-                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:2c38fe6c
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:ad578f1
                       command: [sh]
                       source: |
                         set -e
-                        echo "generate app jwt"
-                        echo "export JWT"
+                        export JWT=$(cat /jwt.txt)
                         curl --request POST --url "https://api.github.com/app/installations/{{`{{inputs.parameters.installation_id}}`}}/access_tokens" \
                         --header "Accept: application/vnd.github+json" --header "Authorization: Bearer $JWT" --header "X-GitHub-Api-Version: 2022-11-28" > access_tokens.json
                     outputs:
@@ -278,12 +295,14 @@ spec:
                         - name: state
                         - name: url
                       artifacts:
-                        - name: 
+                        - name: access_token
+                          path: /access_token.txt
                     script:
-                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:2c38fe6c
+                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:ad578f1
                       command: [sh]
                       source: |
                         set -e
+                        export JWT=$(cat /access_token.txt)
                         curl -X POST --fail --header "Authorization: Bearer $JWT" --header "Accept: application/vnd.github+json" --header "X-GitHub-Api-Version: 2022-11-28" \
                         -d '{"state" : "{{`{{inputs.parameters.state}}`}}", "context" : "{{`{{inputs.parameters.context}}`}}", "target_url":"https://argo-workflows.fugue-state.io/workflows/{{`{{workflow.namespace}}`}}/{{`{{workflow.name}}`}}"}' {{`{{inputs.parameters.url}}`}}
 
