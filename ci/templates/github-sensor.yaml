@@ -264,8 +264,7 @@ spec:
                     outputs:
                       artifacts:
                         - name: jwt
-                          valueFrom:
-                            path: /jwt.txt
+                          path: /jwt.txt
                           
                   - name: github-app-installation-token
                     inputs:
