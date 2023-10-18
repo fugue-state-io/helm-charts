@@ -137,8 +137,8 @@ spec:
                               - name: state
                                 value: "failed"
                             artifacts:
-                              - name: access_tokens
-                                from: "{{`{{tasks.github-app-installation-token.outputs.artifacts.access_tokens}}`}}"
+                              - name: access_token
+                                from: "{{`{{tasks.github-app-installation-token.outputs.artifacts.access_token}}`}}"
 
                         - name: check-suite-event
                           depends: get-workflow-parameters && body-to-artifact
