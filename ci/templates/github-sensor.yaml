@@ -65,7 +65,7 @@ spec:
                           template: github-app-jwt
 
                         - name: github-app-installation-token
-                          depends: github-app-jwt
+                          depends: github-app-jwt && get-workflow-parameters
                           template: github-app-installation-token
                           arguments:
                             parameters:
