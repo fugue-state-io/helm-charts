@@ -128,7 +128,7 @@ spec:
                                 from: "{{tasks.github-app-installation-token.outputs.artifacts.access_token}}"
 
                         - name: images-failed
-                          depends: images.Failed && github-app-installation
+                          depends: images.Failed && github-app-installation-token
                           template: github-status-check
                           arguments:
                             parameters:
