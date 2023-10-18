@@ -35,9 +35,7 @@ spec:
                 templates:
                   - name: main
                     dag:
-                      tasks: |
-
-
+                      tasks: 
                         - name: body-to-artifact
                           template: body-to-artifact
 
