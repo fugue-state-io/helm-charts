@@ -257,9 +257,6 @@ spec:
                         fi
 
                   - name: github-app-jwt
-                    inputs:
-                      parameters:
-                        - name: installation_id
                     volumes:
                       - name: github-auth
                         secret:
