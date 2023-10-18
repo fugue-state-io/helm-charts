@@ -318,6 +318,7 @@ spec:
                     inputs:
                       parameters:
                       - name: image
+                      - name: dockerfile
                       artifacts:
                       - name: argo-source
                         path: /src
@@ -348,7 +349,7 @@ spec:
                         - --local
                         - context=.
                         - --local
-                        - dockerfile=.
+                        - dockerfile={{`{{inputs.parameters.dockerfile}}`}}
                         - --output
                         - type=image,name={{`{{inputs.parameters.image}}`}},push=true
                       securityContext:
