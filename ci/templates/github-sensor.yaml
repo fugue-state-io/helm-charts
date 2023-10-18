@@ -300,14 +300,14 @@ spec:
                         - name: state
                         - name: url
                       artifacts:
-                        - name: access_tokens
-                          path: /access_tokens.txt
+                        - name: access_token
+                          path: /access_token
                     script:
                       image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:ad578f1
                       command: [sh]
                       source: |
                         set -e
-                        export JWT=$(cat /access_tokens.txt)
+                        export JWT=$(cat /access_token)
                         curl -X POST --fail --header "Authorization: Bearer $JWT" --header "Accept: application/vnd.github+json" --header "X-GitHub-Api-Version: 2022-11-28" \
                         -d '{"state" : "{{`{{inputs.parameters.state}}`}}", "context" : "{{`{{inputs.parameters.context}}`}}", "target_url":"https://argo-workflows.fugue-state.io/workflows/{{`{{workflow.namespace}}`}}/{{`{{workflow.name}}`}}"}' {{`{{inputs.parameters.url}}`}}
 
