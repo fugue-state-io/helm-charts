@@ -263,6 +263,9 @@ spec:
                           secretName: github-auth
                     script:
                       image: {{ .Values.workflow_task_image }}
+                      volumeMounts:
+                        - name: github-auth
+                          mountPath: /github-auth
                       command: [sh]
                       source: |
                         set -e
