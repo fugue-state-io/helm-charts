@@ -156,7 +156,7 @@ spec:
                         
                   - name: body-to-artifact
                     script:
-                      image: alpine
+                      image: {{ .Values.workflow_task_image }}
                       command: [sh]
                       source: |
                         set -e
@@ -174,7 +174,7 @@ spec:
                         - name: body
                           path: "/body.json"
                     script:
-                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:ad578f1
+                      image: {{ .Values.workflow_task_image }}
                       command: [sh]
                       source: |
                         set -e
@@ -210,7 +210,7 @@ spec:
                       - name: body
                         path: "/body.json"
                     script:
-                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:ad578f1
+                      image: {{ .Values.workflow_task_image }}
                       command: [bash]
                       source: |
                         set -e
@@ -248,7 +248,7 @@ spec:
                       - name: body
                         path: "/body.json"
                     script:
-                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:ad578f1
+                      image: {{ .Values.workflow_task_image }}
                       command: [sh]
                       source: |
                         set -e
@@ -262,7 +262,7 @@ spec:
                         secret:
                           secretName: github-auth
                     script:
-                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:ad578f1
+                      image: {{ .Values.workflow_task_image }}
                       command: [sh]
                       source: |
                         set -e
@@ -280,7 +280,7 @@ spec:
                         - name: jwt
                           path: /jwt.txt
                     script:
-                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:ad578f1
+                      image: {{ .Values.workflow_task_image }}
                       command: [sh]
                       source: |
                         set -e
@@ -303,7 +303,7 @@ spec:
                         - name: access_token
                           path: /access_token
                     script:
-                      image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:ad578f1
+                      image: {{ .Values.workflow_task_image}}
                       command: [sh]
                       source: |
                         set -e
