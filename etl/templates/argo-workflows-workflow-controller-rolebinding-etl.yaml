@@ -1,0 +1,13 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: argo-workflows-workflow-controller-sa-binding-etl
+  namespace: etl
+subjects:
+  - kind: ServiceAccount
+    name: argo-workflows-workflow-controller-etl
+    namespace: argo-workflows
+roleRef:
+  kind: ClusterRole
+  name: operate-workflow-etl-role
+  apiGroup: rbac.authorization.k8s.io
