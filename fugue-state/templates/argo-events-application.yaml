@@ -8,9 +8,15 @@ spec:
     namespace: argo-events
     server: "https://kubernetes.default.svc"
   project: fugue-state
-  source:
-    path: argo-events
-    repoURL: 'https://github.com/fugue-state-io/helm-charts'
+  sources:
+  - repoURL: 'https://argoproj.github.io/argo-helm'
+    chart: argo-events
+    targetRevision:  2.4.1
+    helm:
+      valueFiles:
+      - $values/argo-events/values.yaml
+  - repoURL: 'https://github.com/fugue-state-io/helm-charts'
+    ref: values
     targetRevision: develop
   syncPolicy:
     automated:
