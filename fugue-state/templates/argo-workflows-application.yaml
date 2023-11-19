@@ -14,7 +14,7 @@ spec:
     targetRevision:  0.39.3
     helm:
       valueFiles:
-      - $values/charts/argo-workflows/values.yaml
+      - $values/argo-workflows/values.yaml
   - repoURL: 'https://github.com/fugue-state-io/helm-charts'
     ref: values
     targetRevision: develop
