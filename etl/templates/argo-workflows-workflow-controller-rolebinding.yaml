@@ -5,9 +5,9 @@ metadata:
   namespace: etl
 subjects:
   - kind: ServiceAccount
-    name: argo-workflows-workflow-controller
+    name: argo-workflows-workflow-controller-etl
     namespace: argo-workflows
 roleRef:
   kind: ClusterRole
-  name: operate-workflow-role
+  name: operate-workflow-etl-role
   apiGroup: rbac.authorization.k8s.io

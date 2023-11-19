@@ -5,7 +5,7 @@ metadata:
   namespace: ci
 subjects:
   - kind: ServiceAccount
-    name: operate-workflow-sa-etl
+    name: operate-workflow-etl-sa
     namespace: ci
 roleRef:
   kind: ClusterRole
