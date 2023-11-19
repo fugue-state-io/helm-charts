@@ -9,5 +9,5 @@ subjects:
     namespace: ci
 roleRef:
   kind: ClusterRole
-  name: operate-workflow-role
+  name: operate-workflow-etl-role
   apiGroup: rbac.authorization.k8s.io
