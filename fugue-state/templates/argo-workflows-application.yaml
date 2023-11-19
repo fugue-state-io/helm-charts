@@ -8,9 +8,15 @@ spec:
     namespace: argo-workflows
     server: "https://kubernetes.default.svc"
   project: fugue-state
-  source:
-    path: argo-workflows
-    repoURL: 'https://github.com/fugue-state-io/helm-charts'
+  sources:
+  - repoURL: 'https://github.com/argoproj/argo-helm/tree/main/charts'
+    chart: argo-workflows
+    targetRevision:  0.39.3
+    helm:
+      valueFiles:
+      - $values/charts/argo-workflows/values.yaml
+  - repoURL: 'https://github.com/fugue-state-io/helm-charts'
+    ref: values
     targetRevision: develop
   syncPolicy:
     automated:
