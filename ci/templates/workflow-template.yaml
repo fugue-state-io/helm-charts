@@ -23,4 +23,4 @@ spec:
         source: |
           set -e
           curl https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/all/{{`{{inputs.parameters.station}}`}} > /{{`{{inputs.parameters.station}}`}}.csv
-          cat ghcnd-stations.csv
+          cat /{{`{{inputs.parameters.station}}`}}.csv
