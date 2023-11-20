@@ -2,4 +2,4 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: operate-workflow-sa-etl
-  namespace: ci
+  namespace: etl

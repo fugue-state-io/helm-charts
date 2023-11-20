@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: operate-workflow-etl-role
+  name: operate-workflow-role-etl
 rules:
 - apiGroups: ["*"]
   resources:

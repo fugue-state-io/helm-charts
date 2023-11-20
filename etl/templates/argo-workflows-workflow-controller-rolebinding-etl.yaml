@@ -9,5 +9,5 @@ subjects:
     namespace: argo-workflows
 roleRef:
   kind: ClusterRole
-  name: operate-workflow-etl-role
+  name: operate-workflow-role-etl
   apiGroup: rbac.authorization.k8s.io

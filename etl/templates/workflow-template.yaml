@@ -3,7 +3,7 @@ kind: WorkflowTemplate
 metadata:
   name: workflow-template-submittable
 spec:
-  serviceAccountName: argo-workflows-workflow-controller
+  serviceAccountName: operate-workflow-sa-etl
   arguments:
     parameters:
       - name: message
