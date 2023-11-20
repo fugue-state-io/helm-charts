@@ -5,7 +5,7 @@ metadata:
   namespace: etl
 subjects:
   - kind: ServiceAccount
-    name: argo-workflows-workflow-controller-etl
+    name: argo-workflows-workflow-controller
     namespace: argo-workflows
 roleRef:
   kind: ClusterRole
