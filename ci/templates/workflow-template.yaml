@@ -5,11 +5,11 @@ metadata:
 spec:
   serviceAccountName: operate-workflow-sa
   templates:
-    - name: whalesay-template
+    - name: curl-ghcnd
       container:
         image: {{ .Values.workflow_task_image }}
         command: [sh]
         source: |
           set -e
           curl https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd-stations.txt > ghcnd-stations.csv
-          cat ghcnd-stations.csv | wc -l
+          cat ghcnd-stations.csv
