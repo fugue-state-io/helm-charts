@@ -22,5 +22,5 @@ spec:
         command: [sh]
         source: |
           set -e
-          curl https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/all/{{`{{inputs.parameters.station}}`}} > /{{`{{inputs.parameters.station}}`}}.dly
+          curl https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/all/{{`{{inputs.parameters.station}}`}}.dly > /{{`{{inputs.parameters.station}}`}}.dly
           cat /{{`{{inputs.parameters.station}}`}}.dly
