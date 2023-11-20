@@ -6,7 +6,7 @@ spec:
   serviceAccountName: operate-workflow-sa
   templates:
     - name: curl-ghcnd
-      container:
+      script:
         image: {{ .Values.workflow_task_image }}
         command: [sh]
         source: |
