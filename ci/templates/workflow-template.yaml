@@ -14,9 +14,9 @@ spec:
           curl https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd-stations.txt > ghcnd-stations.csv
           cat ghcnd-stations.csv
     - name: curl-ghcnd-values
-      arguments:
+      inputs:
         parameters:
-          name: station
+        -  name: station
       script:
         image: {{ .Values.workflow_task_image }}
         command: [sh]
