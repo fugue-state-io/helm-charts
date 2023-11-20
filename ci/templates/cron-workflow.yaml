@@ -3,6 +3,7 @@ kind: CronWorkflow
 metadata:
   name: test-cron-wf
 spec:
+  serviceAccountName: operate-workflow-sa
   schedule: "* * * * *"
   concurrencyPolicy: "Replace"
   startingDeadlineSeconds: 0
