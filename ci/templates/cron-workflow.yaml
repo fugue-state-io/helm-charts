@@ -3,12 +3,18 @@ kind: CronWorkflow
 metadata:
   name: ghcn-daily-stations
 spec:
-  serviceAccountName: operate-workflow-sa
   schedule: "0 0 * * *"
+  concurrencyPolicy: "Allow"
+  startingDeadlineSeconds: 0
   workflowSpec:
-    entrypoint: curl-ghcnd-stations
+    serviceAccountName: operate-workflow-sa
+    entrypoint: main
     templates:
-    - name: curl-ghcnd-stations
-      templateRef:
-        name: curl-ghcnd-stations
-        template: curl-ghcnd-stations-template
+    - name: main
+      dag:
+        tasks:
+          - name: curl-ghcnd-stations
+            templateRef:
+              name: curl-ghcnd-stations-template
+              template: curl-ghcnd-stations
+
