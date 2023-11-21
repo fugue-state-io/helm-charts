@@ -6,7 +6,7 @@ spec:
   serviceAccountName: operate-workflow-sa
   schedule: "0 0 * * *"
   workflowSpec:
-    entrypoint: curlghcnd-stations
+    entrypoint: curl-ghcnd-stations
     templates:
     - name: curl-ghcnd-stations
       templateRef:
