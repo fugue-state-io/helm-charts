@@ -18,11 +18,11 @@ spec:
               name: curl-ghcnd-stations-template
               template: curl-ghcnd-stations
 
-          - name: station-json-list
-            depends:  curl-ghcnd-stations
+          - name: stations-json-list
+            depends: curl-ghcnd-stations
             templateRef:
               name: curl-ghcnd-stations-template
-              template: station-json-list
+              template: stations-json-list
             arguments:
               artifacts:
               - name: ghcnd-stations-csv
