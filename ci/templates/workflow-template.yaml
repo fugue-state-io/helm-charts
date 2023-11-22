@@ -21,6 +21,7 @@ spec:
     - name: stations-json-list
       inputs:
         artifacts:
+        - name: ghcnd-stations-csv
           path: /ghcnd-stations.csv
       script:
         image: {{ .Values.etl_image }}
@@ -30,7 +31,7 @@ spec:
           python3 /etl/stations_to_json.py /ghcnd-stations.csv /ghcnd-stations.json
       outputs:
         paramaters:
-        - name: ghcnd-stations
+        - name: ghcnd-stations-json
           valueFrom:
             path: /ghcnd-stations.json
 
