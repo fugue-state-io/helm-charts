@@ -47,5 +47,5 @@ spec:
           cat /{{`{{inputs.parameters.station}}`}}.dly
       outputs:
         artifacts:
-          - name: {{`{{inputs.parameters.station}}`}}-{{`{{workflow.creationTimestamp.%Y%m%d}}`}}
+          - name: {{`{{inputs.parameters.station}}`}}-{{`{{workflow.creationTimestamp}}`}}
             path: /{{`{{inputs.parameters.station}}`}}.dly
