@@ -18,3 +18,12 @@ spec:
               name: curl-ghcnd-stations-template
               template: curl-ghcnd-stations
 
+          - name: station-json-list
+            depends:  curl-ghcnd-stations
+            templateRef:
+              name: curl-ghcnd-stations-tempalte
+              template: station-json-list
+            arguments:
+              artifacts:
+              - name: ghcnd-stations-csv
+                from: "{{`{{tasks.curl-ghcnd-stations.outputs.artifacts.ghcnd-stations}}`}}"
