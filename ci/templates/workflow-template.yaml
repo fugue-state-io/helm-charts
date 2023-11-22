@@ -15,7 +15,7 @@ spec:
           cat /ghcnd-stations.csv
       outputs:
         artifacts:
-        - name: ghcnd-stations
+        - name: ghcnd-stations-{{`{{workflow.creationTimestamp.%Y%m%d}}`}}
           path: /ghcnd-stations.csv
 
     - name: stations-json-list
@@ -31,7 +31,7 @@ spec:
           python3 /etl/stations_to_json.py /ghcnd-stations.csv /ghcnd-stations.json
       outputs:
         paramaters:
-        - name: ghcnd-stations-json
+        - name: ghcnd-stations
           valueFrom:
             path: /ghcnd-stations.json
 
@@ -46,3 +46,7 @@ spec:
           set -e
           curl https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/all/{{`{{inputs.parameters.station}}`}}.dly > /{{`{{inputs.parameters.station}}`}}.dly
           cat /{{`{{inputs.parameters.station}}`}}.dly
+      outputs:
+        artifacts:
+        - name: {{`{{inputs.parameters.station}}`}}-{{`{{workflow.creationTimestamp}}`}}
+          path: /{{`{{inputs.parameters.station}}`}}.dly
