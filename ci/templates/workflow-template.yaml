@@ -38,7 +38,7 @@ spec:
     - name: curl-ghcnd-values
       inputs:
         parameters:
-        -  name: station
+        - name: station
       script:
         image: {{ .Values.workflow_task_image }}
         command: [sh]
@@ -48,5 +48,5 @@ spec:
           cat /{{`{{inputs.parameters.station}}`}}.dly
       outputs:
         artifacts:
-        - name: {{`{{inputs.parameters.station}}`}}
+        - name: station
           path: /{{`{{inputs.parameters.station}}`}}.dly
