@@ -15,7 +15,7 @@ spec:
           cat /ghcnd-stations.csv
       outputs:
         artifacts:
-        - name: ghcnd-stations-{{`{{workflow.creationTimestamp.%Y%m%d}}`}}
+        - name: ghcnd-stations-{{`{{workflow.creationTimestamp}}`}}
           path: /ghcnd-stations.csv
 
     - name: stations-json-list
