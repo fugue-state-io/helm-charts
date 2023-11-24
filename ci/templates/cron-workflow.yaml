@@ -7,6 +7,8 @@ spec:
   concurrencyPolicy: "Allow"
   startingDeadlineSeconds: 0
   workflowSpec:
+    imagePullSecrets:
+      - name: fugue-state-registry
     serviceAccountName: operate-workflow-sa
     entrypoint: main
     templates:
