@@ -31,12 +31,12 @@ spec:
                 from: "{{`{{tasks.curl-ghcnd-stations.outputs.artifacts.ghcnd-stations}}`}}"
 
           - name: curl-ghcnd-values
-            depends: stations-json-list
+            depends: stations-json-list.Succeeded
             templateRef:
               name: curl-ghcnd-stations-template
               template: curl-ghcnd-values
             arguments:
               parameters:
               - name: station
-                from: "{{`{{item}}`}}"
+                value: "{{`{{item}}`}}"
             withParam: "{{`{{tasks.stations-json-list.outputs.parameters.ghcnd-stations}}`}}"
