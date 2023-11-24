@@ -1,2 +1,2 @@
 workflow_task_image: registry.digitalocean.com/fugue-state-registry/workflow-task-image:6bb81d89
-etl_image: registry.digitalocean.com/fugue-state-registry/etl:3a145639
+etl_image: registry.digitalocean.com/fugue-state-registry/etl:6ab90287
