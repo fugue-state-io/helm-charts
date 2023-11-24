@@ -38,5 +38,5 @@ spec:
             arguments:
               parameters:
               - name: station
-                value: "{{`{{item}}`}}"
+                value: "{{`{{item.station}}`}}"
             withParam: "{{`{{stations-json.outputs.parameters.ghcnd-stations}}`}}"
