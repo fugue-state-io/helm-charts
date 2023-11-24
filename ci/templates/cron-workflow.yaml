@@ -15,12 +15,12 @@ spec:
     - name: main
       dag:
         tasks:
-          - name: curl-ghcnd-stations
+          - name: curl-stations
             templateRef:
               name: curl-ghcnd-stations-template
               template: curl-ghcnd-stations
 
-          - name: stations-json-list
+          - name: stations-json
             depends: curl-ghcnd-stations
             templateRef:
               name: curl-ghcnd-stations-template
@@ -30,8 +30,8 @@ spec:
               - name: ghcnd-stations-csv
                 from: "{{`{{tasks.curl-ghcnd-stations.outputs.artifacts.ghcnd-stations}}`}}"
 
-          - name: curl-ghcnd-values
-            depends: stations-json-list.Succeeded
+          - name: curl-values
+            depends: stations-json
             templateRef:
               name: curl-ghcnd-stations-template
               template: curl-ghcnd-values
@@ -39,4 +39,4 @@ spec:
               parameters:
               - name: station
                 value: "{{`{{item}}`}}"
-            withParam: "{{`{{tasks.stations-json-list.outputs.parameters.ghcnd-stations}}`}}"
+            withParam: "{{`{{tasks.stations-json.outputs.parameters.ghcnd-stations}}`}}"
