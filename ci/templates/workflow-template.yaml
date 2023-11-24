@@ -29,6 +29,8 @@ spec:
         source: |
           set -e
           python3 /etl/stations_to_json.py /ghcnd-stations.csv /ghcnd-stations.json
+
+          cat /ghcnd-stations.json
       outputs:
         paramaters:
         - name: ghcnd-stations
