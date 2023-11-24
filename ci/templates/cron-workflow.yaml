@@ -21,7 +21,7 @@ spec:
               template: curl-ghcnd-stations
 
           - name: stations-json
-            depends: curl-ghcnd-stations
+            depends: curl-stations
             templateRef:
               name: curl-ghcnd-stations-template
               template: stations-json-list
