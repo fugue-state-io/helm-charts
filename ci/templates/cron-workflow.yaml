@@ -28,7 +28,7 @@ spec:
             arguments:
               artifacts:
               - name: ghcnd-stations-csv
-                from: "{{`{{tasks.curl-stations.outputs.artifacts.ghcnd-stations}}`}}"
+                from: "{{`tasks.curl-stations.outputs.artifacts.ghcnd-stations`}}"
 
           - name: curl-values
             depends: stations-json
