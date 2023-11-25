@@ -39,4 +39,4 @@ spec:
               parameters:
               - name: station
                 value: "{{`{{item.station}}`}}"
-            withItems: "{{`{{tasks.stations-json.outputs.parameters.ghcnd-stations}}`}}"
+            withParam: "{{`{{tasks.stations-json.outputs.parameters.ghcnd-stations}}`}}"
