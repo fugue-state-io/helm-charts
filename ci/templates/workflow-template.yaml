@@ -32,7 +32,7 @@ spec:
 
           cat /ghcnd-stations.json
       outputs:
-        paramaters:
+        parameters:
         - name: ghcnd-stations
           valueFrom:
             path: /ghcnd-stations.json
