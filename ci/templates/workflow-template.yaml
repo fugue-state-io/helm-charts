@@ -37,6 +37,28 @@ spec:
           valueFrom:
             path: /ghcnd-stations.json
 
+    - name: slice-stations-json
+      inputs:
+        artifacts:
+        - name: ghcnd-stations-csv
+          path: /ghcnd-stations.csv
+        parameters:
+        - name: slice_index
+        - name: number_of_slices
+      script:
+        image: {{ .Values.etl_image }}
+        command: [sh]
+        source: |
+          set -e
+          python3 /etl/slice_stations.py /ghcnd-stations.json /subset-stations.json {{`{{inputs.parameters.slice_index}}`}} {{`{{inputs.parameters.number_of_slices}}`}}
+
+          cat /subset-stations.json
+      outputs:
+        parameters:
+        - name: subset-stations
+          valueFrom:
+            path: /subset-stations.json
+
     - name: curl-ghcnd-values
       inputs:
         parameters:

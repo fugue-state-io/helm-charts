@@ -30,13 +30,19 @@ spec:
               - name: ghcnd-stations-csv
                 from: "{{`{{tasks.curl-stations.outputs.artifacts.ghcnd-stations}}`}}"
 
-          - name: curl-values
+          - name: slice-stations-json
             depends: stations-json
             templateRef:
               name: curl-ghcnd-stations-template
-              template: curl-ghcnd-values
+              template: slice-stations-json
             arguments:
               parameters:
-              - name: station
-                value: "{{`{{item.station}}`}}"
-            withParam: "{{`{{tasks.stations-json.outputs.parameters.ghcnd-stations}}`}}"
+              - name: slice_index
+                value: "{{`{{item}}`}}"
+              - name: number_of_slices
+                value: 20
+              artifacts:
+              - name: ghcnd-stations-json
+                from: "{{`{{tasks.stations-json.outputs.parameters.ghcnd-stations}}`}}"
+            withParam: '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]'
+              
