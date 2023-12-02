@@ -53,7 +53,7 @@ spec:
           
           jq -cr '.[] | .station' /subset-stations.json | while read i; do
             echo $i
-            curl https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/$1.csv > /$1.csv
+            curl --retry 5 --retry-max-time 600 https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/$1.csv > /$1.csv
           done
       outputs:
         parameters:
