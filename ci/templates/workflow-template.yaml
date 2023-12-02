@@ -40,8 +40,8 @@ spec:
     - name: slice-stations-json
       inputs:
         artifacts:
-        - name: ghcnd-stations-csv
-          path: /ghcnd-stations.csv
+        - name: ghcnd-stations-json
+          path: /ghcnd-stations.json
         parameters:
         - name: slice_index
         - name: number_of_slices
