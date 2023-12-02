@@ -52,6 +52,9 @@ spec:
           python3 /etl/slice_stations.py /ghcnd-stations.json /subset-stations.json {{`{{inputs.parameters.slice_index}}`}} {{`{{inputs.parameters.number_of_slices}}`}}
 
           cat /subset-stations.json
+          jq -c '.["station"]' /subset-stations.json | while read i; do
+              echo $i
+          done
       outputs:
         parameters:
         - name: subset-stations
