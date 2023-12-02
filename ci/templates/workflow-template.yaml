@@ -32,10 +32,9 @@ spec:
 
           cat /ghcnd-stations.json
       outputs:
-        parameters:
+        artifacts:
         - name: ghcnd-stations
-          valueFrom:
-            path: /ghcnd-stations.json
+          path: /ghcnd-stations.json
 
     - name: slice-stations-json
       inputs:
