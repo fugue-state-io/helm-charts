@@ -50,9 +50,10 @@ spec:
         source: |
           set -e
           python3 /etl/slice_stations.py /ghcnd-stations.json /subset-stations.json {{`{{inputs.parameters.slice_index}}`}} {{`{{inputs.parameters.number_of_slices}}`}}
-
+          
           jq -cr '.[] | .station' /subset-stations.json | while read i; do
             echo $i
+            curl https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/$1.csv > /$1.csv
           done
       outputs:
         parameters:
