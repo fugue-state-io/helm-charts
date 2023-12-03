@@ -64,4 +64,5 @@ spec:
 
     volumes:
     - name: out
-      emptyDir: { }
+      persistentVolumeClaim:
+        claimName: ghcnd-volume
