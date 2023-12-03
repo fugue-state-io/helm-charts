@@ -56,7 +56,7 @@ spec:
             curl --retry 5 --retry-max-time 600 https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/$i.csv > /mnt/out/$i.csv
           done
         volumeMounts:
-        - name: out
+        - name: ghcnd-volume
           mountPath: /mnt/out
     - name: process-stations
       inputs:
@@ -78,5 +78,5 @@ spec:
             cat /mnt/out/$i.csv | wc -l
           done
         volumeMounts:
-        - name: out
+        - name: ghcnd-volume
           mountPath: /mnt/out
