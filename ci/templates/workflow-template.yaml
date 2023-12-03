@@ -76,7 +76,7 @@ spec:
           
           jq -cr '.[] | .station' /subset-stations.json | while read i; do
             echo $i
-            cat /mnt/out/$1.csv | wc -l
+            cat /mnt/out/$i.csv | wc -l
           done
         volumeMounts:
         - name: out
