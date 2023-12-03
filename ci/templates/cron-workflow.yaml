@@ -15,7 +15,7 @@ spec:
     - metadata:
         name: ghcnd-volume
       spec:
-        accessModes: [ "ReadWrite" ]
+        accessModes: [ "ReadWriteMany" ]
         resources:
           requests:
             storage: 16Gi
