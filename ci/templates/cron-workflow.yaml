@@ -16,13 +16,13 @@ spec:
       dag:
         tasks:
           - name: curl-stations
-            workflowTemplateRef:
+            templateRef:
               name: curl-ghcnd-stations-template
               template: curl-ghcnd-stations
 
           - name: stations-json
             depends: curl-stations
-            workflowTemplateRef:
+            templateRef:
               name: curl-ghcnd-stations-template
               template: stations-json-list
             arguments:
@@ -32,7 +32,7 @@ spec:
 
           - name: slice-stations-json
             depends: stations-json
-            workflowTemplateRef:
+            templateRef:
               name: curl-ghcnd-stations-template
               template: slice-stations-json
             arguments:
