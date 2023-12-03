@@ -55,9 +55,13 @@ spec:
             echo $i
             curl --retry 5 --retry-max-time 600 https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/$i.csv > /tmp/$i.csv
           done
-          archive: { none: {} }
-          # This key below defines the artifact folder location. The exact same
-          # location will be used during the fan-in stage.
+      outputs:
+        artifacts:
+          - name: fan-out-artifacts
+            path: /tmp/
+            archive: { none: {} }
+            s3:
+              key: fanout-{{`{{workflow.name}}`}}/
 
     - name: process-stations
       inputs:
@@ -66,8 +70,10 @@ spec:
           path: /ghcnd-stations.json
         - name: artifact-files
           path: /tmp
+          # Here we are mounting the exact same artifact folder-location
+          # that we wrote into during the fan-out phase.
           s3:
-            key: fanout-{{workflow.name}}
+            key: fanout-{{`{{workflow.name}}`}}
         parameters:
         - name: slice_index
         - name: number_of_slices
