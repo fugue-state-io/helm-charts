@@ -58,20 +58,12 @@ spec:
           archive: { none: {} }
           # This key below defines the artifact folder location. The exact same
           # location will be used during the fan-in stage.
-      outputs:
-        artifacts:
-          - name: fan-out-artifacts
-            path: /tmp/
-            archive: { none: {} }
-            s3:
-              key: fanout-{{workflow.name}}/
 
     - name: process-stations
       inputs:
         artifacts:
         - name: ghcnd-stations-json
           path: /ghcnd-stations.json
-            inputs:
         - name: artifact-files
           path: /tmp
           s3:

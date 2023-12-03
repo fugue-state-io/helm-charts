@@ -45,10 +45,25 @@ spec:
               - name: ghcnd-stations-json
                 from: "{{`{{tasks.stations-json.outputs.artifacts.ghcnd-stations}}`}}"
             withParam: '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39]'
+            outputs:
+              artifacts:
+                - name: fan-out-artifacts
+                  path: /tmp/
+                  archive: { none: {} }
+                  s3:
+                    key: fanout-{{workflow.name}}/
 
           - name: process-stations
-            depends: map-stations
-            templateRef:
+            inputs:
+              artifacts:
+              - name: ghcnd-stations-json
+                path: /ghcnd-stations.json
+              - name: artifact-files
+                path: /tmp
+                s3:
+                  key: fanout-{{workflow.name}}
+                  depends: map-stations
+                  templateRef:
               name: curl-ghcnd-stations-template
               template: process-stations
             arguments:
