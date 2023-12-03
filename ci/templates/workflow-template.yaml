@@ -53,16 +53,29 @@ spec:
           
           jq -cr '.[] | .station' /subset-stations.json | while read i; do
             echo $i
-            curl --retry 5 --retry-max-time 600 https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/$i.csv > /mnt/out/$i.csv
+            curl --retry 5 --retry-max-time 600 https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/$i.csv > /tmp/$i.csv
           done
-        volumeMounts:
-        - name: ghcnd-volume
-          mountPath: /mnt/out
+          archive: { none: {} }
+          # This key below defines the artifact folder location. The exact same
+          # location will be used during the fan-in stage.
+      outputs:
+        artifacts:
+          - name: fan-out-artifacts
+            path: /tmp/
+            archive: { none: {} }
+            s3:
+              key: fanout-{{workflow.name}}/
+
     - name: process-stations
       inputs:
         artifacts:
         - name: ghcnd-stations-json
           path: /ghcnd-stations.json
+            inputs:
+        - name: artifact-files
+          path: /tmp
+          s3:
+            key: fanout-{{workflow.name}}
         parameters:
         - name: slice_index
         - name: number_of_slices
@@ -75,8 +88,5 @@ spec:
           
           jq -cr '.[] | .station' /subset-stations.json | while read i; do
             echo $i
-            cat /mnt/out/$i.csv | wc -l
+            cat /tmp/$i.csv | wc -l
           done
-        volumeMounts:
-        - name: ghcnd-volume
-          mountPath: /mnt/out
