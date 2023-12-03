@@ -53,26 +53,13 @@ spec:
           
           jq -cr '.[] | .station' /subset-stations.json | while read i; do
             echo $i
-            curl --retry 5 --retry-max-time 600 https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/$1.csv > /$1.csv
+            curl --retry 5 --retry-max-time 600 https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/$1.csv > /mnt/out/$1.csv
           done
+        volumeMounts:
+        - name: out
+          mountPath: /mnt/out
       outputs:
         parameters:
         - name: subset-stations
           valueFrom:
             path: /subset-stations.json
-
-    - name: curl-ghcnd-values
-      inputs:
-        parameters:
-        - name: station
-      script:
-        image: {{ .Values.workflow_task_image }}
-        command: [sh]
-        source: |
-          set -e
-          curl https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/all/{{`{{inputs.parameters.station}}`}}.dly > /{{`{{inputs.parameters.station}}`}}.dly
-          cat /{{`{{inputs.parameters.station}}`}}.dly
-      outputs:
-        artifacts:
-        - name: station
-          path: /{{`{{inputs.parameters.station}}`}}.dly

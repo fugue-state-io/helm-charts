@@ -35,6 +35,9 @@ spec:
             templateRef:
               name: curl-ghcnd-stations-template
               template: slice-stations-json
+            volumes:
+            - name: out
+              emptyDir: { }
             arguments:
               parameters:
               - name: slice_index
