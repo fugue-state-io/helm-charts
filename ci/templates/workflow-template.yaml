@@ -74,17 +74,9 @@ spec:
           # that we wrote into during the fan-out phase.
           s3:
             key: fanout-{{`{{workflow.name}}`}}
-        parameters:
-        - name: slice_index
-        - name: number_of_slices
       script:
         image: {{ .Values.etl_image }}
         command: [sh]
         source: |
           set -e
-          python3 /etl/slice_stations.py /ghcnd-stations.json /subset-stations.json {{`{{inputs.parameters.slice_index}}`}} {{`{{inputs.parameters.number_of_slices}}`}}
-          
-          jq -cr '.[] | .station' /subset-stations.json | while read i; do
-            echo $i
-            cat /tmp/$i.csv | wc -l
-          done
+          ls -la /tmp/
