@@ -32,6 +32,8 @@ spec:
 
           - name: map-stations
             depends: stations-json
+            retryStrategy:
+              limit: "5"
             templateRef:
               name: curl-ghcnd-stations-template
               template: map-stations
