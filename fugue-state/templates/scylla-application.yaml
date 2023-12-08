@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: scylla
+  namespace: argocd
+spec:
+  destination:
+    namespace: scylla
+    server: "https://kubernetes.default.svc"
+  project: fugue-state
+  sources:
+  - repoURL: 'https://scylla-operator-charts.storage.googleapis.com/stable'
+    chart: scylla
+    targetRevision: 1.11.0
+    helm:
+      valueFiles:
+      - $values/scylla/values.yaml
+  - repoURL: 'https://github.com/fugue-state-io/helm-charts'
+    ref: values
+    targetRevision: develop
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
