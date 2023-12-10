@@ -42,7 +42,7 @@ spec:
         command: [sh]
         source: |
           set -e
-          python3 /etl/scylla_conection.py
+          python3 /etl/scylla_connection.py
 
     - name: map-stations
       inputs:
