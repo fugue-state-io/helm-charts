@@ -71,12 +71,3 @@ racks:
 # Whether to create Prometheus ServiceMonitor
 serviceMonitor:
   create: false
-
-exposeOptions:
-  nodeService:
-    type: ClusterIP
-  broadcastOptions:
-    clients:
-      type: ServiceClusterIP
-    nodes:
-      type: ServiceClusterIP
