@@ -19,6 +19,11 @@ spec:
             templateRef:
               name: curl-ghcnd-stations-template
               template: curl-ghcnd-stations
+              
+          - name: scylla-connection
+            templateRef:
+              name: curl-ghcnd-stations-template
+              template: scylla-connection
 
           - name: stations-json
             depends: curl-stations
