@@ -267,7 +267,7 @@ ingress:
   #         name: use-annotation
 
 
-  tls: []
+  tls:
    - secretName: chart-example-tls
      hosts:
        - grafana.fugue-state.io
