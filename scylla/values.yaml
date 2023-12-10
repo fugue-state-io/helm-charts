@@ -70,4 +70,4 @@ racks:
 
 # Whether to create Prometheus ServiceMonitor
 serviceMonitor:
-  create: true
+  create: false
