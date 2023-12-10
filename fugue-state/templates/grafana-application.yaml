@@ -1,18 +1,24 @@
-# apiVersion: argoproj.io/v1alpha1
-# kind: Application
-# metadata:
-#   name: grafana
-#   namespace: argocd
-# spec:
-#   destination:
-#     namespace: grafana
-#     server: "https://kubernetes.default.svc"
-#   project: fugue-state
-#   source:
-#     path: grafana
-#     repoURL: 'https://github.com/fugue-state-io/helm-charts'
-#     targetRevision: develop
-#   syncPolicy:
-#     automated:
-#       prune: true
-#       selfHeal: true
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana
+  namespace: argocd
+spec:
+  destination:
+    namespace: grafana
+    server: "https://kubernetes.default.svc"
+  project: fugue-state
+  sources:
+  - repoURL: 'https://grafana.github.io/helm-charts'
+    chart: grafana
+    targetRevision: 7.0.11
+    helm:
+      valueFiles:
+      - $values/grafana/values.yaml
+  - repoURL: 'https://github.com/fugue-state-io/helm-charts'
+    ref: values
+    targetRevision: develop
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

@@ -58,7 +58,7 @@ racks:
   members: 3
   # Storage definition
   storage:
-    capacity: 30Gi
+    capacity: 50Gi
   # Scylla container resource definition
   resources:
      limits:

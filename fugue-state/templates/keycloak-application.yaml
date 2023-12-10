@@ -1,20 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: prometheus
+  name: keycloak
   namespace: argocd
 spec:
   destination:
-    namespace: prometheus
+    namespace: keycloak
     server: "https://kubernetes.default.svc"
   project: fugue-state
   sources:
-  - repoURL: 'https://prometheus-community.github.io/helm-charts'
-    chart: prometheus
-    targetRevision: 25.8.1
+  - repoURL: 'oci://registry-1.docker.io/bitnamicharts'
+    chart: keycloak
+    targetRevision: 17.3.6
     helm:
       valueFiles:
-      - $values/prometheus/values.yaml
+      - $values/keycloak/values.yaml
   - repoURL: 'https://github.com/fugue-state-io/helm-charts'
     ref: values
     targetRevision: develop
