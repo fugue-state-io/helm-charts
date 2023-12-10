@@ -36,6 +36,14 @@ spec:
         - name: ghcnd-stations
           path: /ghcnd-stations.json
 
+    - name: scylla-connection
+      script:
+        image: {{ .Values.etl_image }}
+        command: [sh]
+        source: |
+          set -e
+          python3 /etl/scylla_conection.py
+
     - name: map-stations
       inputs:
         artifacts:
