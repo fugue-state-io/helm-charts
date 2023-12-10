@@ -9,7 +9,7 @@ spec:
     server: "https://kubernetes.default.svc"
   project: fugue-state
   sources:
-  - repoURL: 'oci://registry-1.docker.io/bitnamicharts'
+  - repoURL: 'oci://registry-1.docker.io/bitnamicharts/keycloak'
     chart: keycloak
     targetRevision: 17.3.6
     helm:
