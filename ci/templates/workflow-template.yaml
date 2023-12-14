@@ -42,7 +42,7 @@ spec:
         command: [sh]
         source: |
           set -e
-          python3 /etl/scylla_connection.py
+          python3 /etl/scylla_idempotent_init.py
 
     - name: map-stations
       inputs:
@@ -69,7 +69,7 @@ spec:
             path: /tmp/
             archive: { none: {} }
             s3:
-              key: fanout-{{`{{workflow.name}}`}}/
+              key: ghcn-data/
 
     - name: process-stations
       inputs:
@@ -81,7 +81,7 @@ spec:
           # Here we are mounting the exact same artifact folder-location
           # that we wrote into during the fan-out phase.
           s3:
-            key: fanout-{{`{{workflow.name}}`}}
+            key: ghcn-data/
       script:
         image: {{ .Values.etl_image }}
         command: [sh]

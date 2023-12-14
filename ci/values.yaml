@@ -1,5 +1,5 @@
 workflow_task_image: registry.digitalocean.com/fugue-state-registry/workflow-task:a9ab52dd
 # no wmo stations
-etl_image: registry.digitalocean.com/fugue-state-registry/etl:43a2fc36
+etl_image: registry.digitalocean.com/fugue-state-registry/etl:8eb31f24
 ## with non wmo stations
 # etl_image: registry.digitalocean.com/fugue-state-registry/etl:cff01c8c
