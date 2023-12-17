@@ -24,7 +24,7 @@ spec:
         - name: ghcnd-stations-csv
           path: /ghcnd-stations.csv
       script:
-        image: {{ .Values.etl_image }}
+        image: {{ .Values.etl_image }}:{{ .Values.etl_tag }}
         command: [sh]
         source: |
           set -e
@@ -38,7 +38,7 @@ spec:
 
     - name: scylla-connection
       script:
-        image: {{ .Values.etl_image }}
+        image: {{ .Values.etl_image }}:{{ .Values.etl_tag }}
         command: [sh]
         source: |
           set -e
@@ -53,7 +53,7 @@ spec:
         - name: slice_index
         - name: number_of_slices
       script:
-        image: {{ .Values.etl_image }}
+        image: {{ .Values.etl_image }}:{{ .Values.etl_tag }}
         command: [sh]
         source: |
           set -e
@@ -83,7 +83,7 @@ spec:
           s3:
             key: ghcn-data/
       script:
-        image: {{ .Values.etl_image }}
+        image: {{ .Values.etl_image }}:{{ .Values.etl_tag }}
         command: [sh]
         source: |
           set -e
