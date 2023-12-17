@@ -1,11 +1,11 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argo-cd-image-updater
+  name: argocd-image-updater
   namespace: argocd
 spec:
   destination:
-    namespace: argo-cd-image-updater
+    namespace: argocd
     server: "https://kubernetes.default.svc"
   project: fugue-state
   sources:
@@ -14,7 +14,7 @@ spec:
     targetRevision:  0.9.1
     helm:
       valueFiles:
-      - $values/argo-cd-image-updater/values.yaml
+      - $values/argocd-image-updater/values.yaml
   - repoURL: 'https://github.com/fugue-state-io/helm-charts'
     ref: values
     targetRevision: develop
