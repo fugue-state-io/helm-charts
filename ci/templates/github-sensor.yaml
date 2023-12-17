@@ -156,7 +156,7 @@ spec:
                         
                   - name: body-to-artifact
                     script:
-                      image: {{ .Values.workflow_task_image }}
+                      image: {{ .Values.workflow_task_image }}:{{ .Values.workflow_task_tag }}
                       command: [sh]
                       source: |
                         set -e
@@ -174,7 +174,7 @@ spec:
                         - name: body
                           path: "/body.json"
                     script:
-                      image: {{ .Values.workflow_task_image }}
+                      image: {{ .Values.workflow_task_image }}:{{ .Values.workflow_task_tag }}
                       command: [sh]
                       source: |
                         set -e
@@ -210,7 +210,7 @@ spec:
                       - name: body
                         path: "/body.json"
                     script:
-                      image: {{ .Values.workflow_task_image }}
+                      image: {{ .Values.workflow_task_image }}:{{ .Values.workflow_task_tag }}
                       command: [bash]
                       source: |
                         set -e
@@ -248,7 +248,7 @@ spec:
                       - name: body
                         path: "/body.json"
                     script:
-                      image: {{ .Values.workflow_task_image }}
+                      image: {{ .Values.workflow_task_image }}:{{ .Values.workflow_task_tag }}
                       command: [sh]
                       source: |
                         set -e
@@ -262,7 +262,7 @@ spec:
                         secret:
                           secretName: github-auth
                     script:
-                      image: {{ .Values.workflow_task_image }}
+                      image: {{ .Values.workflow_task_image }}:{{ .Values.workflow_task_tag }}
                       volumeMounts:
                         - name: github-auth
                           mountPath: /github-auth
@@ -283,7 +283,7 @@ spec:
                         - name: jwt
                           path: /jwt.txt
                     script:
-                      image: {{ .Values.workflow_task_image }}
+                      image: {{ .Values.workflow_task_image }}:{{ .Values.workflow_task_tag }}
                       command: [sh]
                       source: |
                         set -e
@@ -306,7 +306,7 @@ spec:
                         - name: access_token
                           path: /access_token
                     script:
-                      image: {{ .Values.workflow_task_image}}
+                      image: {{ .Values.workflow_task_image }}:{{ .Values.workflow_task_tag }}
                       command: [sh]
                       source: |
                         set -e

@@ -7,7 +7,7 @@ spec:
   templates:
     - name: curl-ghcnd-stations
       script:
-        image: {{ .Values.workflow_task_image }}
+        image: {{ .Values.workflow_task_image }}:{{ .Values.workflow_task_tag }}
         command: [sh]
         source: |
           set -e
