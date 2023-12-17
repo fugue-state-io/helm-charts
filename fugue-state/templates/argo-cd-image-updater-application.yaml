@@ -10,7 +10,7 @@ spec:
   project: fugue-state
   sources:
   - repoURL: 'https://argoproj.github.io/argo-helm'
-    chart: argo-cd-image-updater
+    chart: argocd-image-updater
     targetRevision:  0.9.1
     helm:
       valueFiles:
