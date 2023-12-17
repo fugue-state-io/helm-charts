@@ -98,7 +98,7 @@ config:
   logLevel: "info"
 
   # -- ArgoCD Image Updater registries list configuration. More information [here](https://argocd-image-updater.readthedocs.io/en/stable/configuration/registries/)
-  registries: []
+  registries:
     - name: Fugue State Registry
       api_url: registry.digitalocean.com/fugue-state-registry
       ping: yes
