@@ -100,7 +100,7 @@ config:
   # -- ArgoCD Image Updater registries list configuration. More information [here](https://argocd-image-updater.readthedocs.io/en/stable/configuration/registries/)
   registries:
     - name: Fugue State Registry
-      api_url: https://registry.digitalocean.com/fugue-state-registry
+      api_url: registry.digitalocean.com/fugue-state-registry
       prefix: registry.digitalocean.com
       ping: yes
       credentials: pullsecret:argocd/fugue-state-registry
