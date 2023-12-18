@@ -101,7 +101,6 @@ config:
   registries:
     - name: Fugue State Registry
       api_url: registry.digitalocean.com/fugue-state-registry
-      prefix: registry.digitalocean.com
       ping: yes
       credentials: pullsecret:argocd/fugue-state-registry
       default: true
