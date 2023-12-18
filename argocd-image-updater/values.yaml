@@ -103,7 +103,7 @@ config:
       api_url: https://registry.digitalocean.com/fugue-state-registry
       prefix: registry.digitalocean.com
       ping: yes
-      credentials: pullsecret:ci/fugue-state-registry
+      credentials: pullsecret:argocd/fugue-state-registry
       default: true
     #   defaultns: library
     # - name: Google Container Registry
