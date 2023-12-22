@@ -4,7 +4,7 @@ metadata:
   annotations:
     argocd-image-updater.argoproj.io/image-list:  etl=registry.digitalocean.com/fugue-state-registry/etl
     argocd-image-updater.argoproj.io/etl.helm.image-name: etl_image
-    argocd-image-updater.argoproj.io/etl.helm.image-name: etl_tag
+    argocd-image-updater.argoproj.io/etl.helm.image-tag: etl_tag
     argocd-image-updater.argoproj.io/etl.update-strategy: latest
     argocd-image-updater.argoproj.io/write-back-method: git
     argocd-image-updater.argoproj.io/etl.force-update: "true"
