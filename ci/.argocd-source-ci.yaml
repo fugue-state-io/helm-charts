@@ -1,0 +1,8 @@
+helm:
+  parameters:
+  - name: etl_image
+    value: registry.digitalocean.com/fugue-state-registry/etl
+    forcestring: true
+  - name: etl_tag
+    value: 4e559b21
+    forcestring: true
