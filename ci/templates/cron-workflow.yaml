@@ -15,15 +15,15 @@ spec:
     - name: main
       dag:
         tasks:
-          - name: curl-stations
-            templateRef:
-              name: curl-ghcnd-stations-template
-              template: curl-ghcnd-stations
-              
           - name: scylla-connection
             templateRef:
               name: curl-ghcnd-stations-template
               template: scylla-connection
+          - name: curl-stations
+            depends: scylla-connection
+            templateRef:
+              name: curl-ghcnd-stations-template
+              template: curl-ghcnd-stations
 
           - name: stations-json
             depends: curl-stations
