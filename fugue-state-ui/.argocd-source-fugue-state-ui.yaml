@@ -1,0 +1,8 @@
+helm:
+  parameters:
+  - name: image.tag
+    value: registry.digitalocean.com/fugue-state-registry/fugue-state-ui
+    forcestring: true
+  - name: image.repository
+    value: 8240fc32
+    forcestring: true
