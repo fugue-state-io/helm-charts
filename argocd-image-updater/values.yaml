@@ -86,13 +86,13 @@ config:
   disableKubeEvents: false
 
   # -- Username to use for Git commits
-  gitCommitUser: "fugue-state-io-app"
+  gitCommitUser: ""
 
   # -- E-Mail address to use for Git commits
-  gitCommitMail: "jonathon.zudell@gmail.com"
+  gitCommitMail: ""
 
   # -- Changing the Git commit message
-  gitCommitTemplate: "argocd image updater"
+  gitCommitTemplate: ""
 
   # -- ArgoCD Image Update log level
   logLevel: "info"

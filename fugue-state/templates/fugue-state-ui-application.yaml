@@ -6,7 +6,7 @@ metadata:
     argocd-image-updater.argoproj.io/ui.helm.image-name: image.tag
     argocd-image-updater.argoproj.io/ui.helm.image-tag: image.repository
     argocd-image-updater.argoproj.io/ui.update-strategy: latest
-    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/fugue-state-repo
+    argocd-image-updater.argoproj.io/write-back-method: git
     argocd-image-updater.argoproj.io/ui.force-update: "true"
   name: fugue-state-ui
   namespace: argocd
