@@ -46,17 +46,16 @@ spec:
               path: /
               port: http
           env:
-          - name: FUGUE_STATE_CDN_ACCESS_ID
-            valueFrom:
-              secretKeyRef:
-                name: api-secret
-                key: FUGUE_STATE_CDN_ACCESS_ID
-                    - name: FUGUE_STATE_CDN_ACCESS_ID
-          - name: FUGUE_STATE_CDN_SECRET_KEY
-            valueFrom:
-              secretKeyRef:
-                name: api-secret
-                key: FUGUE_STATE_CDN_SECRET_KEY
+            - name: FUGUE_STATE_CDN_ACCESS_ID
+              valueFrom:
+                secretKeyRef:
+                  name: api-secret
+                  key: FUGUE_STATE_CDN_ACCESS_ID
+            - name: FUGUE_STATE_CDN_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api-secret
+                  key: FUGUE_STATE_CDN_SECRET_KEY
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
