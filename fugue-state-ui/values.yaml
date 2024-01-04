@@ -7,7 +7,7 @@ image:
   repository: registry.digitalocean.com/fugue-state-registry/fugue-state-ui
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "c4c277e1"
+  tag: "335bdea1"
 
 imagePullSecrets:
 - name: "fugue-state-registry"
