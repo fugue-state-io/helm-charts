@@ -135,7 +135,7 @@ spec:
                               - name: context
                                 value: "building-images"
                               - name: state
-                                value: "failed"
+                                value: "failure"
                             artifacts:
                               - name: access_token
                                 from: "{{`{{tasks.github-app-installation-token.outputs.artifacts.access_token}}`}}"
