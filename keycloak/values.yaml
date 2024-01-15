@@ -104,16 +104,10 @@ terminationGracePeriodSeconds: 60
 # The internal Kubernetes cluster domain
 clusterDomain: cluster.local
 
-## Overrides the default entrypoint of the Keycloak container
-command: []
 
 ## Overrides the default args for the Keycloak container
 args: []
 
-# Additional environment variables for Keycloak
-extraEnv: ""
-  # - name: KC_LOG_LEVEL
-  #   value: DEBUG
 
 # Additional environment variables for Keycloak mapped from Secret or ConfigMap
 extraEnvFrom: ""
@@ -537,3 +531,15 @@ test:
     runAsNonRoot: true
   # See https://helm.sh/docs/topics/charts_hooks/#hook-deletion-policies
   deletionPolicy: before-hook-creation
+command:
+  - "/opt/keycloak/bin/kc.sh"
+  - "start"
+  - "--http-enabled=true"
+  - "--http-port=8080"
+  - "--hostname-strict=false"
+  - "--hostname-strict-https=false"
+extraEnv: |
+  - name: JAVA_OPTS_APPEND
+    value: >-
+      -Djgroups.dns.query={{ include "keycloak.fullname" . }}-headless
+extraEnvFrom: "keycloak-secrets-env"
