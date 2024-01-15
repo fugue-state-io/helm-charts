@@ -286,7 +286,7 @@ ingress:
   # TLS configuration
   tls:
     - hosts:
-        - auth-fugue-state.io
+        - auth.fugue-state.io
       secretName: "keycloak-tls-secret"
 
   # ingress for console only (/auth/admin)
