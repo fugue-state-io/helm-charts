@@ -8,15 +8,9 @@ spec:
     namespace: keycloak
     server: "https://kubernetes.default.svc"
   project: fugue-state
-  sources:
-  - repoURL: 'https://codecentric.github.io/helm-charts'
-    chart: keycloakx
-    targetRevision:  2.3.0
-    helm:
-      valueFiles:
-      - $values/keycloak/values.yaml
-  - repoURL: 'https://github.com/fugue-state-io/helm-charts'
-    ref: values
+  source:
+    path: keycloak
+    repoURL: "https://github.com/fugue-state-io/helm-charts"
     targetRevision: develop
   syncPolicy:
     automated:
