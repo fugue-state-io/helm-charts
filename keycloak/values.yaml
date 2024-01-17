@@ -127,7 +127,7 @@ auth:
   existingSecret: "keycloak-secrets-env"
   ## @param auth.passwordSecretKey Key where the Keycloak admin password is being stored inside the existing secret.
   ##
-  passwordSecretKey: "KEYCLOAK_PASSWORD"
+  passwordSecretKey: "KEYCLOAK_ADMIN_PASSWORD"
   ## @param auth.annotations Additional custom annotations for Keycloak auth secret object
   ##
   annotations: {}
@@ -1087,7 +1087,7 @@ postgresql:
 externalDatabase:
   host: private-fugue-state-postgres-cluster-do-user-1934999-0.b.db.ondigitalocean.com
   port: 25060
-  user: keycloak
+  user: keycloak-user
   database: keycloak
   password: ""
   existingSecret: keycloak-secrets
