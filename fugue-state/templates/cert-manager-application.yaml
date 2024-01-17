@@ -1,24 +1,24 @@
-# apiVersion: argoproj.io/v1alpha1
-# kind: Application
-# metadata:
-#   name: cert-manager
-#   namespace: argocd
-# spec:
-#   destination:
-#     namespace: cert-manager
-#     server: "https://kubernetes.default.svc"
-#   project: fugue-state
-#   sources:
-#   - repoURL: 'https://charts.jetstack.io'
-#     chart: cert-manager
-#     targetRevision: 1.13.2
-#     helm:
-#       valueFiles:
-#       - $values/cert-manager/values.yaml
-#   - repoURL: 'https://github.com/fugue-state-io/helm-charts'
-#     ref: values
-#     targetRevision: develop
-#   syncPolicy:
-#     automated:
-#       prune: true
-#       selfHeal: true
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  namespace: argocd
+spec:
+  destination:
+    namespace: cert-manager
+    server: "https://kubernetes.default.svc"
+  project: fugue-state
+  sources:
+  - repoURL: 'https://charts.jetstack.io'
+    chart: cert-manager
+    targetRevision: 1.13.2
+    helm:
+      valueFiles:
+      - $values/cert-manager/values.yaml
+  - repoURL: 'https://github.com/fugue-state-io/helm-charts'
+    ref: values
+    targetRevision: develop
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
