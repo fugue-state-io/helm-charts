@@ -793,7 +793,7 @@ metrics:
 keycloakConfigCli:
   ## @param keycloakConfigCli.enabled Whether to enable keycloak-config-cli job
   ##
-  enabled: false
+  enabled: true
   ## Bitnami keycloak-config-cli image
   ## ref: https://hub.docker.com/r/bitnami/keycloak-config-cli/tags/
   ## @param keycloakConfigCli.image.registry [default: REGISTRY_NAME] keycloak-config-cli container image registry
@@ -941,12 +941,40 @@ keycloakConfigCli:
   ## @param keycloakConfigCli.configuration keycloak-config-cli realms configuration
   ## NOTE: nil keys will be considered files to import locally
   ## Example:
-  ## configuration:
-  ##   realm1.json: |
-  ##     {
-  ##       "realm": "realm1",
-  ##       "clients": []
-  ##     }
+  configuration:
+    realm1.json: |
+      {
+        "realm": "fugue-state",
+        "enabled": true,
+        "roles": {
+          "realm": [
+            {
+                "name": "user",
+                "description": "User privileges"
+            },
+            {
+                "name": "admin",
+                "description": "Administrator privileges"
+            }
+          ]
+        },
+        "defaultRoles": [
+          "user"
+        ],
+        "clients": [
+          {
+            "clientId": "ui",
+            "enabled": true,
+            "publicClient": true,
+            "redirectUris": [
+              "*"
+            ],
+            "webOrigins": [
+              "*"
+            ]
+          }
+        ],
+      }
   ##   realm2.yaml: |
   ##     realm: realm2
   ##     clients: []
