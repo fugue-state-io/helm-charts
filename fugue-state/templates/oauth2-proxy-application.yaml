@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: oauth2-proxy
+  namespace: argocd
+spec:
+  destination:
+    namespace: oauth2-proxy
+    server: "https://kubernetes.default.svc"
+  project: fugue-state
+  sources:
+  - repoURL: 'https://oauth2-proxy.github.io/manifests'
+    chart: oauth2-proxy
+    targetRevision: 7.5.1
+    helm:
+      valueFiles:
+      - $values/oauth2-proxy/values.yaml
+  - repoURL: 'https://github.com/fugue-state-io/helm-charts'
+    ref: values
+    targetRevision: develop
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
