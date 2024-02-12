@@ -45,12 +45,6 @@ spec:
             httpGet:
               path: /
               port: http
-          env:
-            - name: NEXT_PUBLIC_FUGUE_STATE_API_URL
-              valueFrom:
-                secretKeyRef:
-                  name: ui-secrets
-                  key: NEXT_PUBLIC_FUGUE_STATE_API_URL
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
