@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: scan-tls
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: nginx
+  tls:
+  - secretName: scan-tls
+    hosts:
+    - scan.fugue-state.io
+  rules:
+  - host: scanA.fugue-state.io
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: github-scan-eventsource-svc
+            port:
+              number: 12000

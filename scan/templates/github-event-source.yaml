@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: github
+spec:
+  service:
+    ports:
+    - port: 12000
+      targetPort: 12000
+  github:
+    repo_hook:
+      webhook:
+        endpoint: /webhook
+        port: "12000"
+        method: POST
+        url: https://scan.fugue-state.io
+      events:
+        - "push"
+      webhookSecret:
+        name: scan-secrets
+        key: github-webhook-secret
+      active: true
+      contentType: json

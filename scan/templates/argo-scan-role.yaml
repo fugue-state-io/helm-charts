@@ -1,0 +1,28 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: operate-workflow-role
+rules:
+- apiGroups: ["*"]
+  resources:
+  - pods
+  - pods/exec
+  - pods/log
+  - secrets
+  - ingresses
+  - logs
+  - services
+  - jobs
+  - deployments
+  - statefulsets
+  - cronjobs
+  - workflows
+  - workflowtemplates
+  - cronworkflows
+  - clusterworkflowtemplates
+  - configmaps
+  - sensors
+  - events
+  - eventsources
+  - workfloweventbindings
+  verbs: ["*"]

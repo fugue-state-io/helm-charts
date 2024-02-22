@@ -1,0 +1,361 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: github
+spec:
+  template:
+    serviceAccountName: operate-workflow-sa
+  dependencies:
+    - name: github-dep
+      eventSourceName: github
+      eventName: repo_hook
+  triggers:
+    - template:
+        name: github-sensor-trigger
+        k8s:
+          operation: create
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Workflow
+              metadata:
+                generateName: github-
+              spec:
+                volumes:
+                - name: docker-config
+                  secret:
+                    secretName: docker-config
+                serviceAccountName: operate-workflow-sa
+                arguments:
+                  parameters:
+                    - name: body
+                entrypoint: main
+                imagePullSecrets:
+                - name: fugue-state-registry
+                templates:
+                  - name: main
+                    dag:
+                      tasks: 
+                        - name: body-to-artifact
+                          template: body-to-artifact
+
+                        - name: get-workflow-parameters
+                          depends: body-to-artifact
+                          template: get-workflow-parameters
+                          arguments:
+                            artifacts:
+                              - name: body
+                                from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
+
+                        - name: push-event
+                          depends: get-workflow-parameters && body-to-artifact
+                          when: "{{`{{tasks.get-workflow-parameters.outputs.parameters.event}}`}} == 'push'"
+                          template: push-event
+                          arguments:
+                            artifacts:
+                              - name: argo-source
+                                path: /src
+                                git:
+                                  repo: "{{`{{tasks.get-workflow-parameters.outputs.parameters.repo}}`}}"
+                                  revision: "{{`{{tasks.get-workflow-parameters.outputs.parameters.revision}}`}}"
+                              - name: body
+                                from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
+
+                        - name: github-app-jwt
+                          template: github-app-jwt
+
+                        - name: github-app-installation-token
+                          depends: github-app-jwt && get-workflow-parameters
+                          template: github-app-installation-token
+                          arguments:
+                            parameters:
+                              - name: installation_id
+                                value: "{{`{{tasks.get-workflow-parameters.outputs.parameters.installation_id}}`}}"
+                            artifacts:
+                              - name: jwt
+                                from: "{{`{{tasks.github-app-jwt.outputs.artifacts.jwt}}`}}"
+
+                        - name: images-pending
+                          depends: push-event.Succeeded && github-app-installation-token
+                          when: "{{`{{tasks.push-event.outputs.parameters.ci}}`}} != []"
+                          template: github-status-check
+                          arguments:
+                            parameters:
+                              - name: url
+                                value: "https://api.github.com/repos/fugue-state-io/{{`{{tasks.get-workflow-parameters.outputs.parameters.name}}`}}/statuses/{{`{{tasks.get-workflow-parameters.outputs.parameters.revision}}`}}"
+                              - name: context
+                                value: "building-images"
+                              - name: state
+                                value: "pending"
+                            artifacts:
+                              - name: access_token
+                                from: "{{`{{tasks.github-app-installation-token.outputs.artifacts.access_token}}`}}"
+                                
+                        - name: images
+                          depends: get-workflow-parameters && (push-event.Succeeded && check-suite-event.Skipped)
+                          template: image
+                          arguments:
+                            artifacts:
+                              - name: argo-source
+                                path: /src
+                                git:
+                                  repo: "{{`{{tasks.get-workflow-parameters.outputs.parameters.repo}}`}}"
+                                  revision: "{{`{{tasks.get-workflow-parameters.outputs.parameters.revision}}`}}"
+                              - name: body
+                                from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
+                            parameters:
+                              - name: image
+                                value: "registry.digitalocean.com/fugue-state-registry/{{`{{item.image}}`}}:{{`{{tasks.push-event.outputs.parameters.tag}}`}}"
+                              - name: dockerfile
+                                value: "{{`{{item.dockerfile}}`}}"
+                          withParam: "{{`{{tasks.push-event.outputs.parameters.ci}}`}}"
+
+                        - name: images-success
+                          depends: images.Succeeded && github-app-installation-token
+                          template: github-status-check
+                          arguments:
+                            parameters:
+                              - name: url
+                                value: "https://api.github.com/repos/fugue-state-io/{{`{{tasks.get-workflow-parameters.outputs.parameters.name}}`}}/statuses/{{`{{tasks.get-workflow-parameters.outputs.parameters.revision}}`}}"
+                              - name: context
+                                value: "building-images"
+                              - name: state
+                                value: "success"
+                            artifacts:
+                              - name: access_token
+                                from: "{{`{{tasks.github-app-installation-token.outputs.artifacts.access_token}}`}}"
+
+                        - name: images-failed
+                          depends: images.Failed && github-app-installation-token
+                          template: github-status-check
+                          arguments:
+                            parameters:
+                              - name: url
+                                value: "https://api.github.com/repos/fugue-state-io/{{`{{tasks.get-workflow-parameters.outputs.parameters.name}}`}}/statuses/{{`{{tasks.get-workflow-parameters.outputs.parameters.revision}}`}}"
+                              - name: context
+                                value: "building-images"
+                              - name: state
+                                value: "failure"
+                            artifacts:
+                              - name: access_token
+                                from: "{{`{{tasks.github-app-installation-token.outputs.artifacts.access_token}}`}}"
+
+                        - name: check-suite-event
+                          depends: get-workflow-parameters && body-to-artifact
+                          when: "{{`{{tasks.get-workflow-parameters.outputs.parameters.event}}`}} == 'check_suite'"
+                          template: check-suite-event
+                          arguments:
+                            artifacts:
+                              - name: argo-source
+                                path: /src
+                                git:
+                                  repo: "{{`{{tasks.get-workflow-parameters.outputs.parameters.repo}}`}}"
+                                  revision: "{{`{{tasks.get-workflow-parameters.outputs.parameters.revision}}`}}"
+                              - name: body
+                                from: "{{`{{tasks.body-to-artifact.outputs.artifacts.body}}`}}"
+                        
+                  - name: body-to-artifact
+                    script:
+                      image: {{ .Values.workflow_task_image }}:{{ .Values.workflow_task_tag }}
+                      command: [sh]
+                      source: |
+                        set -e
+                        cat <<EOF > /body.json
+                        {{`{{workflow.parameters.body}}`}}
+                        EOF
+                    outputs:
+                      artifacts:
+                        - name: body
+                          path: "/body.json"
+
+                  - name: get-workflow-parameters
+                    inputs:
+                      artifacts:
+                        - name: body
+                          path: "/body.json"
+                    script:
+                      image: {{ .Values.workflow_task_image }}:{{ .Values.workflow_task_tag }}
+                      command: [sh]
+                      source: |
+                        set -e
+                        cat /body.json | jq -r '.["repository"] | .["clone_url"]' > /repo.txt
+                        cat /body.json | jq -r '.["X-GitHub-Event"]' > /event.txt
+                        cat /body.json | jq -r '.["after"] | select( . != null )' >> /revision.txt
+                        cat /body.json | jq -r '.["check_suite"] | .["after"] | select( . != null )' >> /revision.txt
+                        cat /body.json | jq -r '.["repository"] | .["name"]' >> /name.txt
+                        cat /body.json | jq -r '.["installation"] | .["id"]' >> /installation_id.txt
+                    outputs:
+                      parameters:
+                        - name: repo
+                          valueFrom:
+                            path: /repo.txt
+                        - name: event
+                          valueFrom:
+                            path: /event.txt
+                        - name: revision
+                          valueFrom:
+                            path: /revision.txt
+                        - name: name
+                          valueFrom:
+                            path: /name.txt
+                        - name: installation_id
+                          valueFrom:
+                            path: /installation_id.txt
+
+                  - name: push-event
+                    inputs:
+                      artifacts:
+                      - name: argo-source
+                        path: /src/
+                      - name: body
+                        path: "/body.json"
+                    script:
+                      image: {{ .Values.workflow_task_image }}:{{ .Values.workflow_task_tag }}
+                      command: [bash]
+                      source: |
+                        set -e
+                        cd /src
+                        export GIT_REF=$(cat /body.json | jq -r '.["ref"]')
+                        export MASTER_BRANCH=$(cat /body.json | jq -r '.["repository"] | .["master_branch"]')
+
+                        export TAG=$(git rev-parse HEAD)
+                        echo ${TAG:0:8} > /tag.txt
+
+                        if [[ $GIT_REF == *$MASTER_BRANCH ]] # * is used for pattern matching
+                        then
+                          if [ -f "/src/ci.json" ]; then
+                            cat /src/ci.json > /ci.json
+                          else
+                            echo "[]" > /ci.json
+                          fi
+                        else
+                          exit 1
+                        fi
+                    outputs:
+                      parameters:
+                        - name: ci
+                          valueFrom:
+                            path: /ci.json
+                        - name: tag
+                          valueFrom:
+                            path: /tag.txt
+
+                  - name: check-suite-event
+                    inputs:
+                      artifacts:
+                      - name: argo-source
+                        path: /src
+                      - name: body
+                        path: "/body.json"
+                    script:
+                      image: {{ .Values.workflow_task_image }}:{{ .Values.workflow_task_tag }}
+                      command: [sh]
+                      source: |
+                        set -e
+                        if [ -f "/src/check_suite.sh" ]; then
+                          bash /src/check_suite.sh
+                        fi
+
+                  - name: github-app-jwt
+                    volumes:
+                      - name: github-auth
+                        secret:
+                          secretName: github-auth
+                    script:
+                      image: {{ .Values.workflow_task_image }}:{{ .Values.workflow_task_tag }}
+                      volumeMounts:
+                        - name: github-auth
+                          mountPath: /github-auth
+                      command: [sh]
+                      source: |
+                        set -e
+                        python3 /utilities/generate_jwt.py /github\-auth/github\-app.pem 348886 > jwt.txt
+                    outputs:
+                      artifacts:
+                        - name: jwt
+                          path: /jwt.txt
+                          
+                  - name: github-app-installation-token
+                    inputs:
+                      parameters:
+                        - name: installation_id
+                      artifacts:
+                        - name: jwt
+                          path: /jwt.txt
+                    script:
+                      image: {{ .Values.workflow_task_image }}:{{ .Values.workflow_task_tag }}
+                      command: [sh]
+                      source: |
+                        set -e
+                        export JWT=$(cat /jwt.txt)
+                        curl --request POST --url "https://api.github.com/app/installations/{{`{{inputs.parameters.installation_id}}`}}/access_tokens" \
+                        --header "Accept: application/vnd.github+json" --header "Authorization: Bearer $JWT" --header "X-GitHub-Api-Version: 2022-11-28" > access_tokens.json
+                        cat /access_tokens.json | jq -r '.["token"]' >> /access_token
+                    outputs:
+                      artifacts:
+                        - name: access_token
+                          path: /access_token
+                      
+                  - name: github-status-check
+                    inputs:
+                      parameters:
+                        - name: context
+                        - name: state
+                        - name: url
+                      artifacts:
+                        - name: access_token
+                          path: /access_token
+                    script:
+                      image: {{ .Values.workflow_task_image }}:{{ .Values.workflow_task_tag }}
+                      command: [sh]
+                      source: |
+                        set -e
+                        export JWT=$(cat /access_token)
+                        curl -X POST --fail --header "Authorization: Bearer $JWT" --header "Accept: application/vnd.github+json" --header "X-GitHub-Api-Version: 2022-11-28" \
+                        -d '{"state" : "{{`{{inputs.parameters.state}}`}}", "context" : "{{`{{inputs.parameters.context}}`}}", "target_url":"https://argo-workflows.fugue-state.io/workflows/{{`{{workflow.namespace}}`}}/{{`{{workflow.name}}`}}"}' {{`{{inputs.parameters.url}}`}}
+
+                  - name: image
+                    inputs:
+                      parameters:
+                      - name: image
+                      - name: dockerfile
+                      artifacts:
+                      - name: argo-source
+                        path: /src
+                    volumes:
+                      - name: docker-config
+                        secret:
+                          secretName: docker-config
+                    container:
+                      readinessProbe:
+                        exec:
+                          command: [ sh, -c, "buildctl debug workers" ]
+                      image: moby/buildkit:v0.9.3-rootless
+                      volumeMounts:
+                        - name: docker-config
+                          mountPath: /.dockerconfigjson
+                      workingDir: /src/
+                      env:
+                        - name: BUILDKITD_FLAGS
+                          value: --oci-worker-no-process-sandbox
+                        - name: DOCKER_CONFIG
+                          value: /.dockerconfigjson
+                      command:
+                        - buildctl-daemonless.sh
+                      args:
+                        - build
+                        - --frontend
+                        - dockerfile.v0
+                        - --local
+                        - context=.
+                        - --local
+                        - dockerfile={{`{{inputs.parameters.dockerfile}}`}}
+                        - --output
+                        - type=image,name={{`{{inputs.parameters.image}}`}},push=true
+                      securityContext:
+                        privileged: true
+          parameters:
+            - src:
+                dependencyName: github-dep
+                dataKey: body
+              dest: spec.arguments.parameters.0.value
