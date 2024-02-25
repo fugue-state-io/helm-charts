@@ -82,7 +82,7 @@ spec:
                           arguments:
                             parameters:
                               - name: url
-                                value: "https://api.github.com/repos/fugue-state-io/{{`{{tasks.get-workflow-parameters.outputs.parameters.name}}`}}/statuses/{{`{{tasks.get-workflow-parameters.outputs.parameters.revision}}`}}"
+                                value: "https://api.github.com/repos/{{`{{tasks.get-workflow-parameters.outputs.parameters.full_name}}`}}/statuses/{{`{{tasks.get-workflow-parameters.outputs.parameters.revision}}`}}"
                               - name: context
                                 value: "building-images"
                               - name: state
@@ -116,7 +116,7 @@ spec:
                           arguments:
                             parameters:
                               - name: url
-                                value: "https://api.github.com/repos/fugue-state-io/{{`{{tasks.get-workflow-parameters.outputs.parameters.name}}`}}/statuses/{{`{{tasks.get-workflow-parameters.outputs.parameters.revision}}`}}"
+                                value: "https://api.github.com/repos/{{`{{tasks.get-workflow-parameters.outputs.parameters.full_name}}`}}/statuses/{{`{{tasks.get-workflow-parameters.outputs.parameters.revision}}`}}"
                               - name: context
                                 value: "building-images"
                               - name: state
@@ -131,7 +131,7 @@ spec:
                           arguments:
                             parameters:
                               - name: url
-                                value: "https://api.github.com/repos/fugue-state-io/{{`{{tasks.get-workflow-parameters.outputs.parameters.name}}`}}/statuses/{{`{{tasks.get-workflow-parameters.outputs.parameters.revision}}`}}"
+                                value: "https://api.github.com/repos/{{`{{tasks.get-workflow-parameters.outputs.parameters.full_name}}`}}/statuses/{{`{{tasks.get-workflow-parameters.outputs.parameters.revision}}`}}"
                               - name: context
                                 value: "building-images"
                               - name: state
@@ -179,6 +179,7 @@ spec:
                       source: |
                         set -e
                         cat /body.json | jq -r '.["repository"] | .["clone_url"]' > /repo.txt
+                        cat /body.json | jq -r '.["repository"] | .["full_name"]' > /full_name.txt
                         cat /body.json | jq -r '.["X-GitHub-Event"]' > /event.txt
                         cat /body.json | jq -r '.["after"] | select( . != null )' >> /revision.txt
                         cat /body.json | jq -r '.["check_suite"] | .["after"] | select( . != null )' >> /revision.txt
@@ -189,6 +190,9 @@ spec:
                         - name: repo
                           valueFrom:
                             path: /repo.txt
+                        - name: full_name
+                          valueFrom:
+                            path: /full_name.txt
                         - name: event
                           valueFrom:
                             path: /event.txt
