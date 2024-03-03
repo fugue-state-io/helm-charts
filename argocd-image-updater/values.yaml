@@ -12,7 +12,8 @@ image:
 updateStrategy:
   type: Recreate
 # -- ImagePullSecrets for the image updater deployment
-imagePullSecrets: []
+imagePullSecrets:
+- name: "fugue-state-registry"
 # -- Global name (argocd-image-updater.name in _helpers.tpl) override
 nameOverride: ""
 # -- Global fullname (argocd-image-updater.fullname in _helpers.tpl) override
