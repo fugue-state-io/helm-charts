@@ -6,7 +6,7 @@ metadata:
     argocd-image-updater.argoproj.io/zudell-io.helm.image-name: image.repository
     argocd-image-updater.argoproj.io/zudell-io.helm.image-tag: image.tag
     argocd-image-updater.argoproj.io/zudell-io.update-strategy: latest
-    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/fugue-state-repo
     argocd-image-updater.argoproj.io/zudell-io.force-update: "true"
   name: zudell-io
   namespace: argocd
