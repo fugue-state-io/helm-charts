@@ -16,6 +16,8 @@ spec:
     server: "https://kubernetes.default.svc"
   project: fugue-state
   source:
+    helm:
+      passCredentials: false
     path: fugue-state-ui
     repoURL: "https://github.com/fugue-state-io/helm-charts"
     targetRevision: develop

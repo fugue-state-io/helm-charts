@@ -16,6 +16,8 @@ spec:
     server: "https://kubernetes.default.svc"
   project: zudell-io
   source:
+    helm:
+      passCredentials: false
     path: zudell-io
     repoURL: "https://github.com/fugue-state-io/helm-charts"
     targetRevision: develop
