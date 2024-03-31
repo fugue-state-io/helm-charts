@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: go-pong-sevrver
+  name: go-pong-server
   namespace: argocd
 spec:
   destination:
