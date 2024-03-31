@@ -4,10 +4,10 @@
 replicaCount: 1
 
 image:
-  repository: registry.digitalocean.com/fugue-state-registry/fugue-state-ui
+  repository: registry.digitalocean.com/fugue-state-registry/react-pong-client
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "c40a742e"
+  tag: "29307a91"
 
 imagePullSecrets:
 - name: "fugue-state-registry"
@@ -38,7 +38,7 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 3000
+  port: 3001
 
 ingress:
   enabled: true
@@ -49,16 +49,16 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: fugue-state.io
+    - host: pong-roulette.com
       paths:
         - path: /
           pathType: ImplementationSpecific
   tls: 
-   - secretName: fugue-state-ui-tls
+   - secretName: pong-roulette-com-tls
      hosts:
-       - fugue-state.io
+       - pong-roulette.com
 
-resources: 
+resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -66,9 +66,9 @@ resources:
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
-  requests:
-    cpu: 1000m
-    memory: 2048Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
 
 autoscaling:
   enabled: false
