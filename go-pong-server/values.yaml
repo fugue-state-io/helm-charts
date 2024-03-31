@@ -50,6 +50,7 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   hosts:
     - host: ws.pong-roulette.com
+      paths:
         - path: /
           pathType: ImplementationSpecific
   tls: 
