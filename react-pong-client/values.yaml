@@ -7,7 +7,7 @@ image:
   repository: registry.digitalocean.com/fugue-state-registry/react-pong-client
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "dce68057"
+  tag: "29307a91"
 
 imagePullSecrets:
 - name: "fugue-state-registry"
