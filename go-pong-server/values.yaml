@@ -54,7 +54,7 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls: 
-   - secretName: pong-roulette-com-tls
+   - secretName: ws-pong-roulette-com-tls
      hosts:
        - ws.pong-roulette.com
 
