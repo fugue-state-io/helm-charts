@@ -7,7 +7,7 @@ image:
   repository: registry.digitalocean.com/fugue-state-registry/go-pong-server
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "6fad9b7b"
+  tag: "bd1b12c4"
 
 imagePullSecrets:
 - name: "fugue-state-registry"
