@@ -45,10 +45,12 @@ spec:
             httpGet:
               path: /healthcheck/
               port: http
+              scheme: HTTPS
           readinessProbe:
             httpGet:
               path: /readiness/
               port: http
+              scheme: HTTPS
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           envFrom:
