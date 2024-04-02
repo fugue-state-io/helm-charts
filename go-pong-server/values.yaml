@@ -50,7 +50,7 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
     nginx.ingress.kubernetes.io/server-snippets: |
-     location / {
+     location /upgrade/ {
        proxysetheader Upgrade $httpupgrade;
        proxyhttpversion 1.1;
        proxysetheader X-Forwarded-Host $httphost;
