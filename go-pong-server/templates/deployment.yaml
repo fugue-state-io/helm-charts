@@ -27,6 +27,10 @@ spec:
       serviceAccountName: {{ include "fugue-state-ui.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+        - name: ws-pong-roulette-com-tls
+          secret:
+            secretName: ws-pong-roulette-com-tls
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -50,6 +54,10 @@ spec:
           envFrom:
           - secretRef:
               name: go-pong-server-secrets
+          volumeMounts:
+          - name: ws-pong-roulette-com-tls
+            mountPath: "/etc/secrets"
+            readOnly: true
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
