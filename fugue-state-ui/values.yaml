@@ -59,6 +59,9 @@ ingress:
        - fugue-state.io
 
 resources: 
+  limits:
+    cpu: 1000m
+    memory: 4096Mi
   requests:
     cpu: 1000m
     memory: 4096Mi
