@@ -7,7 +7,7 @@ image:
   repository: registry.digitalocean.com/fugue-state-registry/fugue-state-ui
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "73c61a03"
+  tag: "ea163e10"
 
 imagePullSecrets:
 - name: "fugue-state-registry"
@@ -61,10 +61,10 @@ ingress:
 resources: 
   limits:
     cpu: 1000m
-    memory: 10Gi
+    memory: 12Gi
   requests:
     cpu: 1000m
-    memory: 10Gi
+    memory: 12Gi
 
 autoscaling:
   enabled: false
