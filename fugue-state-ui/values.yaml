@@ -58,13 +58,13 @@ ingress:
      hosts:
        - fugue-state.io
 
-resources: {}
-  # limits:
-  #   cpu: 1000m
-  #   memory: 12Gi
-  # requests:
-  #   cpu: 1000m
-  #   memory: 12Gi
+resources:
+  limits:
+    cpu: 1000m
+    memory: 12Gi
+  requests:
+    cpu: 1000m
+    memory: 12Gi
 
 autoscaling:
   enabled: false
