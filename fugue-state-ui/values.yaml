@@ -54,9 +54,9 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls: 
-   - secretName: fugue-state-ui-tls
-     hosts:
-       - fugue-state.io
+  - secretName: fugue-state-ui-tls
+    hosts:
+      - fugue-state.io
 
 resources:
   limits:
