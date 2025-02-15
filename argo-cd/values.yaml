@@ -2083,7 +2083,7 @@ server:
   ## Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/tls/#tls-certificates-used-by-argocd-server
   certificate:
     # -- Deploy a Certificate resource (requires cert-manager)
-    enabled: false
+    enabled: true
     # -- Certificate primary domain (commonName)
     # @default -- `""` (defaults to global.domain)
     domain: ""
@@ -3155,8 +3155,8 @@ applicationSet:
       # nginx.ingress.kubernetes.io/ssl-protocols: "TLSv1.2 TLSv1.3"
       # nginx.ingress.kubernetes.io/ssl-prefer-server-ciphers: "true"
       # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+      # nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 
 
     # -- Defines which ingress ApplicationSet controller will implement the resource
