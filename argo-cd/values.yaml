@@ -1246,7 +1246,7 @@ server:
     # -- The name of the Secret that will be automatically created and managed by this Certificate resource
     secretName: argocd-server-tls
     # -- Certificate primary domain (commonName)
-    domain: argocd.example.com
+    domain: argocd.fugue-state.io
     # -- Certificate Subject Alternate Names (SANs)
     additionalHosts: []
     # -- The requested 'duration' (i.e. lifetime) of the certificate.
@@ -1589,13 +1589,13 @@ repoServer:
   podLabels: {}
 
   # -- Resource limits and requests for the repo server pods
-  resources: {}
-  #  limits:
-  #    cpu: 50m
-  #    memory: 128Mi
-  #  requests:
-  #    cpu: 10m
-  #    memory: 64Mi
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
 
   # Repo server container ports
   containerPorts:
@@ -2096,7 +2096,7 @@ applicationSet:
     # -- The name of the Secret that will be automatically created and managed by this Certificate resource
     secretName: argocd-application-controller-tls
     # -- Certificate primary domain (commonName)
-    domain: argocd.example.com
+    domain: argocd.fugue-state.io
     # -- Certificate Subject Alternate Names (SANs)
     additionalHosts: []
     # -- The requested 'duration' (i.e. lifetime) of the certificate.
