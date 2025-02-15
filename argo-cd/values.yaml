@@ -2103,7 +2103,7 @@ server:
       # -- Certificate issuer group. Set if using an external issuer. Eg. `cert-manager.io`
       group: ""
       # -- Certificate issuer kind. Either `Issuer` or `ClusterIssuer`
-      kind: ClusterIssuer"
+      kind: "ClusterIssuer"
       # -- Certificate issuer name. Eg. `letsencrypt`
       name: "letsencrypt-prod"
     # Private key of the certificate
