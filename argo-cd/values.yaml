@@ -1582,7 +1582,7 @@ redis:
       namespace: "" # "monitoring"
       # -- Prometheus ServiceMonitor labels
       additionalLabels: {}
-      # -- Prometheus ServiceMonitor annotations
+      # -- Prometheus ServiceMonitor
       annotations: {}
 
 ## Redis-HA subchart replaces custom redis deployment when `redis-ha.enabled=true`
@@ -2128,7 +2128,7 @@ server:
   ## Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/tls/#tls-certificates-used-by-argocd-server
   certificateSecret:
     # -- Create argocd-server-tls secret
-    enabled: true
+    enabled: false
     # -- Annotations to be added to argocd-server-tls secret
     annotations: {}
     # -- Labels to be added to argocd-server-tls secret
@@ -2254,6 +2254,7 @@ server:
       # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
       nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
       nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 
     # -- Defines which ingress controller will implement the resource
     ingressClassName: "nginx"
