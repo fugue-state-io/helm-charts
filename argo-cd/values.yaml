@@ -360,16 +360,8 @@ configs:
     #   g, your-github-org:your-team, role:org-admin
     policy.default: role:readonly
     policy.csv: |
-      p, role:org-admin, applications, *, */*, allow
-      p, role:org-admin, clusters, get, *, allow
-      p, role:org-admin, repositories, get, *, allow
-      p, role:org-admin, repositories, create, *, allow
-      p, role:org-admin, repositories, update, *, allow
-      p, role:org-admin, repositories, delete, *, allow
-      p, role:org-admin, logs, get, *, allow
-      p, role:org-admin, exec, create, */*, allow
+      g, fugue-state-io:admin, role:admin
 
-      g, fugue-state-io:admin, role:org-admin
 
     # -- OIDC scopes to examine during rbac enforcement (in addition to `sub` scope).
     # The scope value can be a string, or a list of strings.
