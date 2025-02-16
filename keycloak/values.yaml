@@ -966,7 +966,7 @@ keycloakConfigCli:
     seconds: 600
 
 postgresql:
-  enabled: false
+  enabled: true
   auth:
     postgresPassword: ""
     username: bn_keycloak
@@ -990,7 +990,7 @@ postgresql:
 ## @param externalDatabase.annotations Additional custom annotations for external database secret object
 ##
 externalDatabase:
-  host: private-fugue-state-postgres-cluster-do-user-1934999-0.b.db.ondigitalocean.com
+  host: ""
   port: 25060
   user: keycloak-user
   database: keycloak
