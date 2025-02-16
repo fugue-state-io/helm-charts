@@ -952,7 +952,7 @@ keycloakConfigCli:
   ##     clients: []
   ##
   configuration: 
-    realm1.json |
+    realm1.json: |
       {
         "id": "04621a73-f1d1-456e-9f03-d5b2a689b116",
         "realm": "fugue-state-io",
