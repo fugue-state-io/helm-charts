@@ -645,7 +645,21 @@ nodeAgent:
 #       - persistentVolumeClaims
 #       excludedClusterScopedResources:
 #       - persistentVolumes
-schedules: {}
+schedules:
+  backup:
+    disabled: false
+    labels:
+      app: velero
+    annotations:
+      app: velero
+    schedule: "0 0 * * *"
+    useOwnerReferencesInBackup: false
+    paused: false
+    template:
+      ttl: "720h"
+      storageLocation: default
+      includedNamespaces:
+      - "*"
 
 # Velero ConfigMaps.
 # Eg:
