@@ -660,6 +660,8 @@ schedules:
       storageLocation: default
       includedNamespaces:
       - "*"
+      includedResources:
+      - "*"
 
 # Velero ConfigMaps.
 # Eg:
