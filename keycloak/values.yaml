@@ -3181,7 +3181,7 @@ postgresql:
     username: bn_keycloak
     password: password
     database: bitnami_keycloak
-    existingSecret: "keycloak-postgresql"
+    existingSecret: ""
     secretKeys:
       userPasswordKey: password
   architecture: standalone
