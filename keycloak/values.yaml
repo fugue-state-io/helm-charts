@@ -516,7 +516,7 @@ extraVolumes:
 ##
 extraVolumeMounts:
   - name: theme-volume
-    mountPath: /opt/bitnami/keycloak/themes/
+    mountPath: /opt/bitnami/keycloak/providers/
 ## @param initContainers Add additional init containers to the Keycloak pods
 ## Example:
 ## initContainers:
