@@ -532,7 +532,7 @@ initContainers:
     image: curlimages/curl:latest
     command: ["sh", "-c"]
     args:
-      - curl -L https://github.com/fugue-state-io/keycloakify-tailwind-shadcn/releases/download/v0.0.3/keycloak-theme-for-kc-22-to-25.jar -o /theme/custom-theme.jar
+      - curl -L https://github.com/fugue-state-io/keycloakify-tailwind-shadcn/releases/download/v0.0.4/keycloak-theme-for-kc-all-other-versions.jar -o /theme/fugue-state-io-theme.jar
     volumeMounts:
       - name: theme-volume
         mountPath: /theme
