@@ -509,10 +509,14 @@ updateStrategy:
 minReadySeconds: 0
 ## @param extraVolumes Optionally specify extra list of additional volumes for Keycloak pods
 ##
-extraVolumes: []
+extraVolumes:
+  - name: theme-volume
+    emptyDir: {}
 ## @param extraVolumeMounts Optionally specify extra list of additional volumeMounts for Keycloak container(s)
 ##
-extraVolumeMounts: []
+extraVolumeMounts:
+  - name: theme-volume
+    mountPath: /opt/bitnami/keycloak/themes/
 ## @param initContainers Add additional init containers to the Keycloak pods
 ## Example:
 ## initContainers:
@@ -523,7 +527,16 @@ extraVolumeMounts: []
 ##       - name: portname
 ##         containerPort: 1234
 ##
-initContainers: []
+initContainers:
+  - name: download-theme
+    image: curlimages/curl:latest
+    command: ["sh", "-c"]
+    args:
+      - curl -L https://github.com/fugue-state-io/keycloakify-tailwind-shadcn/releases/download/v0.0.3/keycloak-theme-for-kc-22-to-25.jar -o /theme/custom-theme.jar
+    volumeMounts:
+      - name: theme-volume
+        mountPath: /theme
+
 ## @param sidecars Add additional sidecar containers to the Keycloak pods
 ## Example:
 ## sidecars:
