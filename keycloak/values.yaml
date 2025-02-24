@@ -542,10 +542,11 @@ initContainers:
       - name: theme-volume
         mountPath: /theme
   - name: process-realm
-    image: bitnami/kubectl:latest
+    image: alpine:3.12
     command: ["sh", "-c"]
     args:
       - |
+        apk --no-cache add gettext
         echo $REALM_JSON > ./realm.json
         envsubst '\$APP_PASSWORD \$APP_EMAIL \$AUTH_SECRET' < ./realm.json > /processed/realm-substituted.json
     volumeMounts:
