@@ -546,10 +546,9 @@ initContainers:
     command: ["sh", "-c"]
     args:
       - |
-        envsubst '\$APP_PASSWORD \$APP_EMAIL \$AUTH_SECRET' < /realm/realm.json > /realm/realm-substituted.json
+        kubectl get secret realm-volume -o jsonpath="{.data.realm\.json}" | base64 --decode > ./realm.json
+        envsubst '\$APP_PASSWORD \$APP_EMAIL \$AUTH_SECRET' < ./realm.json > /processed/realm-substituted.json
     volumeMounts:
-      - name: realm-volume
-        mountPath: /realm/
       - name: processed-realm
         mountPath: /processed/
     env:
