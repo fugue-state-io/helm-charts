@@ -521,7 +521,7 @@ extraVolumeMounts:
   - name: theme-volume
     mountPath: /opt/bitnami/keycloak/providers/
   - name: processed-realm
-    mountPath: /opt/jboss/keycloak/standalone/configuration/
+    mountPath: /opt/bitnami/keycloak/data/import/
 ## @param initContainers Add additional init containers to the Keycloak pods
 ## Example:
 ## initContainers:
@@ -1301,7 +1301,9 @@ keycloakConfigCli:
   ##   - name: FOO
   ##     value: "bar"
   ##
-  extraEnvVars: []
+  extraEnvVars: 
+  - name: KEYCLOAK_EXTRA_ARGS
+    value: "--import-realm"
   ## @param keycloakConfigCli.extraEnvVarsCM ConfigMap with extra environment variables
   ##
   extraEnvVarsCM: ""
