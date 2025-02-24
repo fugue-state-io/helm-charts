@@ -556,8 +556,8 @@ initContainers:
       - name: AUTH_SECRET
         valueFrom:
           secretKeyRef:
-          name: realm-secret
-          key: AUTH_SECRET
+            name: realm-secret
+            key: AUTH_SECRET
       - name: APP_PASSWORD
         valueFrom:
           secretKeyRef:
