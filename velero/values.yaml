@@ -382,7 +382,7 @@ configuration:
 
     credential:
       # name of the secret used by this volumeSnapshotLocation.
-      name: valero-credentials
+      name: velero-credentials
       # name of key that contains the secret data to be used.
       key: snapshot-credentials
     # Additional provider-specific configuration. See link above
