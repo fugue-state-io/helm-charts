@@ -514,9 +514,6 @@ extraVolumes:
     emptyDir: {}
   - name: processed-realm
     emptyDir: {}
-  - name: realm-volume
-    secret:
-      secretName: realm-secret
 
 ## @param extraVolumeMounts Optionally specify extra list of additional volumeMounts for Keycloak container(s)
 ##
@@ -549,13 +546,17 @@ initContainers:
     command: ["sh", "-c"]
     args:
       - |
-        envsubst '\$APP_PASSWORD \$APP_EMAIL \$AUTH_SECRET' < /realm/realm.json > /processed/realm-substituted.json
+        echo $REALM_JSON > ./realm.json
+        envsubst '\$APP_PASSWORD \$APP_EMAIL \$AUTH_SECRET' < ./realm.json > /processed/realm-substituted.json
     volumeMounts:
-      - name: realm-volume
-        mountPath: /realm
       - name: processed-realm
         mountPath: /processed/
     env:
+      - name: REALM_JSON
+        valueFrom:
+          secretKeyRef:
+            name: realm-volume
+            key: realm.json
       - name: AUTH_SECRET
         valueFrom:
           secretKeyRef:
