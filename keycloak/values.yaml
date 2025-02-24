@@ -556,33 +556,6 @@ initContainers:
     volumeMounts:
       - name: theme-volume
         mountPath: /theme
-  - name: process-realm
-    image: bitnami/kubectl:latest
-    command: ["sh", "-c"]
-    args:
-      - |
-        envsubst '\$APP_PASSWORD \$APP_EMAIL \$AUTH_SECRET' < /realm/realm.json > /realm/realm-substituted.json
-    volumeMounts:
-      - name: realm-volume
-        mountPath: /realm/
-      - name: processed-realm
-        mountPath: /processed/
-    env:
-      - name: AUTH_SECRET
-        valueFrom:
-          secretKeyRef:
-          name: realm-secret
-          key: AUTH_SECRET
-      - name: APP_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: realm-secret
-            key: APP_PASSWORD
-      - name: APP_EMAIL
-        valueFrom:
-          secretKeyRef:
-            name: realm-secret
-            key: APP_EMAIL
 
 ## @param sidecars Add additional sidecar containers to the Keycloak pods
 ## Example:
