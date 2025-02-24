@@ -549,7 +549,7 @@ initContainers:
     command: ["sh", "-c"]
     args:
       - |
-        envsubst '\$APP_PASSWORD \$APP_EMAIL \$AUTH_SECRET' < ./realm.json > /processed/realm-substituted.json
+        envsubst '\$APP_PASSWORD \$APP_EMAIL \$AUTH_SECRET' < /realm/realm.json > /processed/realm-substituted.json
     volumeMounts:
       - name: realm-volume
         mountPath: /realm
