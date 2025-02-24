@@ -514,6 +514,9 @@ extraVolumes:
     emptyDir: {}
   - name: processed-realm
     emptyDir: {}
+  - name: realm-volume
+    secret:
+      secretName: realm-secret
 
 ## @param extraVolumeMounts Optionally specify extra list of additional volumeMounts for Keycloak container(s)
 ##
