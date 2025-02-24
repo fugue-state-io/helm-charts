@@ -546,9 +546,10 @@ initContainers:
     command: ["sh", "-c"]
     args:
       - |
-        kubectl get secret realm-volume -o jsonpath="{.data.realm\.json}" | base64 --decode > ./realm.json
         envsubst '\$APP_PASSWORD \$APP_EMAIL \$AUTH_SECRET' < ./realm.json > /processed/realm-substituted.json
     volumeMounts:
+      - name: realm-volume
+        mountPath: /realm
       - name: processed-realm
         mountPath: /processed/
     env:
@@ -948,7 +949,7 @@ networkPolicy:
 serviceAccount:
   ## @param serviceAccount.create Enable the creation of a ServiceAccount for Keycloak pods
   ##
-  create: false
+  create: true
   ## @param serviceAccount.name Name of the created ServiceAccount
   ## If not set and create is true, a name is generated using the fullname template
   ##
