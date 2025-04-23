@@ -35,10 +35,7 @@ spec:
         - name: {{ .name }}
           image: "{{ .image.repository }}:{{ .image.tag }}"
           imagePullPolicy: {{ .image.pullPolicy }}
-          command: "sh /application/scripts/build.sh && cp -r /application/* /application-volume/"
           volumeMounts:
-            - name: application-volume
-              mountPath: /application-volume
             {{- toYaml .volumeMounts | nindent 12 }}
           resources:
             {{- toYaml .resources | nindent 12 }}
