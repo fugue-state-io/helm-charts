@@ -36,8 +36,8 @@ spec:
           image: "{{ .image.repository }}:{{ .image.tag }}"
           imagePullPolicy: {{ .image.pullPolicy }}
           command:
-            - sh
-            - -c
+            - "sh"
+            - "-c"
             - "/application/scripts/build.sh && cp -r /application/* /application-volume/"
           volumeMounts:
             - name: application-volume
