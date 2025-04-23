@@ -30,6 +30,16 @@ spec:
       serviceAccountName: {{ include "fugue-state-ui.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        {{- range .Values.initContainers }}
+        - name: {{ .name }}
+          image: "{{ .image.repository }}:{{ .image.tag }}"
+          imagePullPolicy: {{ .image.pullPolicy }}
+          volumeMounts:
+            {{- toYaml .volumeMounts | nindent 12 }}
+          resources:
+            {{- toYaml .resources | nindent 12 }}
+        {{- end }}
       volumes:
         - name: next-app-{{ .Release.Revision }}
           emptyDir: {}
