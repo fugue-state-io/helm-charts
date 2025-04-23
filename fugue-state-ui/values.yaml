@@ -7,7 +7,7 @@ image:
   repository: registry.digitalocean.com/fugue-state-registry/fugue-state-ui
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v0.0.46"
+  tag: "v0.1.0"
 
 imagePullSecrets:
 - name: "fugue-state-registry"
@@ -78,3 +78,23 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+predeploy:
+  enabled: true
+  image:
+    repository: registry.digitalocean.com/fugue-state-registry/fugue-state-ui-build
+    tag: "v0.1.0"
+    pullPolicy: IfNotPresent
+  volumeMounts:
+    - name: application-volume
+      mountPath: /application
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+
+volumes: []
+# Removed static volume definition to allow dynamic generation in the deployment template.
