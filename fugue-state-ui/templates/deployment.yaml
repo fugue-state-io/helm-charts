@@ -39,6 +39,9 @@ spec:
             {{- toYaml .volumeMounts | nindent 12 }}
           resources:
             {{- toYaml .resources | nindent 12 }}
+          envFrom:
+          - secretRef:
+              name: fugue-state-ui-secrets
         {{- end }}
       volumes:
         - name: next-app-{{ .Release.Revision }}
