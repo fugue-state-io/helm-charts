@@ -37,7 +37,6 @@ spec:
           imagePullPolicy: {{ .image.pullPolicy }}
           command:
             - "sh"
-            - "-c"
             - "/application/scripts/build.sh && cp -r /application/* /application-volume/"
           volumeMounts:
             - name: application-volume
