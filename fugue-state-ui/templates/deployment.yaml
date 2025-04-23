@@ -33,9 +33,6 @@ spec:
       initContainers:
         {{- range .Values.initContainers }}
         - name: {{ .name }}
-          volumeMounts:
-            - name: application-volume
-              mountPath: /application-volume
           image: "{{ .image.repository }}:{{ .image.tag }}"
           imagePullPolicy: {{ .image.pullPolicy }}
           volumeMounts:

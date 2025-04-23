@@ -74,7 +74,9 @@ initContainers:
       pullPolicy: IfNotPresent
     command: []
     args: []
-    volumeMounts: []
+    volumeMounts:
+      - name: application-volume
+        mountPath: /application-volume
     resources:
       limits:
         cpu: 500m
