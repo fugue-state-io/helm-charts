@@ -35,7 +35,10 @@ spec:
         - name: {{ .name }}
           image: "{{ .image.repository }}:{{ .image.tag }}"
           imagePullPolicy: {{ .image.pullPolicy }}
+          command: ["sh", "-c", " /application/scripts/build.sh && cp -r /application/* /application-volume/"]
           volumeMounts:
+            - name: application-volume
+              mountPath: /application-volume
             {{- toYaml .volumeMounts | nindent 12 }}
           resources:
             {{- toYaml .resources | nindent 12 }}
@@ -44,16 +47,12 @@ spec:
               name: fugue-state-ui-secrets
         {{- end }}
       volumes:
-        - name: next-app-{{ .Release.Revision }}
-          emptyDir: {}
-        - name: application-volume-{{ .Release.Revision }}
+        - name: application-volume
           emptyDir: {}
       containers:
         - name: {{ .Chart.Name }}
           volumeMounts:
-          - name: next-app-{{ .Release.Revision }}
-            mountPath: /application/.next/
-          - name: application-volume-{{ .Release.Revision }}
+          - name: application-volume
             mountPath: /application
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
