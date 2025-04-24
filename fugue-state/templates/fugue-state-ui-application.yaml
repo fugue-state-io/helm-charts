@@ -13,6 +13,7 @@ metadata:
     argocd-image-updater.argoproj.io/build.update-strategy: semver
     argocd-image-updater.argoproj.io/write-back-method: git
     argocd-image-updater.argoproj.io/ui.force-update: "true"
+    argocd-image-updater.argoproj.io/build.force-update: "true"
 spec:
   destination:
     namespace: ui
