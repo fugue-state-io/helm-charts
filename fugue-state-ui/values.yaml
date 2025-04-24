@@ -66,11 +66,10 @@ resources:
     cpu: 250m
     memory: 1Gi
 
-initContainer:
+initContainers:
   name: predeploy
   image:
     repository: registry.digitalocean.com/fugue-state-registry/fugue-state-ui-build
-    tag: "v0.1.6"
     pullPolicy: IfNotPresent
   command: []
   args: []
