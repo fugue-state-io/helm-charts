@@ -8,8 +8,8 @@ metadata:
     argocd-image-updater.argoproj.io/ui.helm.image-name: image.repository
     argocd-image-updater.argoproj.io/ui.helm.image-tag: image.tag
     argocd-image-updater.argoproj.io/ui.update-strategy: semver
-    argocd-image-updater.argoproj.io/build.helm.image-name: image.repository
-    argocd-image-updater.argoproj.io/build.helm.image-tag: image.tag
+    argocd-image-updater.argoproj.io/build.helm.image-name: initContainer.image.repository
+    argocd-image-updater.argoproj.io/build.helm.image-tag: initContainer.image.tag
     argocd-image-updater.argoproj.io/build.update-strategy: semver
     argocd-image-updater.argoproj.io/write-back-method: git
     argocd-image-updater.argoproj.io/ui.force-update: "true"
