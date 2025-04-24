@@ -32,7 +32,7 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
         - name: {{ .Values.initContainer.name }}
-          image: "{{ .Values.initContainer.image.repository }}:{{ .Values.initContainer.image.tag }}"
+          image: "{{ .Values.initContainer.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.initContainer.image.pullPolicy }}
           volumeMounts:
             {{- toYaml .Values.initContainer.volumeMounts | nindent 12 }}
