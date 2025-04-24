@@ -7,7 +7,7 @@ image:
   repository: registry.digitalocean.com/fugue-state-registry/fugue-state-ui
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v0.1.4"
+  tag: "v0.1.6"
 
 imagePullSecrets:
 - name: "fugue-state-registry"
@@ -70,7 +70,7 @@ initContainer:
   name: predeploy
   image:
     repository: registry.digitalocean.com/fugue-state-registry/fugue-state-ui-build
-    tag: "v0.1.4"
+    tag: "v0.1.6"
     pullPolicy: IfNotPresent
   command: []
   args: []
