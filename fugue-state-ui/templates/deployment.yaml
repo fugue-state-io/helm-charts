@@ -31,18 +31,16 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
-        {{- range .Values.initContainers }}
-        - name: {{ .name }}
-          image: "{{ .image.repository }}:{{ .Values.image.tag  }}"
-          imagePullPolicy: {{ .image.pullPolicy }}
+        - name: {{ .Values.initContainer.name }}
+          image: "{{ .Values.initContainer.image.repository }}:{{ .Values.initContainer.image.tag }}"
+          imagePullPolicy: {{ .Values.initContainer.image.pullPolicy }}
           volumeMounts:
-            {{- toYaml .volumeMounts | nindent 12 }}
+            {{- toYaml .Values.initContainer.volumeMounts | nindent 12 }}
           resources:
-            {{- toYaml .resources | nindent 12 }}
+            {{- toYaml .Values.initContainer.resources | nindent 12 }}
           envFrom:
           - secretRef:
               name: fugue-state-ui-secrets
-        {{- end }}
       volumes:
         - name: application-volume
           emptyDir: {}
