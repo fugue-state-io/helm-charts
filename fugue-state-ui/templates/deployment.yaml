@@ -30,13 +30,13 @@ spec:
       serviceAccountName: {{ include "fugue-state-ui.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      - name: {{ .Values.initContainers.name }}
-        image: "{{ .Values.initContainers.image.repository }}:{{ .Values.initContainers.image.tag }}"
-        imagePullPolicy: {{ .Values.initContainers.image.pullPolicy }}
+      - name: {{ .Values.initContainer.name }}
+        image: "{{ .Values.initContainer.image.repository }}:{{ .Values.initContainer.image.tag }}"
+        imagePullPolicy: {{ .Values.initContainer.image.pullPolicy }}
         volumeMounts:
-          {{- toYaml .Values.initContainers.volumeMounts | nindent 12 }}
+          {{- toYaml .Values.initContainer.volumeMounts | nindent 12 }}
         resources:
-          {{- toYaml .Values.initContainers.resources | nindent 12 }}
+          {{- toYaml .Values.initContainer.resources | nindent 12 }}
         envFrom:
         - secretRef:
             name: fugue-state-ui-secrets
