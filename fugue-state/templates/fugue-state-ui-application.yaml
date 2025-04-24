@@ -3,6 +3,17 @@ kind: Application
 metadata:
   name: fugue-state-ui
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: ui=registry.digitalocean.com/fugue-state-registry/fugue-state-ui, build=registry.digitalocean.com/fugue-state-registry/fugue-state-build
+    argocd-image-updater.argoproj.io/ui.helm.image-name: image.repository
+    argocd-image-updater.argoproj.io/ui.helm.image-tag: image.tag
+    argocd-image-updater.argoproj.io/ui.update-strategy: semver
+    argocd-image-updater.argoproj.io/build.helm.image-name: image.repository
+    argocd-image-updater.argoproj.io/build.helm.image-tag: image.tag
+    argocd-image-updater.argoproj.io/build.update-strategy: semver
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/ui.force-update: "true"
+    argocd-image-updater.argoproj.io/build.force-update: "true"
 spec:
   destination:
     namespace: ui
