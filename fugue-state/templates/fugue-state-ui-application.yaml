@@ -4,7 +4,7 @@ metadata:
   name: fugue-state-ui
   namespace: argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: ui=registry.digitalocean.com/fugue-state-registry/fugue-state-ui, build=registry.digitalocean.com/fugue-state-registry/fugue-state-build
+    argocd-image-updater.argoproj.io/image-list: ui=registry.digitalocean.com/fugue-state-registry/fugue-state-ui, build=registry.digitalocean.com/fugue-state-registry/fugue-state-ui-build
     argocd-image-updater.argoproj.io/ui.helm.image-name: image.repository
     argocd-image-updater.argoproj.io/ui.helm.image-tag: image.tag
     argocd-image-updater.argoproj.io/ui.update-strategy: semver
