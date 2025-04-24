@@ -66,23 +66,22 @@ resources:
     cpu: 250m
     memory: 1Gi
 
-initContainers:
-  - name: predeploy
-    image:
-      repository: registry.digitalocean.com/fugue-state-registry/fugue-state-ui-build
-      pullPolicy: IfNotPresent
-    command: []
-    args: []
-    volumeMounts:
-      - name: application-volume
-        mountPath: /application-volume
-    resources:
-      limits:
-        cpu: 500m
-        memory: 2Gi
-      requests:
-        cpu: 250m
-        memory: 1Gi
+initContainer:
+  name: predeploy
+  image:
+    repository: registry.digitalocean.com/fugue-state-registry/fugue-state-ui-build
+    tag: "v0.1.6"
+    pullPolicy: IfNotPresent
+  volumeMounts:
+    - name: application-volume
+      mountPath: /application-volume
+  resources:
+    limits:
+      cpu: 500m
+      memory: 2Gi
+    requests:
+      cpu: 250m
+      memory: 1Gi
 
 autoscaling:
   enabled: false
