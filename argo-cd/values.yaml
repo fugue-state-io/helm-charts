@@ -2128,7 +2128,7 @@ server:
   ## Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/tls/#tls-certificates-used-by-argocd-server
   certificateSecret:
     # -- Create argocd-server-tls secret
-    enabled: true
+    enabled: false
     # -- Annotations to be added to argocd-server-tls secret
     annotations: {}
     # -- Labels to be added to argocd-server-tls secret
