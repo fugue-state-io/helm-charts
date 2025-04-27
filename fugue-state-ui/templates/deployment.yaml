@@ -41,6 +41,11 @@ spec:
           envFrom:
           - secretRef:
               name: fugue-state-ui-secrets
+          env:
+          - name: NEXT_PUBLIC_VERSION
+            value: "{{ .Values.image.tag }}"
+          - name: NEXT_TELEMETRY_DISABLED
+            value: "{{ .Values.nextTelemetryDisabled}}"
       volumes:
         - name: application-volume
           emptyDir: {}
