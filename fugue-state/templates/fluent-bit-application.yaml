@@ -10,7 +10,7 @@ spec:
   project: fugue-state
   sources:
   - repoURL: 'https://fluent.github.io/helm-charts'
-    chart: cert-manager
+    chart: fugue-state
     targetRevision: 1.17.1
     helm:
       valueFiles:
