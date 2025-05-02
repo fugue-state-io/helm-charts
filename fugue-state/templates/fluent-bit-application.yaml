@@ -10,11 +10,11 @@ spec:
   project: fugue-state
   sources:
   - repoURL: 'https://fluent.github.io/helm-charts'
-    chart: fluentbit
+    chart: fluent-bit
     targetRevision: 1.17.1
     helm:
       valueFiles:
-      - $values/fluentbit/values.yaml
+      - $values/fluent-bit/values.yaml
   - repoURL: 'https://github.com/fugue-state-io/helm-charts'
     ref: values
     targetRevision: develop
