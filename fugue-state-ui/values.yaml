@@ -78,11 +78,11 @@ initContainer:
       mountPath: /application-volume
   resources:
     limits:
-      cpu: 500m
+      cpu: 1000m
       memory: 2Gi
     requests:
-      cpu: 250m
-      memory: 1Gi
+      cpu: 1000m
+      memory: 2Gi
 
 autoscaling:
   enabled: false
