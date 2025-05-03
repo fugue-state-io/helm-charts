@@ -1,0 +1,73 @@
+image:
+  repository: bitnami/fluentd
+  tag: 1.16.3-debian-11-r1
+  pullPolicy: IfNotPresent
+
+extraPlugins: "fluent-plugin-s3"
+
+env:
+  - name: AWS_ACCESS_KEY_ID
+    valueFrom:
+      secretKeyRef:
+        name: fluentd-s3-credentials
+        key: AWS_ACCESS_KEY_ID
+  - name: AWS_SECRET_ACCESS_KEY
+    valueFrom:
+      secretKeyRef:
+        name: fluentd-s3-credentials
+        key: AWS_SECRET_ACCESS_KEY
+
+command:
+  - /opt/bitnami/fluentd/bin/fluentd
+  - -c
+  - /opt/bitnami/fluentd/conf/fluentd.conf
+  - -p
+  - /opt/bitnami/fluentd/plugins
+  - --gemfile
+  - /opt/bitnami/fluentd/Gemfile
+
+livenessProbe:
+  enabled: false
+readinessProbe:
+  enabled: false
+
+persistence:
+  enabled: false
+
+volumeMounts:
+  - name: varlog
+    mountPath: /var/log
+
+volumes:
+  - name: varlog
+    hostPath:
+      path: /var/log
+
+configMap:
+  fluentd.conf: |
+    <source>
+      @type tail
+      path /var/log/containers/*.log
+      pos_file /opt/bitnami/fluentd/logs/buffered.pos
+      tag kube.*
+      format json
+    </source>
+
+    <match **>
+      @type s3
+
+      aws_key_id "#{ENV['AWS_ACCESS_KEY_ID']}"
+      aws_sec_key "#{ENV['AWS_SECRET_ACCESS_KEY']}"
+
+      s3_bucket fugue-state-backend
+      s3_region nyc3
+      s3_endpoint nyc3.digitaloceanspaces.com
+      s3_force_path_style true
+
+      path logs/
+      buffer_path /opt/bitnami/fluentd/logs/s3
+      time_slice_format %Y%m%d-%H
+      time_slice_wait 10m
+      compress gzip
+      utc
+    </match>

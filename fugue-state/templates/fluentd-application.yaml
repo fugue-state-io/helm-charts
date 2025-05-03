@@ -1,0 +1,25 @@
+
+kind: Application
+metadata:
+  name: fluentd
+  namespace: argocd
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: fluentd
+  project: default
+  sources:
+    - repoURL: https://charts.bitnami.com/bitnami
+      chart: fluentd
+      targetRevision: 5.1.7  # confirm latest if needed
+      helm:
+        valueFiles:
+          - $values/fluentd/values.yaml
+  - repoURL: 'https://github.com/fugue-state-io/helm-charts'
+    ref: values
+    targetRevision: develop
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      apiVersion: argoproj.io/v1alpha1
