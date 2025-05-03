@@ -1,4 +1,20 @@
 config:
+  outputs: |
+    [OUTPUT]
+        Name s3
+        Match *
+        bucket fugue-state-backend
+        region nyc3
+        endpoint https://nyc3.digitaloceanspaces.com
+        s3_force_path_style On
+        use_put_object On
+        total_file_size 5M
+        upload_timeout 10m
+        store_dir /buffers
+        s3_key_format /logs/$TAG/%Y/%m/%d/%H/%M/%S
+        tls On
+        compression gzip
+        retry_limit False
   service: |
     [SERVICE]
         flush        1
@@ -15,20 +31,6 @@ config:
         DB /var/log/flb_kube.db
         Mem_Buf_Limit 10MB
         Skip_Long_Lines On
-
-  outputs: |
-    [OUTPUT]
-        Name s3
-        Match *
-        bucket your-s3-bucket-name
-        region us-east-1
-        total_file_size 5M
-        upload_timeout 10m
-        store_dir /buffers
-        s3_key_format /logs/$TAG/%Y/%m/%d/%H/%M/%S
-        use_put_object On
-        compression gzip
-        tls On
 
   filters: ""   # <--- THIS removes default filters
   parsers: ""   # <--- Optional: if you're not using built-in ones
