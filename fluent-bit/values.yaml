@@ -1,59 +1,51 @@
-kind: DaemonSet
+config:
+  service: |
+    [SERVICE]
+        flush        1
+        daemon       off
+        log_level    info
+        parsers_file parsers.conf
 
-rbac:
-  create: true
+  inputs: |
+    [INPUT]
+        Name tail
+        Path /var/log/containers/*.log
+        Tag kube.*
+        Parser docker
+        DB /var/log/flb_kube.db
+        Mem_Buf_Limit 10MB
+        Skip_Long_Lines On
 
-service:
-  type: ClusterIP
-  port: 2020
+  outputs: |
+    [OUTPUT]
+        Name s3
+        Match *
+        bucket your-s3-bucket-name
+        region us-east-1
+        total_file_size 5M
+        upload_timeout 10m
+        store_dir /buffers
+        s3_key_format /logs/$TAG/%Y/%m/%d/%H/%M/%S
+        use_put_object On
+        compression gzip
+        tls On
 
-input:
-  enabled: true
-  name: tail
-  tag: kube.*
-  path: /var/log/containers/*.log
-  parser: docker
-  refresh_interval: 10
-  read_from_head: true
+extraVolumeMounts:
+  - name: buffers
+    mountPath: /buffers
 
-filters:
-  enabled: true
-  customParsers: |
-    [FILTER]
-        Name    kubernetes
-        Match   kube.*
-        Merge_Log On
-        Keep_Log Off
-        K8S-Logging.Parser On
-        K8S-Logging.Exclude On
+extraVolumes:
+  - name: buffers
+    emptyDir: {}
 
-output:
-  enabled: true
-  name: loki
-  match: "*"
-  host: loki.default.svc.cluster.local
-  port: 3100
-  tls: off
-
-volumes:
-  - name: varlog
-    hostPath:
-      path: /var/log
-  - name: varlibdockercontainers
-    hostPath:
-      path: /var/lib/docker/containers
-
-volumeMounts:
-  - name: varlog
-    mountPath: /var/log
-  - name: varlibdockercontainers
-    mountPath: /var/lib/docker/containers
-    readOnly: true
-
-resources:
-  limits:
-    memory: 200Mi
-    cpu: 200m
-  requests:
-    memory: 100Mi
-    cpu: 100m
+extraEnv:
+  - name: AWS_ACCESS_KEY_ID
+    valueFrom:
+      secretKeyRef:
+        name: fluent-bit-s3-credentials
+        key: AWS_ACCESS_KEY_ID
+  - name: AWS_SECRET_ACCESS_KEY
+    valueFrom:
+      secretKeyRef:
+        name: fluent-bit-s3-credentials
+        key: AWS_SECRET_ACCESS_KEY
