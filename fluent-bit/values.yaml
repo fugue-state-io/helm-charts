@@ -6,7 +6,7 @@ config:
         bucket fugue-state-backend
         region nyc3
         endpoint https://nyc3.digitaloceanspaces.com
-        s3_force_path_style On
+        force_path_style On
         use_put_object On
         total_file_size 5M
         upload_timeout 10m
