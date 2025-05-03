@@ -30,6 +30,9 @@ config:
         compression gzip
         tls On
 
+  filters: ""   # <--- THIS removes default filters
+  parsers: ""   # <--- Optional: if you're not using built-in ones
+
 extraVolumeMounts:
   - name: buffers
     mountPath: /buffers
