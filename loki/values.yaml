@@ -1,3 +1,5 @@
+deploymentMode: SingleBinary
+
 loki:
   auth_enabled: false
 
@@ -6,7 +8,7 @@ loki:
     s3:
       bucketnames: fugue-state-backend
       region: nyc3
-      endpoint: https://nyc3.digitaloceanspaces.com  # or your S3-compatible endpoint
+      endpoint: https://nyc3.digitaloceanspaces.com
       s3forcepathstyle: true
       insecure: false
 
@@ -34,17 +36,6 @@ loki:
   table_manager:
     retention_deletes_enabled: true
     retention_period: 168h
-
-singleBinary:
-  replicas: 1
-  enabled: true
-
-backend:
-  enabled: false
-read:
-  enabled: false
-write:
-  enabled: false
 
 extraEnvFrom:
   - secretRef:
