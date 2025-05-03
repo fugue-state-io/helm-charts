@@ -1,4 +1,4 @@
-
+apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: fluentd
@@ -7,7 +7,7 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: fluentd
-  project: default
+  project: fugue-state
   sources:
     - repoURL: https://charts.bitnami.com/bitnami
       chart: fluentd
@@ -22,4 +22,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-      apiVersion: argoproj.io/v1alpha1
