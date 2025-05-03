@@ -11,13 +11,13 @@ spec:
   sources:
     - repoURL: https://charts.bitnami.com/bitnami
       chart: fluentd
-      targetRevision: 5.1.7  # confirm latest if needed
+      targetRevision: 5.1.7
       helm:
         valueFiles:
           - $values/fluentd/values.yaml
-  - repoURL: 'https://github.com/fugue-state-io/helm-charts'
-    ref: values
-    targetRevision: develop
+    - repoURL: https://github.com/fugue-state-io/helm-charts
+      ref: values
+      targetRevision: develop
   syncPolicy:
     automated:
       prune: true
