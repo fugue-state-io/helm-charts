@@ -11,7 +11,7 @@ spec:
   sources:
     - repoURL: 'https://charts.bitnami.com/bitnami'
       chart: redis
-      targetRevision: 19.4.3 # Adjust to latest stable as needed
+      targetRevision: 20.13.4 # Adjust to latest stable as needed
       helm:
         valueFiles:
           - $values/redis/values.yaml
