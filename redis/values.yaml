@@ -137,7 +137,7 @@ image:
 
 ## @param architecture Redis&reg; architecture. Allowed values: `standalone` or `replication`
 ##
-architecture: standalone
+architecture: replication
 ## Redis&reg; Authentication parameters
 ## ref: https://github.com/bitnami/containers/tree/main/bitnami/redis#setting-the-server-password-on-first-run
 ##
@@ -682,7 +682,7 @@ replica:
   kind: StatefulSet
   ## @param replica.replicaCount Number of Redis&reg; replicas to deploy
   ##
-  replicaCount: 0
+  replicaCount: 2
   ## @param replica.revisionHistoryLimit The number of old history to retain to allow rollback
   ## NOTE: Explicitly setting this field to 0, will result in cleaning up all the history, breaking ability to rollback
   revisionHistoryLimit: 10
@@ -1167,12 +1167,12 @@ replica:
 ## @section Redis&reg; Sentinel configuration parameters
 ##
 
+
 sentinel:
-  ## @param sentinel.enabled Use Redis&reg; Sentinel on Redis&reg; pods.
-  ## IMPORTANT: this will disable the master and replicas services and
-  ## create a single Redis&reg; service exposing both the Redis and Sentinel ports
-  ##
-  enabled: false
+  enabled: true
+  masterSet: mymaster
+  quorum: 2
+  replicaCount: 3
   ## Bitnami Redis&reg; Sentinel image version
   ## ref: https://hub.docker.com/r/bitnami/redis-sentinel/tags/
   ## @param sentinel.image.registry [default: REGISTRY_NAME] Redis&reg; Sentinel image registry
@@ -1206,12 +1206,6 @@ sentinel:
   ## @param sentinel.annotations Additional custom annotations for Redis&reg; Sentinel resource
   ##
   annotations: {}
-  ## @param sentinel.masterSet Master set name
-  ##
-  masterSet: mymaster
-  ## @param sentinel.quorum Sentinel Quorum
-  ##
-  quorum: 2
   ## @param sentinel.getMasterTimeout Amount of time to allow before get_sentinel_master_info() times out.
   ##
   getMasterTimeout: 90
