@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: redis
+  namespace: argocd
+spec:
+  destination:
+    namespace: redis
+    server: "https://kubernetes.default.svc"
+  project: fugue-state
+  sources:
+    - repoURL: 'https://charts.bitnami.com/bitnami'
+      chart: redis
+      targetRevision: 19.4.3 # Adjust to latest stable as needed
+      helm:
+        valueFiles:
+          - $values/redis/values.yaml
+    - repoURL: 'https://github.com/fugue-state-io/helm-charts'
+      ref: values
+      targetRevision: develop
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
