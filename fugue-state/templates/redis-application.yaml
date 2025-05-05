@@ -8,16 +8,10 @@ spec:
     namespace: redis
     server: "https://kubernetes.default.svc"
   project: fugue-state
-  sources:
-    - repoURL: 'https://charts.bitnami.com/bitnami'
-      chart: redis
-      targetRevision: 20.13.4 # Adjust to latest stable as needed
-      helm:
-        valueFiles:
-          - $values/redis/values.yaml
-    - repoURL: 'https://github.com/fugue-state-io/helm-charts'
-      ref: values
-      targetRevision: develop
+  source:
+    path: redis
+    repoURL: "https://github.com/fugue-state-io/helm-charts"
+    targetRevision: develop
   syncPolicy:
     automated:
       prune: true
