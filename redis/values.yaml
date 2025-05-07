@@ -73,7 +73,32 @@ secretAnnotations: {}
 clusterDomain: cluster.local
 ## @param extraDeploy Array of extra objects to deploy with the release
 ##
-extraDeploy: []
+# Other existing configurations...
+
+extraDeploy:
+  - apiVersion: rbac.authorization.k8s.io/v1
+    kind: Role
+    metadata:
+      name: redis-service-reader
+      namespace: redis
+    rules:
+      - apiGroups: [""]
+        resources: ["services"]
+        verbs: ["get", "list", "watch"]
+
+  - apiVersion: rbac.authorization.k8s.io/v1
+    kind: RoleBinding
+    metadata:
+      name: redis-service-access
+      namespace: redis
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: Role
+      name: redis-service-reader
+    subjects:
+      - kind: ServiceAccount
+        name: fugue-state-ui
+        namespace: ui
 ## @param useHostnames Use hostnames internally when announcing replication. If false, the hostname will be resolved to an IP address
 ##
 useHostnames: true
