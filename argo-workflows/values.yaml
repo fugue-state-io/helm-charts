@@ -76,7 +76,6 @@ controller:
     # enable archiving of old workflows
     archive: false
     postgresql:
-      schema: argo
       host: private-fugue-state-postgres-cluster-do-user-1934999-0.i.db.ondigitalocean.com
       port: 25060
       database: postgres
