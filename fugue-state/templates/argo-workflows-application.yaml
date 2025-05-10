@@ -9,6 +9,12 @@ spec:
     server: "https://kubernetes.default.svc"
   project: fugue-state
   sources:
+  - repoURL: 'https://argoproj.github.io/argo-helm'
+    chart: argo-workflows
+    targetRevision:  0.45.14
+    helm:
+      valueFiles:
+      - $values/argo-workflows/values.yaml
   - repoURL: 'https://github.com/fugue-state-io/helm-charts'
     chart: workflows
     targetRevision: develop
