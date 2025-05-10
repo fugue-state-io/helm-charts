@@ -157,12 +157,9 @@ controller:
     timeoutSeconds: 30
 
   # -- Extra environment variables to provide to the controller container
-  extraEnv:
-    - name: ARGO_POSTGRES_HOST
-      valueFrom:
-        secretKeyRef:
-          name: argo-postgres-config
-          key: host
+  extraEnv: []
+    # - name: FOO
+    #   value: "bar"
 
   # -- Extra arguments to be added to the controller
   extraArgs: []
