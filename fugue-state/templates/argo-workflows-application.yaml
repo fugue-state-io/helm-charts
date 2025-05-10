@@ -16,8 +16,6 @@ spec:
       valuesFrom:
         - secretRef:
             name: argo-postgres-host
-      valueFiles:
-      - $values/argo-workflows/values.yaml
   - repoURL: 'https://github.com/fugue-state-io/helm-charts'
     ref: values
     targetRevision: develop
