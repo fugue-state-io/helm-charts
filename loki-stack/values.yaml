@@ -6,19 +6,33 @@ loki:
     size: 10Gi
     accessModes:
       - ReadWriteOnce
+  limits_config:
+    ingestion_rate_mb: 10
+    ingestion_burst_size_mb: 20
+    max_age: 336h # allows logs up to 14 days old
 
 promtail:
   enabled: true
   config:
     clients:
       - url: http://loki-stack.loki-stack.svc.cluster.local:3100/loki/api/v1/push
+    scrape_configs:
+    - job_name: kubernetes-pods
+      kubernetes_sd_configs:
+        - role: pod
+      relabel_configs:
+        - source_labels: [__meta_kubernetes_pod_label_app]
+          action: keep
+          regex: fugue-state-ui
+        - source_labels: [__meta_kubernetes_pod_container_name]
+          target_label: container
+        - source_labels: [__meta_kubernetes_pod_name]
+          target_label: pod
+        - source_labels: [__meta_kubernetes_namespace]
+          target_label: namespace
 
 grafana:
   enabled: true
   adminPassword: "admin"
   service:
     type: ClusterIP
-  limits_config:
-    ingestion_rate_mb: 10
-    ingestion_burst_size_mb: 20
-    max_age: 336h # allows logs up to 14 days old
