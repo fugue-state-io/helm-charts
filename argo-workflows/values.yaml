@@ -651,7 +651,7 @@ server:
   # -- Additional volumes to the server pod.
   volumes: []
 
-  ## ingress:
+  ingress:
     enabled: true
     https: true
     annotations:
