@@ -68,7 +68,6 @@ controller:
       drop:
         - ALL
   persistence:
-    enabled: false  # optional depending on chart version
     archive: false
     nodeStatusOffLoad: false
     # # connectionPool:
