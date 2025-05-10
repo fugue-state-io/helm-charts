@@ -1,14 +1,6 @@
 loki:
   enabled: true
 
-  # storage:
-  #   type: s3
-  #   s3:
-  #     bucketnames: fugue-state-backend
-  #     region: nyc3
-  #     endpoint: https://nyc3.digitaloceanspaces.com
-  #     s3forcepathstyle: true
-  #     insecure: false
   persistence:
     enabled: true
     size: 10Gi
@@ -19,7 +11,7 @@ promtail:
   enabled: true
   config:
     clients:
-      - url: http://loki:3100/loki/api/v1/push
+      - url: http://loki.loki-stack.svc.cluster.local:3100/loki/api/v1/push
 
 grafana:
   enabled: true
