@@ -76,7 +76,6 @@ controller:
     # enable archiving of old workflows
     archive: true
     postgresql:
-      host: None
       port: 25060
       database: postgres
       tableName: argo_workflows
