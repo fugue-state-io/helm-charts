@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-workflows
+  namespace: argocd
+spec:
+  destination:
+    namespace: argo-workflows
+    server: "https://kubernetes.default.svc"
+  project: fugue-state
+  sources:
+  - repoURL: 'https://github.com/fugue-state-io/helm-charts'
+    chart: workflows
+    targetRevision: develop
+    helm:
+      valueFiles:
+      - $values/argo-workflows/values.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

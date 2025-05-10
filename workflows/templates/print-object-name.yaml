@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: print-object-name-
+  namespace: argo-workflows
+spec:
+  entrypoint: print-object-name
+  templates:
+  - name: print-object-name
+    script:
+      image: python:3.9
+      command: ["python"]
+      source: |
+        import os
+        object_name = os.getenv("OBJECT_NAME", "unknown")
+        print(f"New object name: {object_name}")
+  podGC:
+    strategy: OnWorkflowCompletion

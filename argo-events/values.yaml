@@ -1,0 +1,49 @@
+# Global configuration for argo-events
+global:
+  image:
+    tag: v1.7.0
+
+# EventBus configuration
+eventBus:
+  default:
+    nats:
+      native:
+        replicas: 3
+
+# Sensor configuration
+sensor:
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 250m
+      memory: 128Mi
+  buckets:
+    - name: fugue-state-io
+      eventSource:
+        s3:
+          bucket: fugue-state-io
+          region: us-east-1
+          eventTypes:
+            - s3:ObjectCreated:*
+          filter:
+            prefix: "events/"
+            suffix: ".json"
+          credentials:
+            accessKeySecret:
+              name: s3-access-secret
+              key: accessKey
+            secretKeySecret:
+              name: s3-access-secret
+              key: secretKey
+
+# EventSource configuration
+eventSource:
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 250m
+      memory: 128Mi

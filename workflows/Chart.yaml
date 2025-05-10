@@ -1,0 +1,7 @@
+
+apiVersion: v2
+name: workflows
+description: A Helm chart for Argo Workflows
+type: application
+version: 0.1.0
+appVersion: v3.4.4
