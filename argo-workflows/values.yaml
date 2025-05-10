@@ -74,7 +74,7 @@ controller:
     # # save the entire workflow into etcd and DB
     nodeStatusOffLoad: true
     # enable archiving of old workflows
-    archive: true
+    archive: false
     postgresql:
       host: private-fugue-state-postgres-cluster-do-user-1934999-0.b.db.ondigitalocean.com
       port: 25060
@@ -117,8 +117,7 @@ controller:
   name: workflow-controller
 
   workflowNamespaces:
-    - ci
-    - etl
+    - processing
 
   instanceID:
     enabled: false
