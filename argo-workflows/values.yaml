@@ -75,18 +75,9 @@ controller:
     nodeStatusOffLoad: true
     # enable archiving of old workflows
     archive: false
-    postgresql:
-      host: private-fugue-state-postgres-cluster-do-user-1934999-0.b.db.ondigitalocean.com
-      port: 25060
-      database: postgres
-      tableName: argo_workflows
-      # the database secrets must be in the same namespace of the controller
-      userNameSecret:
-        name: argo-postgres-config
-        key: username
-      passwordSecret:
-        name: argo-postgres-config
-        key: password
+    nodeStatusOffLoad: false
+    archive: false
+
 
   workflowDefaults: {}
   workflowWorkers: # 32
