@@ -18,3 +18,7 @@ grafana:
   adminPassword: "admin"
   service:
     type: ClusterIP
+  limits_config:
+    ingestion_rate_mb: 10
+    ingestion_burst_size_mb: 20
+    max_age: 336h # allows logs up to 14 days old
