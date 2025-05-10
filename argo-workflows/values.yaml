@@ -67,7 +67,10 @@ controller:
     capabilities:
       drop:
         - ALL
-  persistence: {}
+  persistence:
+    enabled: false  # optional depending on chart version
+    archive: false
+    nodeStatusOffLoad: false
     # # connectionPool:
     # #   maxIdleConns: 100
     # #   maxOpenConns: 0
