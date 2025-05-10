@@ -16,11 +16,8 @@ spec:
       valueFiles:
       - $values/argo-workflows/values.yaml
   - repoURL: 'https://github.com/fugue-state-io/helm-charts'
-    chart: workflows
+    ref: values
     targetRevision: develop
-    helm:
-      valueFiles:
-      - $values/argo-workflows/values.yaml
   syncPolicy:
     automated:
       prune: true
