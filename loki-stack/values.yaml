@@ -47,10 +47,6 @@ grafana:
         - secretName: grafana-tls
           hosts:
             - grafana.fugue-state.io
-  adminPassword: 
-    valueFrom:
-      secretKeyRef:
-        name: grafana-admin-secret
-        key: admin-password
+  #adminPassword: {}
   service:
     type: ClusterIP
