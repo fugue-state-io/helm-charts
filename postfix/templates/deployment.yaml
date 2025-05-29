@@ -21,6 +21,7 @@ spec:
         - name: postfix
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh", "/etc/postfix/entrypoint.sh"]
           env:
             - name: SMTP_SERVER
               valueFrom:
@@ -31,13 +32,23 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.smtp.secretName }}
-                  key: smtp-user
-            - name: SMTP_PASS
+                  key: smtp-username
+            - name: SMTP_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.smtp.secretName }}
                   key: smtp-password
           ports:
             - containerPort: 25
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: postfix-config
+              mountPath: /etc/postfix/main.cf.template
+              subPath: main.cf.template
+            - name: postfix-config
+              mountPath: /etc/postfix/entrypoint.sh
+              subPath: entrypoint.sh
+      volumes:
+        - name: postfix-config
+          configMap:
+            name: {{ include "postfix.fullname" . }}-config
+
