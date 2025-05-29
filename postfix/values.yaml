@@ -3,10 +3,10 @@ replicaCount: 1
 config:
   postfix:
     myhostname: fugue-state.io
-    
+
 image:
-  repository: boky/postfix
-  tag: latest
+  repository: registry.digitalocean.com/fugue-state-registry/fugue-state-ui
+  tag: v0.0.4
   pullPolicy: IfNotPresent
 
 service:

@@ -44,9 +44,6 @@ spec:
             - name: postfix-config
               mountPath: /etc/postfix/main.cf.template
               subPath: main.cf.template
-            - name: postfix-config
-              mountPath: /etc/postfix/entrypoint.sh
-              subPath: entrypoint.sh
       volumes:
         - name: postfix-config
           configMap:
