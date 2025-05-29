@@ -15,12 +15,6 @@ spec:
       helm:
         valueFiles:
           - $values/loki-stack/values.yaml
-      # valuesFrom:
-      #   - secretRef:
-      #       name: grafana-admin-password
-      # parameters:
-      #   - name: grafana.adminPassword
-      #     value: '{{ admin-password }}'
     - repoURL: 'https://github.com/fugue-state-io/helm-charts'
       ref: values
       targetRevision: develop
