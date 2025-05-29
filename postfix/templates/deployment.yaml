@@ -48,4 +48,3 @@ spec:
         - name: postfix-config
           configMap:
             name: {{ include "postfix.fullname" . }}-config
-

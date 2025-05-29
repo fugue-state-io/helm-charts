@@ -6,7 +6,7 @@ config:
 
 image:
   repository: registry.digitalocean.com/fugue-state-registry/postfix
-  tag: v0.0.6
+  tag: v0.0.7
   pullPolicy: IfNotPresent
 
 service:
@@ -28,3 +28,7 @@ smtp:
 nodeSelector: {}
 tolerations: []
 affinity: {}
+livenessProbe:
+  enabled: false
+readinessProbe:
+  enabled: false
