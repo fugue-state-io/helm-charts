@@ -1,5 +1,9 @@
 replicaCount: 1
 
+config:
+  postfix:
+    myhostname: fugue-state.io
+    
 image:
   repository: boky/postfix
   tag: latest
