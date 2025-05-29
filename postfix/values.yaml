@@ -1,0 +1,26 @@
+replicaCount: 1
+
+image:
+  repository: boky/postfix
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 25
+
+resources:
+  limits:
+    cpu: 50m
+    memory: 100Mi
+  requests:
+    cpu: 10m
+    memory: 50Mi
+
+smtp:
+  # These are injected from the Kubernetes Secret (postfix-secrets)
+  secretName: postfix-secrets
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
