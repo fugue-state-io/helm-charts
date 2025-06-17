@@ -14,6 +14,16 @@ spec:
       labels:
         app: {{ include "ssh-jumpbox.name" . }}
     spec:
+      initContainers:
+        - name: copy-ssh-keys
+          image: busybox
+          command: ["sh", "-c", "cp /mnt/secrets/id_rsa.pub /mnt/shared/id_rsa.pub"]
+          volumeMounts:
+            - name: ssh-keys
+              mountPath: /mnt/secrets
+              readOnly: true
+            - name: ssh-config
+              mountPath: /mnt/shared
       containers:
         - name: jumpbox
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -27,11 +37,11 @@ spec:
             - name: PGID
               value: "1000"
           volumeMounts:
-            - name: ssh-keys
-              mountPath: /config/ssh/id_rsa.pub
-              subPath: id_rsa.pub
-              readOnly: true
+            - name: ssh-config
+              mountPath: /config/ssh
       volumes:
         - name: ssh-keys
           secret:
             secretName: {{ .Values.ssh.secretName }}
+        - name: ssh-config
+          emptyDir: {}
