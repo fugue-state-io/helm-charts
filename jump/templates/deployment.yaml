@@ -17,7 +17,7 @@ spec:
       initContainers:
         - name: copy-ssh-keys
           image: busybox
-          command: ["sh", "-c", "mkdir -p /mnt/shared/ssh && cp /mnt/secrets/id_rsa.pub /mnt/shared/ssh/authorized_keys"]
+          command: ["sh", "-c", "mkdir -p /mnt/shared/ssh/authorized_keys && cp /mnt/secrets/id_rsa.pub /mnt/shared/ssh/authorized_keys/{{ .Values.ssh.user }}"]
           volumeMounts:
             - name: ssh-keys
               mountPath: /mnt/secrets
