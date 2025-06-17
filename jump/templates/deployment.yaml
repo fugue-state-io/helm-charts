@@ -28,7 +28,8 @@ spec:
               value: "1000"
           volumeMounts:
             - name: ssh-keys
-              mountPath: /config/ssh
+              mountPath: /config/ssh/id_rsa.pub
+              subPath: id_rsa.pub
               readOnly: true
       volumes:
         - name: ssh-keys
