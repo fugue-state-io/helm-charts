@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ssh-jumpbox.fullname" . }}
+  labels:
+    app: {{ include "ssh-jumpbox.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "ssh-jumpbox.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "ssh-jumpbox.name" . }}
+    spec:
+      containers:
+        - name: jumpbox
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 2222
+              name: ssh
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          volumeMounts:
+            - name: ssh-keys
+              mountPath: /config/ssh
+              readOnly: true
+      volumes:
+        - name: ssh-keys
+          secret:
+            secretName: {{ .Values.ssh.secretName }}
