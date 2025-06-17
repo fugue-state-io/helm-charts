@@ -40,6 +40,10 @@ spec:
               value: "{{ .Values.ssh.user }}"
             - name: PUBLIC_KEY_DIR
               value: "/config/ssh"
+            - name: DOCKER_MODS
+              value: "linuxserver/mods:openssh-server-ssh-allow-users"
+            - name: ALLOWED_USERS
+              value: "{{ .Values.ssh.user }}"
           volumeMounts:
             - name: ssh-config
               mountPath: /config/ssh
