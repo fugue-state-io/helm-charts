@@ -14,16 +14,16 @@ spec:
       labels:
         app: {{ include "ssh-jumpbox.name" . }}
     spec:
-      initContainers:
-        - name: copy-ssh-keys
-          image: busybox
-          command: ["sh", "-c", "mkdir -p /mnt/shared/ssh/authorized_keys && cp /mnt/secrets/id_rsa.pub /mnt/shared/ssh/authorized_keys/{{ .Values.ssh.user }}"]
-          volumeMounts:
-            - name: ssh-keys
-              mountPath: /mnt/secrets
-              readOnly: true
-            - name: ssh-config
-              mountPath: /mnt/shared
+      # initContainers:
+      #   - name: copy-ssh-keys
+      #     image: busybox
+      #     command: ["sh", "-c", "mkdir -p /mnt/shared/ssh/authorized_keys && cp /mnt/secrets/id_rsa.pub /mnt/shared/ssh/authorized_keys/{{ .Values.ssh.user }}"]
+      #     volumeMounts:
+      #       - name: ssh-keys
+      #         mountPath: /mnt/secrets
+      #         readOnly: true
+      #       - name: ssh-config
+      #         mountPath: /mnt/shared
       containers:
         - name: jumpbox
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -38,18 +38,21 @@ spec:
               value: "1000"
             - name: USER_NAME
               value: "{{ .Values.ssh.user }}"
-            - name: PUBLIC_KEY_DIR
-              value: "/config/ssh"
-            - name: DOCKER_MODS
-              value: "linuxserver/mods:openssh-server-ssh-allow-users"
-            - name: ALLOWED_USERS
-              value: "{{ .Values.ssh.user }}"
-          volumeMounts:
-            - name: ssh-config
-              mountPath: /config/ssh
-      volumes:
-        - name: ssh-keys
-          secret:
-            secretName: {{ .Values.ssh.secretName }}
-        - name: ssh-config
-          emptyDir: {}
+            - name: PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ssh-public-keys
+                  key: id_rsa.pub
+          #   - name: DOCKER_MODS
+          #     value: "linuxserver/mods:openssh-server-ssh-allow-users"
+          #   - name: ALLOWED_USERS
+          #     value: "{{ .Values.ssh.user }}"
+          # volumeMounts:
+          #   - name: ssh-config
+          #     mountPath: /config/ssh
+      # volumes:
+      #   - name: ssh-keys
+      #     secret:
+      #       secretName: {{ .Values.ssh.secretName }}
+      #   - name: ssh-config
+      #     emptyDir: {}
