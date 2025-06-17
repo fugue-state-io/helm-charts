@@ -71,6 +71,9 @@ image:
 service:
   type: LoadBalancer
   port: 22
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: jump.fugue-state.io.
+  
 
 resources:
   limits:
