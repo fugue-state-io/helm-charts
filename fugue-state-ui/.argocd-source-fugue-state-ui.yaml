@@ -4,5 +4,5 @@ helm:
     value: registry.digitalocean.com/fugue-state-registry/fugue-state-ui
     forcestring: true
   - name: image.tag
-    value: v0.5.5
+    value: v0.5.7
     forcestring: true
