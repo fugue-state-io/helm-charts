@@ -96,11 +96,11 @@ data:
         total_file_size               100M
         upload_timeout                10m
         store_dir                     /tmp/s3
-        s3_key_format                 {{ .Values.s3.pathPrefix }}/%Y/%m/%d/$TAG[2]/%Y%m%d_%H%M%S_$UUID.gz
+        s3_key_format                 /{{ .Values.s3.pathPrefix }}/%Y/%m/%d/$TAG[2]/%Y%m%d_%H%M%S_$UUID.gz
         s3_key_format_tag_delimiters  .
         auto_retry_requests           On
         retry_limit                   {{ .Values.buffering.maxRetries }}
-        storage.total_limit_size      2G
+        store_dir_limit_size          2G
         compression                   gzip
 
     {{- if .Values.monitoring.enabled }}
