@@ -18,6 +18,9 @@ spec:
       {{- with .Values.podAnnotations }}
       annotations:
         reloader.stakater.com/match: "true"
+        # Annotations for log parsing
+        fluentbit.io/parser: "fugue_state_json"
+        fluentbit.io/exclude: "false"
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
@@ -46,6 +49,15 @@ spec:
             value: "{{ .Values.image.tag }}"
           - name: NEXT_TELEMETRY_DISABLED
             value: "{{ .Values.nextTelemetryDisabled}}"
+          # Logging configuration
+          - name: LOG_STRUCTURED
+            value: "{{ .Values.logging.structured }}"
+          - name: LOG_LEVEL
+            value: "{{ .Values.logging.level }}"
+          - name: LOG_REQUEST_ENABLED
+            value: "{{ .Values.logging.requestLogging }}"
+          - name: LOG_SECURITY_ENABLED
+            value: "{{ .Values.logging.securityLogging }}"
       volumes:
         - name: application-volume
           emptyDir: {}
@@ -79,6 +91,20 @@ spec:
           envFrom:
           - secretRef:
               name: fugue-state-ui-secrets
+          env:
+          - name: NEXT_PUBLIC_VERSION
+            value: "{{ .Values.image.tag }}"
+          - name: NEXT_TELEMETRY_DISABLED
+            value: "{{ .Values.nextTelemetryDisabled}}"
+          # Logging configuration
+          - name: LOG_STRUCTURED
+            value: "{{ .Values.logging.structured }}"
+          - name: LOG_LEVEL
+            value: "{{ .Values.logging.level }}"
+          - name: LOG_REQUEST_ENABLED
+            value: "{{ .Values.logging.requestLogging }}"
+          - name: LOG_SECURITY_ENABLED
+            value: "{{ .Values.logging.securityLogging }}"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

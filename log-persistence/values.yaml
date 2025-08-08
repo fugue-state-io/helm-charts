@@ -1,0 +1,106 @@
+# Default values for log-persistence
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Fluent Bit configuration
+fluentbit:
+  image:
+    repository: fluent/fluent-bit
+    tag: "4.0.7"
+    pullPolicy: IfNotPresent
+
+  # Resource configuration
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+  # Node selector to ensure Fluent Bit runs on all nodes
+  nodeSelector: {}
+  tolerations:
+    - operator: Exists
+      effect: NoSchedule
+    - operator: Exists
+      effect: NoExecute
+
+  # Service account configuration
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: ""
+
+# S3 configuration for log storage
+s3:
+  # S3-compatible endpoint (DigitalOcean Spaces)
+  endpoint: "https://nyc3.digitaloceanspaces.com"
+  bucket: "fugue-state-logs"
+  region: "nyc3"
+  
+  # Path structure for logs
+  # This will create paths like: logs/2024/01/15/fugue-state-ui/app.log
+  pathPrefix: "logs"
+  
+  # Credentials - these are provided via Terraform-managed secret
+  # Use existing secret created by Terraform
+  existingSecret: "log-persistence-s3-credentials"
+
+# Log collection configuration
+logging:
+  # Collect logs from these namespaces
+  namespaces:
+    - default
+    - fugue-state
+    - ui
+  
+  # Log parsing and filtering
+  parsing:
+    enabled: true
+    # Parse JSON logs from fugue-state-ui
+    json: true
+    # Time format for log timestamps
+    timeFormat: "%Y-%m-%dT%H:%M:%S.%LZ"
+    timeKey: "timestamp"
+  
+  # Log enrichment - add metadata
+  enrichment:
+    enabled: true
+    # Add Kubernetes metadata
+    kubernetes: true
+    # Add pod annotations as labels
+    annotations: true
+
+# Monitoring and metrics
+monitoring:
+  enabled: true
+  # Enable Fluent Bit metrics endpoint
+  metricsPort: 2020
+  # Enable health check endpoint
+  healthPort: 2021
+
+# Log rotation and buffering
+buffering:
+  # Buffer size for logs before sending to S3
+  bufferSize: "64KB"
+  # Flush interval (seconds)
+  flushInterval: 10
+  # Maximum number of retries for failed uploads
+  maxRetries: 3
+
+# Security configuration
+security:
+  # Run as non-root user
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+  
+  # Read-only root filesystem
+  readOnlyRootFilesystem: true
+
+# Log retention (handled by S3 lifecycle policies)
+retention:
+  # This is configured in the S3 bucket lifecycle policy
+  # Default: 90 days as configured in terraform
+  days: 90

@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: log-persistence
+  namespace: argocd
+spec:
+  destination:
+    namespace: log-persistence
+    server: "https://kubernetes.default.svc"
+  project: fugue-state
+  source:
+    path: log-persistence
+    repoURL: "https://github.com/fugue-state-io/helm-charts"
+    targetRevision: develop
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  ignoreDifferences:
+    - group: ""
+      kind: Secret
+      name: log-persistence-s3-credentials
+      jsonPointers:
+        - /data

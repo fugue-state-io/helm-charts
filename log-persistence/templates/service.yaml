@@ -1,0 +1,22 @@
+{{- if .Values.monitoring.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "log-persistence.fullname" . }}-metrics
+  labels:
+    {{- include "log-persistence.labels" . | nindent 4 }}
+    app.kubernetes.io/component: metrics
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.monitoring.metricsPort }}
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+    - port: {{ .Values.monitoring.healthPort }}
+      targetPort: health
+      protocol: TCP
+      name: health
+  selector:
+    {{- include "log-persistence.selectorLabels" . | nindent 4 }}
+{{- end }}

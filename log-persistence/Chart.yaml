@@ -1,0 +1,21 @@
+apiVersion: v2
+name: log-persistence
+description: Log persistence system using Fluent Bit to send logs to S3
+type: application
+version: 0.1.0
+appVersion: "3.1.7"
+
+dependencies: []
+
+keywords:
+  - logging
+  - fluent-bit
+  - s3
+  - monitoring
+
+maintainers:
+  - name: fugue-state-io
+    email: admin@fugue-state.io
+
+sources:
+  - https://github.com/fugue-state-io/fugue-state-ui

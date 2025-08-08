@@ -99,3 +99,14 @@ affinity: {}
 
 volumes: []
 # Removed static volume definition to allow dynamic generation in the deployment template.
+
+# Logging configuration for the application
+logging:
+  # Enable structured JSON logging for better parsing
+  structured: true
+  # Log level for the application
+  level: "INFO"
+  # Enable request/response logging
+  requestLogging: true
+  # Enable security event logging
+  securityLogging: true
