@@ -67,11 +67,17 @@ data:
         Match   kube.*
         Regex   kubernetes.namespace_name {{ join "|" .Values.logging.namespaces }}
 
+    # Temporary debug output to see log structure
+    [OUTPUT]
+        Name   stdout
+        Match  kube.*ui*
+        Format json_lines
+
     {{- if .Values.logging.parsing.enabled }}
     # Parse JSON logs from fugue-state-ui
     [FILTER]
         Name    parser
-        Match   kube.*fugue-state-ui*
+        Match   kube.*ui*
         Key_Name log
         Parser  fugue_state_json
         Reserve_Data On
