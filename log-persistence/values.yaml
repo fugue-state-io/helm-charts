@@ -52,7 +52,6 @@ logging:
   # Collect logs from these namespaces
   namespaces:
     - default
-    - fugue-state
     - ui
   
   # Log parsing and filtering
@@ -84,10 +83,12 @@ monitoring:
 buffering:
   # Buffer size for logs before sending to S3
   bufferSize: "64KB"
-  # Flush interval (seconds)
-  flushInterval: 10
+  # Flush interval (seconds) - flush more frequently
+  flushInterval: 5
   # Maximum number of retries for failed uploads
   maxRetries: 3
+  # S3 specific settings
+  s3TotalFileSize: "1M"  # Much smaller file size for faster uploads
 
 # Security configuration
 security:
