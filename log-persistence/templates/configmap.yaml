@@ -61,11 +61,11 @@ data:
         Buffer_Size         {{ .Values.buffering.bufferSize }}
     {{- end }}
 
-    # Filter to only include logs from specified namespaces
-    [FILTER]
-        Name    grep
-        Match   kube.*
-        Regex   kubernetes.namespace_name {{ join "|" .Values.logging.namespaces }}
+    # Filter to only include logs from specified namespaces - temporarily disabled for debugging
+    # [FILTER]
+    #     Name    grep
+    #     Match   kube.*
+    #     Regex   kubernetes.namespace_name {{ join "|" .Values.logging.namespaces }}
 
     # Temporary debug output to see log structure
     [OUTPUT]
