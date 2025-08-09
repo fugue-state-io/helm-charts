@@ -88,7 +88,8 @@ buffering:
   # Maximum number of retries for failed uploads
   maxRetries: 3
   # S3 specific settings
-  s3TotalFileSize: "1M"  # Much smaller file size for faster uploads
+  s3TotalFileSize: "5M"  # Must be at least 2x upload_chunk_size (2M)
+  s3UploadChunkSize: "2M"  # Chunk size for S3 uploads
 
 # Security configuration
 security:

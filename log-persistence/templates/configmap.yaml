@@ -93,9 +93,9 @@ data:
         region                        {{ .Values.s3.region }}
         endpoint                      {{ .Values.s3.endpoint }}
         use_put_object                On
-        total_file_size               1M
+        total_file_size               {{ .Values.buffering.s3TotalFileSize }}
         upload_timeout                10m
-        upload_chunk_size             6M
+        upload_chunk_size             {{ .Values.buffering.s3UploadChunkSize }}
         store_dir                     /tmp/s3
         s3_key_format                 /{{ .Values.s3.pathPrefix }}/%Y/%m/%d/$TAG[2]/%Y%m%d_%H%M%S_$UUID.gz
         s3_key_format_tag_delimiters  .
