@@ -225,6 +225,13 @@ configs:
             clientSecret: $fugue-state-argocd-secret:dexSecret
             org: fugue-state-io
 
+      staticClients:
+      - id: argo-workflows
+        name: "Argo Workflows"
+        redirectURIs:
+        - https://argo-workflows.fugue-state.io/oauth2/callback
+        secret: $argo-workflows-sso:client-secret
+
     # OIDC configuration as an alternative to dex (optional).
     # oidc.config: |
     #   name: AzureAD
