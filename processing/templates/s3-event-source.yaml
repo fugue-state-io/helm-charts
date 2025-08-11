@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: fugue-state-cdn-s3
+  namespace: processing
+spec:
+  s3:
+    fugue-state-cdn:
+      bucket: fugue-state-cdn
+      endpoint: s3.amazonaws.com
+      region: us-east-1
+      events:
+        - s3:ObjectCreated:*
+      filter:
+        prefix: ""
+        suffix: ""
+      accessKey:
+        name: argo-workflows-spaces
+        key: spaces_access_id
+      secretKey:
+        name: argo-workflows-spaces
+        key: spaces_secret_key

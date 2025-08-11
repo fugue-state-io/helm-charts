@@ -1,0 +1,14 @@
+# Processing Chart Values
+# This chart deploys argo-events sensors and workflows for processing S3 file uploads
+
+# S3 Configuration
+s3:
+  bucket: fugue-state-cdn
+  region: us-east-1
+  endpoint: s3.amazonaws.com
+  secretName: argo-workflows-spaces  # Updated to match terraform
+
+# Workflow Configuration
+workflow:
+  namespace: argo-workflows
+  image: python:3.9

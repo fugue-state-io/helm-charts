@@ -1,18 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: keycloak
+  name: processing
   namespace: argocd
 spec:
   destination:
-    namespace: keycloak
+    namespace: processing
     server: "https://kubernetes.default.svc"
   project: fugue-state
-  source:
-    path: keycloak
-    repoURL: "https://github.com/fugue-state-io/helm-charts"
+  sources:
+  - repoURL: 'https://github.com/fugue-state-io/helm-charts'
+    path: processing
     targetRevision: develop
+    helm:
+      valueFiles:
+      - values.yaml
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

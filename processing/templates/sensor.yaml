@@ -1,0 +1,60 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: s3-cdn-sensor
+  namespace: processing
+spec:
+  dependencies:
+    - name: s3-dep
+      eventSourceName: fugue-state-cdn-s3
+      eventName: fugue-state-cdn
+  triggers:
+    - template:
+        name: s3-workflow-trigger
+        argoWorkflow:
+          operation: create
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Workflow
+              metadata:
+                generateName: process-s3-file-
+                namespace: argo-workflows
+              spec:
+                entrypoint: print-object-name
+                templates:
+                - name: print-object-name
+                  script:
+                    image: python:3.9
+                    command: ["python"]
+                    source: |
+                      import os
+                      object_name = os.getenv("OBJECT_NAME", "unknown")
+                      bucket_name = os.getenv("BUCKET_NAME", "unknown")
+                      print(f"Processing file: {object_name} from bucket: {bucket_name}")
+                    env:
+                      - name: AWS_ACCESS_KEY_ID
+                        valueFrom:
+                          secretKeyRef:
+                            name: argo-workflows-spaces
+                            key: spaces_access_id
+                      - name: AWS_SECRET_ACCESS_KEY
+                        valueFrom:
+                          secretKeyRef:
+                            name: argo-workflows-spaces
+                            key: spaces_secret_key
+                      - name: OBJECT_NAME
+                        value: ""
+                      - name: BUCKET_NAME
+                        value: ""
+                podGC:
+                  strategy: OnWorkflowCompletion
+          parameters:
+            - src:
+                dependencyName: s3-dep
+                dataKey: body.object.key
+              dest: spec.templates[0].script.env[2].value
+            - src:
+                dependencyName: s3-dep
+                dataKey: body.bucket.name
+              dest: spec.templates[0].script.env[3].value
