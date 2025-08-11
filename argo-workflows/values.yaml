@@ -114,6 +114,14 @@ controller:
     name: ""
     # -- ConfigMap annotations
     annotations: {}
+    # -- Workflow controller configuration
+    data:
+      policy.default: |
+        p, role:admin, *, *, *, allow
+        g, fugue-state-io:admin, role:admin
+      policy.csv: |
+        p, role:admin, *, *, *, allow
+        g, fugue-state-io:admin, role:admin
 
   # -- Limits the maximum number of incomplete workflows in a namespace
   namespaceParallelism:
