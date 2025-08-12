@@ -53,10 +53,15 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
+    - host: practice-music.io
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
   tls: 
   - secretName: fugue-state-ui-tls
     hosts:
       - fugue-state.io
+      - practice-music.io
 
 resources:
   limits:
